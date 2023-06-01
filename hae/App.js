@@ -1,10 +1,12 @@
-import React from "react";
-import { NativeBaseProvider, Button } from "native-base";
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 
-export default function App() {
+const App = () => {
   return (
-    <NativeBaseProvider>
-      <Button>Hello world</Button>
-    </NativeBaseProvider>
+    <NavigationContainer>
+      {/* Rest of your app code */}
+    </NavigationContainer>
   );
-}
+};
+
+export default App;
