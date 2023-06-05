@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NativeBaseProvider, Text, Flex, Input, Button } from "native-base";
+import {
+  NativeBaseProvider,
+  Text,
+  Flex,
+  Input,
+  Button,
+  Checkbox,
+} from "native-base";
 
 const ShoppingList = () => {
   const [quantity, setQuantity] = useState("");
@@ -35,17 +42,6 @@ const ShoppingList = () => {
     }
   };
 
-  const handleLogStoredData = async () => {
-    try {
-      const storedInputList = await AsyncStorage.getItem("inputList");
-      const parsedInputList = JSON.parse(storedInputList);
-      setInputList(parsedInputList || []);
-      console.log("Stored data:", parsedInputList);
-    } catch (error) {
-      console.log("Error logging stored data:", error);
-    }
-  };
-
   return (
     <NativeBaseProvider>
       <Flex direction="row" p="3">
@@ -76,12 +72,6 @@ const ShoppingList = () => {
         />
         <Button size="sm" ml="auto" onPress={saveData}>
           Hinzufügen
-        </Button>
-      </Flex>
-
-      <Flex direction="row" p={3}>
-        <Button size="xs" variant="outline" onPress={handleLogStoredData}>
-          Log Stored Data
         </Button>
       </Flex>
     </NativeBaseProvider>
