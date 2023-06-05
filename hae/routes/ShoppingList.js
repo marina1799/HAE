@@ -10,23 +10,10 @@ const ShoppingList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const keys = await AsyncStorage.getAllKeys();
-        const values = await AsyncStorage.multiGet(keys);
-
-        if (values) {
-          values.forEach((value) => {
-            const [key, data] = value;
-            console.log(`${key}: ${data}`);
-          });
-
-          const storedQuantity =
-            values.find((value) => value[0] === "quantity")?.[1] || "";
-          const storedIngredient =
-            values.find((value) => value[0] === "ingredient")?.[1] || "";
-
-          setQuantity(storedQuantity);
-          setIngredient(storedIngredient);
-        }
+        const storedInputList = await AsyncStorage.getItem("inputList");
+        const parsedInputList = JSON.parse(storedInputList);
+        setInputList(parsedInputList || []);
+        console.log("Stored data:", parsedInputList);
       } catch (error) {
         console.log("Error retrieving data:", error);
       }
@@ -52,7 +39,7 @@ const ShoppingList = () => {
     try {
       const storedInputList = await AsyncStorage.getItem("inputList");
       const parsedInputList = JSON.parse(storedInputList);
-      setInputList(parsedInputList);
+      setInputList(parsedInputList || []);
       console.log("Stored data:", parsedInputList);
     } catch (error) {
       console.log("Error logging stored data:", error);
