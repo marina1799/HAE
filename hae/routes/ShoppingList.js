@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  NativeBaseProvider,
-  Text,
-  Flex,
-  Input,
-  Button,
-  Checkbox,
-} from "native-base";
+import { NativeBaseProvider, Text, Flex, Input, Button } from "native-base";
 
 const ShoppingList = () => {
   const [quantity, setQuantity] = useState("");
