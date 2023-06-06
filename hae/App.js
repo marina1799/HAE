@@ -1,7 +1,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Recipes from "./routes/Recipes";
+import RecipesList from "./routes/RecipesList";
 import ShoppingList from "./routes/ShoppingList";
 
 const Stack = createNativeStackNavigator();
@@ -11,9 +11,9 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Recipes"
-          component={Recipes}
-          options={{ title: "Rezepte" }}
+          name="RecipesList"
+          component={RecipesList}
+          options={{ title: "RezepteListe" }}
         />
         <Stack.Screen
           name="ShoppingList"
