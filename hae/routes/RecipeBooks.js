@@ -12,7 +12,6 @@ import {
   FlatList,
   Icon,
 } from "native-base";
-import { Ionicons } from "@expo/vector-icons";
 
 const Recipes = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
@@ -79,9 +78,6 @@ const Recipes = ({ navigation }) => {
         renderInPortal={false}
         shadow={2}
         size="sm"
-        icon={
-          <Icon as={Ionicons} name="add-outline" size={6} color="white"></Icon>
-        }
       />
 
       <Modal
@@ -154,9 +150,8 @@ const Recipes = ({ navigation }) => {
               </Text>
             </Text>
 
-            <TouchableOpacity onPress={() => deleteBook(index)}>
-              <Icon as={Ionicons} name="trash-outline" size={6} />
-            </TouchableOpacity>
+            <Button onPress={() => deleteBook(index)}><Text>-</Text>
+            </Button>
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
