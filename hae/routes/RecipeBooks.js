@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, RefreshControl } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider, Button, Text, Flex, Box, FlatList, Icon } from "native-base";
 import { Ionicons } from '@expo/vector-icons';
 
 const Recipes = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -23,10 +22,8 @@ const Recipes = ({ navigation }) => {
     }
   };
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await fetchData();
-    setRefreshing(false);
+  const handlePress = (item) => {
+    navigation.navigate('RecipesList', { selectedItem: item });
   };
 
   const deleteBook = async (index) => {
@@ -62,10 +59,10 @@ const Recipes = ({ navigation }) => {
         data={inputList}
         renderItem={({ item, index }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("RecipesList")}
+          onPress={() => handlePress(item)}
             style={{
               marginTop: 2,
-              backgroundColor: 'green',
+              backgroundColor: 'blue',
               padding: 12,
               borderRadius: 8,
               flexDirection: 'row',
@@ -76,6 +73,9 @@ const Recipes = ({ navigation }) => {
           >
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginRight: 8 }}>
               {item.bookName}
+            </Text>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginRight: 8 }}>
+              {item.bookDescription}
             </Text>
             <TouchableOpacity onPress={() => deleteBook(index)}>
               <Icon
@@ -88,9 +88,6 @@ const Recipes = ({ navigation }) => {
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
       />
 
     </NativeBaseProvider>
