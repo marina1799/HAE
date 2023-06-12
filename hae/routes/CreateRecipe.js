@@ -31,7 +31,7 @@ const CreateRecipe = () => {
                              
                             <Flex direction="column" width="100%">
                                 <FormControl ml="2" w="3/4" maxW="300" isRequired>{/* isInvalid */}
-                                    <Select maxWidth="100%" mb="4" accessibilityLabel="Rezeptliste wählen" placeholder="Rezeptliste wählen" _selectedItem={{
+                                    <Select maxWidth="100%" height="9" mb="4" accessibilityLabel="Rezeptliste wählen" placeholder="Rezeptliste wählen" _selectedItem={{
                                         bg: "teal.900",
                                         endIcon: <CheckIcon size={5} />
                                     }} mt="1">
