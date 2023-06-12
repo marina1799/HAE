@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Checkbox,
+  Heading,
 } from "native-base";
 
 const ShoppingList = () => {
@@ -135,11 +136,7 @@ const ShoppingList = () => {
 
   return (
     <NativeBaseProvider>
-      <Flex direction="row" p="3">
-        <Text>Produkte:</Text>
-      </Flex>
-
-      <Flex direction="column" p={3}>
+      <Flex direction="column">
         {ingredientsList.map((ingredient, index) => {
           if (removedIngredientsList.includes(ingredient)) {
             return null; // Skip rendering removed ingredients
@@ -165,17 +162,17 @@ const ShoppingList = () => {
         })}
       </Flex>
 
-      <Flex direction="row" p="3" alignItems="center">
+      <Flex direction="row" alignItems="center">
         <Input
           placeholder="Menge"
           width="20"
           onChangeText={(text) => setQuantity(text)}
           value={quantity}
+          keyboardType="numeric"
         />
         <Input
           placeholder="Zutat"
           width="20"
-          mx="1"
           onChangeText={(text) => setIngredient(text)}
           value={ingredient}
         />
@@ -184,11 +181,7 @@ const ShoppingList = () => {
         </Button>
       </Flex>
 
-      <Flex direction="row" p={3}>
-        Abgehakt:
-      </Flex>
-
-      <Flex direction="column" p={3}>
+      <Flex direction="column">
         {removedIngredientsList.map((ingredient, index) => {
           if (!ingredient) {
             return null; // Skip rendering null values
@@ -211,11 +204,18 @@ const ShoppingList = () => {
             </Flex>
           );
         })}
-        {removedIngredientsList.length > 0 && (
-          <Button size="sm" mt={2} onPress={clearRemovedIngredients}>
-            Clear Removed Ingredients
-          </Button>
-        )}
+        <Flex alignItems="flex-end">
+          {removedIngredientsList.length > 0 && (
+            <Button
+              size="sm"
+              colorScheme="secondary"
+              onPress={clearRemovedIngredients}
+              ios_ripple={{ color: "#000000" }}
+            >
+              Abgehakte löschen
+            </Button>
+          )}
+        </Flex>
       </Flex>
     </NativeBaseProvider>
   );
