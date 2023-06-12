@@ -26,19 +26,18 @@ const CreateRecipeList = ({ navigation }) => {
     try {
       const newBook = { bookName, bookDescription };
       const updatedInputList = [...inputList, newBook];
-  
+
       await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
       console.log("Data saved successfully!");
-  
+
       setInputList(updatedInputList);
       console.log("Updated inputList:", updatedInputList);
-  
-      navigation.navigate("Recipes");
+
+      navigation.navigate("RecipesList");
     } catch (error) {
       console.log("Error saving data:", error);
     }
   };
-  
 
   return (
     <NativeBaseProvider>
@@ -59,7 +58,6 @@ const CreateRecipeList = ({ navigation }) => {
       <Button size="lg" onPress={addBook}>
         <Text>Hinzufügen</Text>
       </Button>
-
     </NativeBaseProvider>
   );
 };

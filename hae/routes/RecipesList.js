@@ -1,6 +1,6 @@
 import { NativeBaseProvider, Button, Text, Flex } from "native-base";
 
-const Recipes = ({ navigation }) => {
+const RecipesList = ({ navigation }) => {
   return (
     <NativeBaseProvider>
       <Flex direction="row-reverse">
@@ -38,4 +38,4 @@ const Recipes = ({ navigation }) => {
   );
 };
 
-export default Recipes;
+export default RecipesList;
