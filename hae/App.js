@@ -5,6 +5,7 @@ import Recipes from "./routes/RecipeBooks";
 import ShoppingList from "./routes/ShoppingList";
 import RecipesList from "./routes/RecipesList";
 import CreateRecipeList from "./routes/CreateRecipeList";
+import CreateRecipe from "./routes/CreateRecipe";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ const App = () => {
           name="CreateRecipeList"
           component={CreateRecipeList}
           options={{ title: "CreateRecipeList" }}
+        />
+        <Stack.Screen
+          name="CreateRecipe"
+          component={CreateRecipe}
+          options={{ title: "CreateRecipe" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

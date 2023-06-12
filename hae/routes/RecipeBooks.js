@@ -155,7 +155,7 @@ const Recipes = ({ navigation }) => {
             </Text>
 
             <TouchableOpacity onPress={() => deleteBook(index)}>
-              <Icon as={Ionicons} name="trash-outline" size={6} color="white" />
+              <Icon as={Ionicons} name="trash-outline" size={6} />
             </TouchableOpacity>
           </TouchableOpacity>
         )}
