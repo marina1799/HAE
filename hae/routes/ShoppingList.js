@@ -7,7 +7,6 @@ import {
   Input,
   Button,
   Checkbox,
-  Heading,
 } from "native-base";
 
 const ShoppingList = () => {
@@ -139,7 +138,7 @@ const ShoppingList = () => {
       <Flex direction="column">
         {ingredientsList.map((ingredient, index) => {
           if (removedIngredientsList.includes(ingredient)) {
-            return null; // Skip rendering removed ingredients
+            return null;
           }
 
           return (
