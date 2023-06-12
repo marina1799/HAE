@@ -28,17 +28,14 @@ const Recipes = ({ navigation }) => {
           </Text>
         </Button>
       </Flex>
-<Flex direction="row-reverse"></Flex>
+      <Flex direction="row-reverse"></Flex>
       <Flex direction="row" p="3">
         <Text>Rezepteliste:</Text>
       </Flex>
       <Text>{selectedItem.bookName}</Text>
       <Text>{selectedItem.bookDescription}</Text>
-
     </NativeBaseProvider>
   );
 };
 
-
 export default Recipes;
-

@@ -2,7 +2,7 @@ import * as React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Recipes from "./routes/RecipeBooks";
+import RecipeBooks from "./routes/RecipeBooks";
 
 import ShoppingList from "./routes/ShoppingList";
 import RecipesList from "./routes/RecipesList";
@@ -24,6 +24,16 @@ const App = () => {
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
         <Stack.Screen
+          name="RecipeBooks"
+          component={{ RecipeBooks }}
+          options={{ title: "RecipeBooks" }}
+        />
+        <Stack.Screen
+          name="RecipesList"
+          component={RecipesList}
+          options={{ title: "RecipesList" }}
+        />
+        <Stack.Screen
           name="CreateRecipe"
           component={CreateRecipe}
           options={{ title: "Rezept erstellen" }}
@@ -32,11 +42,6 @@ const App = () => {
           name="ShoppingList"
           component={ShoppingList}
           options={{ title: "Einkaufszettel" }}
-        />
-        <Stack.Screen
-          name="RecipesList"
-          component={RecipesList}
-          options={{ title: "RecipesList" }}
         />
         <Stack.Screen
           name="CreateRecipeList"
