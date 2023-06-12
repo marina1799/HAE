@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import {
   NativeBaseProvider,
   Button,
@@ -17,14 +18,26 @@ const Recipes = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
+  const isFocused = useIsFocused();
+
+  // Modal schließen, wenn die Seite fokussiert ist
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isFocused) {
+      setShowModal(false); 
+    }
+  }, [isFocused]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   const fetchData = async () => {
     try {
       const storedInputList = await AsyncStorage.getItem("inputList");
       const parsedInputList = JSON.parse(storedInputList);
+
       setInputList(parsedInputList || []);
       console.log("Stored data:", parsedInputList);
     } catch (error) {
