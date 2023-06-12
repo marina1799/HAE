@@ -39,11 +39,6 @@ const CreateRecipeList = ({ navigation }) => {
     }
   };
   
-  
-
-  const handleAddBook = async () => {
-    await addBook();
-  };
 
   return (
     <NativeBaseProvider>
@@ -61,7 +56,7 @@ const CreateRecipeList = ({ navigation }) => {
         onChangeText={(text) => setDescription(text)}
         value={bookDescription}
       />
-      <Button size="lg" onPress={handleAddBook}>
+      <Button size="lg" onPress={addBook}>
         <Text>Hinzufügen</Text>
       </Button>
 

@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NativeBaseProvider, Button, Text, Flex, Box, FlatList, Icon } from "native-base";
-import { Ionicons } from '@expo/vector-icons';
+import {
+  NativeBaseProvider,
+  Button,
+  Fab,
+  Text,
+  Flex,
+  Modal,
+  FlatList,
+  Icon,
+} from "native-base";
+import { Ionicons } from "@expo/vector-icons";
 
 const Recipes = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -23,7 +33,7 @@ const Recipes = ({ navigation }) => {
   };
 
   const handlePress = (item) => {
-    navigation.navigate('RecipesList', { selectedItem: item });
+    navigation.navigate("RecipesList", { selectedItem: item });
   };
 
   const deleteBook = async (index) => {
@@ -51,45 +61,93 @@ const Recipes = ({ navigation }) => {
         <Text>Rezepteliste:</Text>
       </Flex>
 
-      <Button size="lg" onPress={() => navigation.navigate("CreateRecipeList", { setInputList })}>
-        +
-      </Button>
+      <Fab
+        onPress={() => setShowModal(true)}
+        renderInPortal={false}
+        shadow={2}
+        size="sm"
+        icon={
+          <Icon as={Ionicons} name="add-outline" size={6} color="white"></Icon>
+        }
+      />
+
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        _backdrop={{
+          _dark: {
+            bg: "coolGray.800",
+          },
+          bg: "warmGray.50",
+        }}
+      >
+        <Modal.Content maxWidth="350" maxH="212">
+          <Modal.CloseButton />
+          <Modal.Header>Add</Modal.Header>
+          <Modal.Body>
+            <Button.Group space={2}>
+              <Button
+                size="lg"
+                onPress={() => navigation.navigate("CreateRecipeList")}
+              >
+                Recipe Book
+              </Button>
+              <Button
+                size="lg"
+                onPress={() => navigation.navigate("CreateRecipe")}
+              >
+                Recipe
+              </Button>
+            </Button.Group>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
 
       <FlatList
         data={inputList}
         renderItem={({ item, index }) => (
           <TouchableOpacity
-          onPress={() => handlePress(item)}
+            onPress={() => handlePress(item)}
             style={{
               marginTop: 2,
-              backgroundColor: 'blue',
+              backgroundColor: "white",
               padding: 12,
               borderRadius: 8,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
             key={item.key}
           >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginRight: 8 }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: "black",
+                marginRight: 8,
+              }}
+            >
               {item.bookName}
+              {"\n"}
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "gray",
+                  marginRight: 8,
+                }}
+              >
+                {item.bookDescription}
+              </Text>
             </Text>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginRight: 8 }}>
-              {item.bookDescription}
-            </Text>
+
             <TouchableOpacity onPress={() => deleteBook(index)}>
-              <Icon
-                as={Ionicons}
-                name="trash-outline"
-                size={6}
-                color="white"
-              />
+              <Icon as={Ionicons} name="trash-outline" size={6} color="white" />
             </TouchableOpacity>
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-
     </NativeBaseProvider>
   );
 };
