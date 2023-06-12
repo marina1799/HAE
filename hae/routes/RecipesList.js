@@ -17,6 +17,17 @@ const Recipes = ({ navigation }) => {
       <Flex direction="row" p="3">
         <Text>Rezepteliste:</Text>
       </Flex>
+      <Flex direction="row-reverse">
+        <Button
+          size="lg"
+          variant="unstyled"
+          onPress={() => navigation.navigate("CreateRecipe")}
+        >
+          <Text color="primary.400" underline>
+            Rezept erstellen
+          </Text>
+        </Button>
+      </Flex>
     </NativeBaseProvider>
   );
 };
