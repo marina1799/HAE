@@ -3,7 +3,6 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import RecipeBooks from "./routes/RecipeBooks";
-
 import ShoppingList from "./routes/ShoppingList";
 import RecipesList from "./routes/RecipesList";
 import CreateRecipeList from "./routes/CreateRecipeList";
@@ -25,7 +24,7 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen
           name="RecipeBooks"
-          component={{ RecipeBooks }}
+          component={RecipeBooks}
           options={{ title: "RecipeBooks" }}
         />
         <Stack.Screen

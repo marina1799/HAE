@@ -10,10 +10,9 @@ import {
   Flex,
   Modal,
   FlatList,
-  Icon,
 } from "native-base";
 
-const Recipes = ({ navigation }) => {
+const RecipeBooks = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -22,7 +21,7 @@ const Recipes = ({ navigation }) => {
   // Modal schließen, wenn die Seite fokussiert ist
   useEffect(() => {
     if (isFocused) {
-      setShowModal(false); 
+      setShowModal(false);
     }
   }, [isFocused]);
 
@@ -150,7 +149,8 @@ const Recipes = ({ navigation }) => {
               </Text>
             </Text>
 
-            <Button onPress={() => deleteBook(index)}><Text>-</Text>
+            <Button onPress={() => deleteBook(index)}>
+              <Text>-</Text>
             </Button>
           </TouchableOpacity>
         )}
@@ -160,4 +160,4 @@ const Recipes = ({ navigation }) => {
   );
 };
 
-export default Recipes;
+export default RecipeBooks;
