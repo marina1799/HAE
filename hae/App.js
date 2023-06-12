@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Recipes from "./routes/RecipeBooks";
 
-
 import ShoppingList from "./routes/ShoppingList";
 import RecipesList from "./routes/RecipesList";
 import CreateRecipeList from "./routes/CreateRecipeList";
@@ -16,7 +15,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'white'
+    background: "white",
   },
 };
 
@@ -24,11 +23,6 @@ const App = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
-        <Stack.Screen
-          name="RecipesList"
-          component={RecipesList}
-          options={{ title: "RezepteListe" }}
-        />
         <Stack.Screen
           name="CreateRecipe"
           component={CreateRecipe}
@@ -48,11 +42,6 @@ const App = () => {
           name="CreateRecipeList"
           component={CreateRecipeList}
           options={{ title: "CreateRecipeList" }}
-        />
-        <Stack.Screen
-          name="CreateRecipe"
-          component={CreateRecipe}
-          options={{ title: "CreateRecipe" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
