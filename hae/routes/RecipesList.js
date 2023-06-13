@@ -1,6 +1,9 @@
-import { NativeBaseProvider, Button, Text, Flex } from "native-base";
+import React from 'react';
+import { NativeBaseProvider, Button, Flex, Text } from 'native-base';
 
-const RecipesList = ({ navigation }) => {
+const RecipesList = ({ navigation, route }) => {
+  const selectedItem = route.params.selectedItem; // Das ausgewählte Objekt aus route.params abrufen
+
   return (
     <NativeBaseProvider>
       <Flex direction="row-reverse">
@@ -28,10 +31,11 @@ const RecipesList = ({ navigation }) => {
           </Text>
         </Button>
       </Flex>
+
+      <Text>{selectedItem.bookName}</Text>
+      <Text>{selectedItem.bookDescription}</Text>
+      
       <Flex direction="row-reverse"></Flex>
-      <Flex direction="row" p="3">
-        <Text>Rezepteliste:</Text>
-      </Flex>
     </NativeBaseProvider>
   );
 };
