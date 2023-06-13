@@ -33,7 +33,7 @@ const CreateRecipeList = ({ navigation }) => {
       setInputList(updatedInputList);
       console.log("Updated inputList:", updatedInputList);
 
-      navigation.navigate("RecipesList");
+      navigation.navigate("RecipeBooks");
     } catch (error) {
       console.log("Error saving data:", error);
     }
