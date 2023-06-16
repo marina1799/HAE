@@ -28,10 +28,10 @@ const CreateRecipe = () => {
                                 <Text mt="2" mb="8">Rezeptliste:</Text>
                                 <Text>Dauer:</Text>
                             </Flex>
-                             
+
                             <Flex direction="column" width="100%">
                                 <FormControl ml="2" w="3/4" maxW="300" isRequired>{/* isInvalid */}
-                                    <Select maxWidth="100%" height="9" mb="4" accessibilityLabel="Rezeptliste wählen" placeholder="Rezeptliste wählen" _selectedItem={{
+                                    <Select maxWidth="100%" height="9" mb="4" fontSize="sm" accessibilityLabel="Rezeptliste wählen" placeholder="Rezeptliste wählen" _selectedItem={{
                                         bg: "teal.900",
                                         endIcon: <CheckIcon size={5} />
                                     }} mt="1">
@@ -78,8 +78,10 @@ const CreateRecipe = () => {
                             />
                         </Flex>
                         <Flex direction="row" mt="4" justifyContent="center">
-                            <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
-                            </Circle>
+                            <Button variant="unstyled">
+                                <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
+                                </Circle>
+                            </Button>
                         </Flex>
 
                         {/* Zubereitung */}
@@ -102,8 +104,10 @@ const CreateRecipe = () => {
                             </Flex>
                         </Flex>
                         <Flex direction="row" mt="4" justifyContent="center">
-                            <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
-                            </Circle>
+                            <Button variant="unstyled">
+                                <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
+                                </Circle>
+                            </Button>
                         </Flex>
                         <Button mt="12">Speichern</Button>
                     </Flex>
