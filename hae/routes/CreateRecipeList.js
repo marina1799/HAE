@@ -7,6 +7,7 @@ const CreateRecipeList = ({ navigation }) => {
   const [bookName, setBookName] = useState("");
   const [bookDescription, setDescription] = useState("");
   const [inputList, setInputList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,19 +25,27 @@ const CreateRecipeList = ({ navigation }) => {
   }, []);
 
   const addBook = async () => {
-    try {
-      const newBook = { bookName, bookDescription };
-      const updatedInputList = [...inputList, newBook];
-
-      await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
-      console.log("Data saved successfully!");
-
-      setInputList(updatedInputList);
-      console.log("Updated inputList:", updatedInputList);
-
-      navigation.navigate("RecipeBooks");
-    } catch (error) {
-      console.log("Error saving data:", error);
+    if (bookName === '' || bookDescription === '') {
+      setErrorMessage('Bitte füllen Sie alle Felder aus.');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+    } else {
+      try {
+        const newBook = { bookName, bookDescription };
+        const updatedInputList = [...inputList, newBook];
+  
+        await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
+        console.log("Data saved successfully!");
+  
+        setInputList(updatedInputList);
+        console.log("Updated inputList:", updatedInputList);
+  
+        navigation.navigate("RecipeBooks");
+      } catch (error) {
+        console.log("Error saving data:", error);
+      }
+      setErrorMessage(''); 
     }
   };
 
@@ -60,6 +69,7 @@ const CreateRecipeList = ({ navigation }) => {
        onPress={addBook}>
         <Text>Hinzufügen</Text>
       </Button>
+      {errorMessage !== '' && <Text>{errorMessage}</Text>}
     </NativeBaseProvider>
   );
 };
