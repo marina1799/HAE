@@ -1,8 +1,28 @@
 import React, { useState } from "react";
-import { NativeBaseProvider, Text, Input, Flex, Select, FormControl, CheckIcon, WarningOutlineIcon, Circle, Button, ScrollView, AddIcon, TextArea } from "native-base";
+import { NativeBaseProvider, View, Text, Input, TextInput, Flex, Select, FormControl, CheckIcon, WarningOutlineIcon, Circle, Button, ScrollView, AddIcon, TextArea } from "native-base";
+import DynamicTextInput from "../components/dynamicTextInput";
 
 const CreateRecipe = () => {
     const [recipeTitle, setRecipeTitle] = useState("");
+    const [input, setInput] = React.useState(['']);
+
+    const handleAdd = () => {
+        const newInputs = [...input];
+        newInputs.push('');
+        setInput(newInputs);
+    };
+
+    const handleRemove = () => {
+        const newInputs = [...input];
+        newInputs.splice(index, 1),
+            setInput(newInputs);
+    };
+
+    const handleInputChange = (text, index) => {
+        const newInputs = [...input];
+        newInputs[index] = text;
+        setInput(newInputs);
+    };
 
     return (
         <NativeBaseProvider>
@@ -67,6 +87,40 @@ const CreateRecipe = () => {
                                 onChangeText={(text) => setRecipeTitle(text)}
                                 value={recipeTitle}
                             />
+                            <Input
+                                direction="column"
+                                placeholder="Zutat"
+                                variant="filled"
+                                size="md"
+                                width="75%"
+                                onChangeText={(text) => setRecipeTitle(text)}
+                                value={recipeTitle}
+                            />
+                        </Flex>
+                        <Flex direction="row" mt="4" justifyContent="center">
+                            <Button variant="unstyled">
+                                <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
+                                </Circle>
+                            </Button>
+                        </Flex>
+
+                        <DynamicTextInput></DynamicTextInput>
+
+                        {/* Zutaten 2 */}
+                        <Text mt="6" fontSize="md">Zutaten</Text>
+                        <Flex direction="row" mt="2">
+                            {/* <View>
+                                {input.map((input, index) => (
+                                    <View key={index}>
+                                        <TextInput
+                                            style={{ borderWidth: 1, marginVertical: 5 }}                             //dynamicTextInput nicht als Komponente sondern komplett raus in "CreateRecipe"
+                                            value={input}
+                                            onChangeText={text => handleInputChange(text, index)}
+                                        />
+                                        <Button title="remove" onPress={() => handleRemove(index)} />
+                                    </View>
+                                ))}
+                            </View> */}
                             <Input
                                 direction="column"
                                 placeholder="Zutat"
