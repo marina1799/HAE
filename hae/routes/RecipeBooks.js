@@ -11,15 +11,15 @@ import {
   Modal,
   FlatList,
 } from "native-base";
-import { FabStyles } from '../theme/Components';
+import { FabStyles, buttonStyles } from "../theme/Components";
 
 const RecipeBooks = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const isFocused = useIsFocused();
 
-  // Modal schließen, wenn die Seite fokussiert ist
   useEffect(() => {
     if (isFocused) {
       setShowModal(false);
@@ -54,6 +54,8 @@ const RecipeBooks = ({ navigation }) => {
     setInputList(updatedInputList);
     await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
     console.log("Data saved successfully!");
+
+    setDeleteModal(false);
   };
 
   return (
@@ -73,11 +75,10 @@ const RecipeBooks = ({ navigation }) => {
         <Text>Rezepteliste:</Text>
       </Flex>
 
-      <Fab style={FabStyles.primaryFab}
+      <Fab
+        style={FabStyles.primaryFab}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
-        shadow={2}
-        size="sm"
       />
 
       <Modal
@@ -149,10 +150,42 @@ const RecipeBooks = ({ navigation }) => {
                 {item.bookDescription}
               </Text>
             </Text>
-
-            <Button onPress={() => deleteBook(index)}>
+            <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
               <Text>-</Text>
             </Button>
+
+            <Modal
+              isOpen={deleteModal}
+              onClose={() => setDeleteModal(false)}
+              _backdrop={{
+                _dark: {
+                  bg: "coolGray.800",
+                },
+                bg: "warmGray.50",
+              }}
+            >
+              <Modal.Content maxWidth="350" maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>Delete recipe book?</Modal.Header>
+                <Modal.Body>
+                  <Button.Group space={2}>
+                    <Button
+                      variant="ghost"
+                      colorScheme="blueGray"
+                      onPress={() => setDeleteModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      style={buttonStyles.primaryButton}
+                      onPress={() => deleteBook(index)}
+                    >
+                      <Text>Delete</Text>
+                    </Button>
+                  </Button.Group>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
