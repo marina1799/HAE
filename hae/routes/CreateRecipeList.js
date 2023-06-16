@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider, Text, Input, Button } from "native-base";
+import { buttonStyles } from '../theme/Components';
 
 const CreateRecipeList = ({ navigation }) => {
   const [bookName, setBookName] = useState("");
@@ -55,7 +56,8 @@ const CreateRecipeList = ({ navigation }) => {
         onChangeText={(text) => setDescription(text)}
         value={bookDescription}
       />
-      <Button size="lg" onPress={addBook}>
+      <Button style={buttonStyles.primaryButton}
+       onPress={addBook}>
         <Text>Hinzufügen</Text>
       </Button>
     </NativeBaseProvider>

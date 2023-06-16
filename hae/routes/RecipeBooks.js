@@ -11,6 +11,7 @@ import {
   Modal,
   FlatList,
 } from "native-base";
+import { FabStyles } from '../theme/Components';
 
 const RecipeBooks = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
@@ -72,7 +73,7 @@ const RecipeBooks = ({ navigation }) => {
         <Text>Rezepteliste:</Text>
       </Flex>
 
-      <Fab
+      <Fab style={FabStyles.primaryFab}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
         shadow={2}

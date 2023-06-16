@@ -60,7 +60,6 @@ const RecipesList = ({ navigation, route }) => {
         data={inputList}
         renderItem={({ item, index }) => (
           <TouchableOpacity
-          onPress={() => navigation.navigate("Recipe")}
             style={{
               marginTop: 2,
               backgroundColor: "white",
@@ -105,8 +104,6 @@ const RecipesList = ({ navigation, route }) => {
       <Fab
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
-        shadow={2}
-        size="sm"
       />
     </NativeBaseProvider>
   );
