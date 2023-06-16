@@ -55,7 +55,7 @@ const CreateRecipe = () => {
                         </Flex>
 
                         {/* Zutaten */}
-                        <Text mt="12" fontSize="md">Zutaten</Text>
+                        <Text mt="6" fontSize="md">Zutaten</Text>
                         <Flex direction="row" mt="2">
                             <Input
                                 direction="column"
@@ -85,7 +85,7 @@ const CreateRecipe = () => {
                         </Flex>
 
                         {/* Zubereitung */}
-                        <Text mt="12" fontSize="md">Zubereitungsschritte</Text>
+                        <Text mt="6" fontSize="md">Zubereitungsschritte</Text>
                         <Flex direction="column" mt="2">
                             <Text mb="1">Schritt 1</Text>
                             <Flex direction="row">
@@ -109,7 +109,7 @@ const CreateRecipe = () => {
                                 </Circle>
                             </Button>
                         </Flex>
-                        <Button mt="12">Speichern</Button>
+                        <Button mt="6">Speichern</Button>
                     </Flex>
                 </Flex>
             </ScrollView>
