@@ -4,25 +4,46 @@ import { TouchableOpacity } from 'react-native'
 
 const CreateRecipe = () => {
     const [recipeTitle, setRecipeTitle] = useState("");
-    const [inputs, setInputs] = useState([{ key: '', value: '' }]);
+    const [inputsZutaten, setInputsZutaten] = useState([{ key: '', value: '' }]);
+    const [inputsZubereitung, setInputsZubereitung] = useState([{ key: '', value: '' }]);
 
-    const addHandler = () => {
-        const _inputs = [...inputs];
-        _inputs.push({ key: '', value: '' });
-        setInputs(_inputs);
-    }
+    // Zutaten-Inputs hinzufügen
+    const addHandlerZutaten = () => {
+        const _inputsZutaten = [...inputsZutaten];
+        _inputsZutaten.push({ key: '', value: '' });
+        setInputsZutaten(_inputsZutaten);
+    };
 
-    const deleteHandler = (key) => {
-        const _inputs = inputs.filter((input, index) => index != key);
-        setInputs(_inputs);
-    }
+    const deleteHandlerZutaten = (key) => {
+        const _inputsZutaten = inputsZutaten.filter((input, index) => index != key);
+        setInputsZutaten(_inputsZutaten);
+    };
 
-    const inputHandler = (text, key) => {
-        const _inputs = [...inputs];
-        _inputs[key].value = text;
-        _inputs[key].key = key;
-        setInputs(_inputs);
-    }
+    const inputHandlerZutaten = (text, key) => {
+        const _inputsZutaten = [...inputsZutaten];
+        _inputsZutaten[key].value = text;
+        _inputsZutaten[key].key = key;
+        setInputsZutaten(_inputsZutaten);
+    };
+
+    // Zubereitungsschritte-Inputs hinzufügen
+    const addHandlerZubereitung = () => {
+        const _inputsZubereitung = [...inputsZubereitung];
+        _inputsZubereitung.push({ key: '', value: '' });
+        setInputsZubereitung(_inputsZubereitung);
+    };
+
+    const deleteHandlerZubereitung = (key) => {
+        const _inputsZubereitung = inputsZubereitung.filter((input, index) => index != key);
+        setInputsZubereitung(_inputsZubereitung);
+    };
+
+    const inputHandlerZubereitung = (text, key) => {
+        const _inputsZubereitung = [...inputsZubereitung];
+        _inputsZubereitung[key].value = text;
+        _inputsZubereitung[key].key = key;
+        setInputsZutaten(_inputsZubereitung);
+    };
 
     return (
         <NativeBaseProvider>
@@ -78,7 +99,7 @@ const CreateRecipe = () => {
                         <Text mt="6" fontSize="md">Zutaten</Text>
                         <View>
                             <ScrollView>
-                                {inputs.map((input, key) => (
+                                {inputsZutaten.map((input, key) => (
                                     <View>
                                         <Flex direction="row" mt="2">
                                             <Input
@@ -88,7 +109,7 @@ const CreateRecipe = () => {
                                                 size="md"
                                                 mr="2"
                                                 width="20%"
-                                                onChangeText={(text) => inputHandler(text, key)}
+                                                onChangeText={(text) => inputHandlerZutaten(text, key)}
                                                 value={input.value}
                                             />
                                             <Input
@@ -97,10 +118,10 @@ const CreateRecipe = () => {
                                                 variant="filled"
                                                 size="md"
                                                 width="69%"
-                                                onChangeText={(text) => inputHandler(text, key)}
+                                                onChangeText={(text) => inputHandlerZutaten(text, key)}
                                                 value={input.value}
                                             />
-                                            <TouchableOpacity onPress={() => deleteHandler(key)}>
+                                            <TouchableOpacity onPress={() => deleteHandlerZutaten(key)}>
                                                 <DeleteIcon m="2" />
                                             </TouchableOpacity>
                                         </Flex>
@@ -108,9 +129,9 @@ const CreateRecipe = () => {
                                 ))}
                             </ScrollView>
 
-                            {/* Zeile hinzufügen - Button */}
+                            {/* Neue Zeile hinzufügen - Button */}
                             <Flex direction="row" mt="4" justifyContent="center">
-                                <Button variant="unstyled" title="Add" onPress={addHandler} >
+                                <Button variant="unstyled" title="Add" onPress={addHandlerZutaten} >
                                     <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
                                     </Circle>
                                 </Button>
@@ -118,30 +139,42 @@ const CreateRecipe = () => {
                         </View>
 
                         {/* Zubereitung */}
-                        <Text mt="6" fontSize="md">Zubereitungsschritte</Text>
-                        <Flex direction="column" mt="2">
-                            <Text mb="1">Schritt 1</Text>
-                            <Flex direction="row">
-                                <Button width="100" height="100" variant="outline"><AddIcon color="info.600" /></Button>
-                                <TextArea
-                                    direction="column"
-                                    placeholder="Zubereitung"
-                                    variant="filled"
-                                    size="md"
-                                    ml="2"
-                                    width="69%"
-                                    h={100}
-                                    onChangeText={(text) => setRecipeTitle(text)}
-                                    value={recipeTitle}
-                                />
+                        <Text mt="6" fontSize="md">Zubereitungsschritte</Text><View>
+                            <ScrollView>
+                                {inputsZubereitung.map((input, key) => (
+                                    <View>
+                                        <Flex direction="column" mt="2">
+                                            <Text mb="1">Schritt 1</Text>
+                                            <Flex direction="row">
+                                                <Button width="100" height="100" variant="outline"><AddIcon color="info.600" /></Button>
+                                                <TextArea
+                                                    direction="column"
+                                                    placeholder="Zubereitung"
+                                                    variant="filled"
+                                                    size="md"
+                                                    ml="2"
+                                                    width="62%"
+                                                    h={100}
+                                                    onChangeText={(text) => inputHandlerZubereitung(text, key)}
+                                                    value={input.value}
+                                                />
+                                                <TouchableOpacity onPress={() => deleteHandlerZubereitung(key)}>
+                                                    <DeleteIcon m="2" />
+                                                </TouchableOpacity>
+                                            </Flex>
+                                        </Flex>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                            {/* Neue Zeile hinzufügen - Button */}
+                            <Flex direction="row" mt="4" justifyContent="center">
+                                <Button variant="unstyled" title="Add" onPress={addHandlerZubereitung} >
+                                    <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
+                                    </Circle>
+                                </Button>
                             </Flex>
-                        </Flex>
-                        <Flex direction="row" mt="4" justifyContent="center">
-                            <Button variant="unstyled">
-                                <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
-                                </Circle>
-                            </Button>
-                        </Flex>
+                        </View>
+
                         <Button mt="6">Speichern</Button>
                     </Flex>
                 </Flex>
