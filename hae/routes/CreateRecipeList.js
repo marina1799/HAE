@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider, Text, Input, Button } from "native-base";
 import { buttonStyles } from '../theme/Components';
+import ImageUpload from '../components/FileSystem';
 
 const CreateRecipeList = ({ navigation }) => {
   const [bookName, setBookName] = useState("");
@@ -49,8 +50,13 @@ const CreateRecipeList = ({ navigation }) => {
     }
   };
 
+  const handleImageSelected = (imageUri) => {
+    console.log('Selected image URI:', imageUri);
+  };
+
   return (
     <NativeBaseProvider>
+      <ImageUpload onImageSelected={handleImageSelected} />
       <Input
         placeholder="Name"
         width="100%"
@@ -65,8 +71,7 @@ const CreateRecipeList = ({ navigation }) => {
         onChangeText={(text) => setDescription(text)}
         value={bookDescription}
       />
-      <Button style={buttonStyles.primaryButton}
-       onPress={addBook}>
+      <Button style={buttonStyles.primaryButton} onPress={addBook}>
         <Text>Hinzufügen</Text>
       </Button>
       {errorMessage !== '' && <Text>{errorMessage}</Text>}
