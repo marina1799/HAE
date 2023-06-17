@@ -1,29 +1,27 @@
-// ImageUpload.js
-import * as React from 'react';
-import { Button } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import React from 'react';
+import { View, Text } from 'react-native';
 
-const ImageUpload = ({ onImageSelected }) => {
-  const [selectedImageUri, setSelectedImageUri] = React.useState('');
+export const uploadImage = async (imageUri, fileName) => {
+  const fileUri = FileSystem.documentDirectory + fileName;
 
-  const pickImage = async () => {
-    // Code zum Bildauswählen
-  };
+  await FileSystem.copyAsync({
+    from: imageUri,
+    to: fileUri,
+  });
 
-  const uploadImage = async () => {
-    // Code zum Hochladen des Bildes
-    onImageSelected(selectedImageUri); // Aufruf der übergebenen Funktion mit dem ausgewählten Bild-URI
-  };
+  return fileUri;
+};
 
+export const deleteImage = async (fileUri) => {
+  await FileSystem.deleteAsync(fileUri);
+};
+const FileSystemScreen = () => {
   return (
-    <>
-      <Button title="Select Image" onPress={pickImage} />
-      {selectedImageUri ? (
-        <Button title="Upload Image" onPress={uploadImage} />
-      ) : null}
-    </>
+    <View>
+      <Text>FileSystem Screen</Text>
+    </View>
   );
 };
 
-export default ImageUpload;
+export default FileSystemScreen;
