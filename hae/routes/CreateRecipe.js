@@ -1,28 +1,28 @@
 import React, { useState } from "react";
-import { NativeBaseProvider, View, Text, Input, TextInput, Flex, Select, FormControl, CheckIcon, WarningOutlineIcon, Circle, Button, ScrollView, AddIcon, TextArea } from "native-base";
-import DynamicTextInput from "../components/dynamicTextInput";
+import { NativeBaseProvider, View, Text, Input, Flex, Select, FormControl, CheckIcon, DeleteIcon, WarningOutlineIcon, Circle, Button, ScrollView, AddIcon, TextArea } from "native-base";
+import { TouchableOpacity } from 'react-native'
 
 const CreateRecipe = () => {
     const [recipeTitle, setRecipeTitle] = useState("");
-    const [input, setInput] = React.useState(['']);
+    const [inputs, setInputs] = useState([{ key: '', value: '' }]);
 
-    const handleAdd = () => {
-        const newInputs = [...input];
-        newInputs.push('');
-        setInput(newInputs);
-    };
+    const addHandler = () => {
+        const _inputs = [...inputs];
+        _inputs.push({ key: '', value: '' });
+        setInputs(_inputs);
+    }
 
-    const handleRemove = () => {
-        const newInputs = [...input];
-        newInputs.splice(index, 1),
-            setInput(newInputs);
-    };
+    const deleteHandler = (key) => {
+        const _inputs = inputs.filter((input, index) => index != key);
+        setInputs(_inputs);
+    }
 
-    const handleInputChange = (text, index) => {
-        const newInputs = [...input];
-        newInputs[index] = text;
-        setInput(newInputs);
-    };
+    const inputHandler = (text, key) => {
+        const _inputs = [...inputs];
+        _inputs[key].value = text;
+        _inputs[key].key = key;
+        setInputs(_inputs);
+    }
 
     return (
         <NativeBaseProvider>
@@ -76,67 +76,46 @@ const CreateRecipe = () => {
 
                         {/* Zutaten */}
                         <Text mt="6" fontSize="md">Zutaten</Text>
-                        <Flex direction="row" mt="2">
-                            <Input
-                                direction="column"
-                                placeholder="Menge"
-                                variant="filled"
-                                size="md"
-                                mr="2"
-                                width="20"
-                                onChangeText={(text) => setRecipeTitle(text)}
-                                value={recipeTitle}
-                            />
-                            <Input
-                                direction="column"
-                                placeholder="Zutat"
-                                variant="filled"
-                                size="md"
-                                width="75%"
-                                onChangeText={(text) => setRecipeTitle(text)}
-                                value={recipeTitle}
-                            />
-                        </Flex>
-                        <Flex direction="row" mt="4" justifyContent="center">
-                            <Button variant="unstyled">
-                                <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
-                                </Circle>
-                            </Button>
-                        </Flex>
-
-                        <DynamicTextInput></DynamicTextInput>
-
-                        {/* Zutaten 2 */}
-                        <Text mt="6" fontSize="md">Zutaten</Text>
-                        <Flex direction="row" mt="2">
-                            {/* <View>
-                                {input.map((input, index) => (
-                                    <View key={index}>
-                                        <TextInput
-                                            style={{ borderWidth: 1, marginVertical: 5 }}                             //dynamicTextInput nicht als Komponente sondern komplett raus in "CreateRecipe"
-                                            value={input}
-                                            onChangeText={text => handleInputChange(text, index)}
-                                        />
-                                        <Button title="remove" onPress={() => handleRemove(index)} />
+                        <View>
+                            <ScrollView>
+                                {inputs.map((input, key) => (
+                                    <View>
+                                        <Flex direction="row" mt="2">
+                                            <Input
+                                                direction="column"
+                                                placeholder="Menge"
+                                                variant="filled"
+                                                size="md"
+                                                mr="2"
+                                                width="20%"
+                                                onChangeText={(text) => inputHandler(text, key)}
+                                                value={input.value}
+                                            />
+                                            <Input
+                                                direction="column"
+                                                placeholder="Zutat"
+                                                variant="filled"
+                                                size="md"
+                                                width="69%"
+                                                onChangeText={(text) => inputHandler(text, key)}
+                                                value={input.value}
+                                            />
+                                            <TouchableOpacity onPress={() => deleteHandler(key)}>
+                                                <DeleteIcon m="2" />
+                                            </TouchableOpacity>
+                                        </Flex>
                                     </View>
                                 ))}
-                            </View> */}
-                            <Input
-                                direction="column"
-                                placeholder="Zutat"
-                                variant="filled"
-                                size="md"
-                                width="75%"
-                                onChangeText={(text) => setRecipeTitle(text)}
-                                value={recipeTitle}
-                            />
-                        </Flex>
-                        <Flex direction="row" mt="4" justifyContent="center">
-                            <Button variant="unstyled">
-                                <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
-                                </Circle>
-                            </Button>
-                        </Flex>
+                            </ScrollView>
+
+                            {/* Zeile hinzufügen - Button */}
+                            <Flex direction="row" mt="4" justifyContent="center">
+                                <Button variant="unstyled" title="Add" onPress={addHandler} >
+                                    <Circle size="40px" bg="lightgrey"><AddIcon color="darkText" />
+                                    </Circle>
+                                </Button>
+                            </Flex>
+                        </View>
 
                         {/* Zubereitung */}
                         <Text mt="6" fontSize="md">Zubereitungsschritte</Text>
