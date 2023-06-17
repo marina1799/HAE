@@ -62,7 +62,7 @@ const CreateRecipe = () => {
                         value={recipeTitle}
                     />
 
-                    {/* Mini Infos */}
+                    {/* Rezeptliste & Dauer */}
                     <Flex mt="2">
                         <Flex direction="row">
                             <Flex direction="column">
@@ -128,7 +128,6 @@ const CreateRecipe = () => {
                                     </View>
                                 ))}
                             </ScrollView>
-
                             {/* Neue Zeile hinzufügen - Button */}
                             <Flex direction="row" mt="4" justifyContent="center">
                                 <Button variant="unstyled" title="Add" onPress={addHandlerZutaten} >
@@ -175,6 +174,7 @@ const CreateRecipe = () => {
                             </Flex>
                         </View>
 
+                        {/* Eintrag speichern */}
                         <Button mt="6">Speichern</Button>
                     </Flex>
                 </Flex>
