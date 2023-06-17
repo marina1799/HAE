@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Checkbox,
+  Modal,
 } from "native-base";
 
 const ShoppingList = () => {
@@ -14,6 +15,9 @@ const ShoppingList = () => {
   const [ingredient, setIngredient] = useState("");
   const [ingredientsList, setIngredientsList] = useState([]);
   const [removedIngredientsList, setRemovedIngredientsList] = useState([]);
+
+  const [showModal, setShowModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -215,6 +219,58 @@ const ShoppingList = () => {
             </Button>
           )}
         </Flex>
+        <Flex mt="40" alignItems="center">
+          <Button
+            size="sm"
+            variant="subtle"
+            colorScheme="secondary"
+            onPress={() => setDeleteModal(true)}
+            renderInPortal={false}
+          >
+            <Text>(DUMMY) Zu Einkaufszettel hinzufügen</Text>
+          </Button>
+        </Flex>
+
+        <Modal
+          isOpen={deleteModal}
+          onClose={() => setDeleteModal(false)}
+          _backdrop={{
+            _dark: {
+              bg: "coolGray.800",
+            },
+            bg: "warmGray.50",
+          }}
+        >
+          <Modal.Content maxWidth="350" maxH="212">
+            <Modal.CloseButton />
+            <Modal.Header>Zutaten:</Modal.Header>
+            <Modal.Body>
+              <Flex direction="column">
+                {ingredientsList.map((ingredient, index) => {
+                  if (removedIngredientsList.includes(ingredient)) {
+                    return null;
+                  }
+                  return (
+                    <Flex
+                      key={index}
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Text>
+                        {ingredient?.quantity} {ingredient?.ingredient}
+                      </Text>
+                      <Checkbox accessibilityLabel="add" defaultIsChecked />
+                    </Flex>
+                  );
+                })}
+              </Flex>
+              <Button mt={4} colorScheme="green">
+                <Text>Hinzufügen</Text>
+              </Button>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
       </Flex>
     </NativeBaseProvider>
   );
