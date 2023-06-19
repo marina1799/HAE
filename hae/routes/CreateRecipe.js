@@ -1,16 +1,52 @@
 import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider, View, Text, Input, Flex, Select, FormControl, CheckIcon, DeleteIcon, WarningOutlineIcon, Circle, Button, ScrollView, AddIcon, TextArea } from "native-base";
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native';
 
 const CreateRecipe = () => {
-    const [recipeTitle, setRecipeTitle] = useState("");
-    const [inputsZutaten, setInputsZutaten] = useState([{ key: '', value: '' }]);
+    // States fürs Kopieren der Inputfelder-Elemente
+    const [inputsZutaten, setInputsZutaten] = useState([{}]);
     const [inputsZubereitung, setInputsZubereitung] = useState([{ key: '', value: '' }]);
 
-    // Zutaten-Inputs hinzufügen
+    // States für Inhalt der Inputfelder
+    const [recipeTitle, setRecipeTitle] = useState("");
+    const [recipeDuration, setRecipeDuration] = useState("");
+    const [recipeStep, setRecipeStep] = useState("");
+
+    // State für das komplette neu erstellte Rezept
+    const [inputRecipe, setInputRecipe] = useState("");
+
+    // Alle eingegebenen Daten lokal speichern
+    const saveData = async () => {
+        try {
+            const newRecipe = { recipeTitle, recipeDuration, inputsZutaten, recipeStep };
+            const updatedRecipe = [...inputRecipe, newRecipe];
+            setInputRecipe(updatedRecipe);
+
+            await AsyncStorage.setItem("inputRecipe", JSON.stringify(updatedRecipe));
+            console.log(updatedRecipe[0].inputsZutaten);
+        } catch (error) {
+            console.log("Error saving data:", error);
+        }
+    };
+
+    // Input der Zutaten neu schreiben
+    const handleAmountInput = (text, key) => {
+        const tempInputsZutaten = [...inputsZutaten];
+        tempInputsZutaten[key].amount = text;
+        setInputsZutaten(tempInputsZutaten);
+    };
+
+    const handleIngredientNameInput = (text, key) => {
+        const tempInputsZutaten = [...inputsZutaten];
+        tempInputsZutaten[key].ingredient = text;
+        setInputsZutaten(tempInputsZutaten);
+    };
+
+    // Zutaten-Inputs-Elemente hinzufügen
     const addHandlerZutaten = () => {
         const _inputsZutaten = [...inputsZutaten];
-        _inputsZutaten.push({ key: '', value: '' });
+        _inputsZutaten.push({ });
         setInputsZutaten(_inputsZutaten);
     };
 
@@ -19,14 +55,7 @@ const CreateRecipe = () => {
         setInputsZutaten(_inputsZutaten);
     };
 
-    const inputHandlerZutaten = (text, key) => {
-        const _inputsZutaten = [...inputsZutaten];
-        _inputsZutaten[key].value = text;
-        _inputsZutaten[key].key = key;
-        setInputsZutaten(_inputsZutaten);
-    };
-
-    // Zubereitungsschritte-Inputs hinzufügen
+    // Zubereitungsschritte-Inputs-Elemente hinzufügen
     const addHandlerZubereitung = () => {
         const _inputsZubereitung = [...inputsZubereitung];
         _inputsZubereitung.push({ key: '', value: '' });
@@ -36,13 +65,6 @@ const CreateRecipe = () => {
     const deleteHandlerZubereitung = (key) => {
         const _inputsZubereitung = inputsZubereitung.filter((input, index) => index != key);
         setInputsZubereitung(_inputsZubereitung);
-    };
-
-    const inputHandlerZubereitung = (text, key) => {
-        const _inputsZubereitung = [...inputsZubereitung];
-        _inputsZubereitung[key].value = text;
-        _inputsZubereitung[key].key = key;
-        setInputsZutaten(_inputsZubereitung);
     };
 
     return (
@@ -89,8 +111,8 @@ const CreateRecipe = () => {
                                     size="md"
                                     ml="2"
                                     width="75%"
-                                    onChangeText={(text) => setRecipeTitle(text)}
-                                    value={recipeTitle}
+                                    value={recipeDuration}
+                                    onChangeText={(text) => setRecipeDuration(text)}
                                 />
                             </Flex>
                         </Flex>
@@ -99,7 +121,7 @@ const CreateRecipe = () => {
                         <Text mt="6" fontSize="md">Zutaten</Text>
                         <View>
                             <ScrollView>
-                                {inputsZutaten.map((input, key) => (
+                                {inputsZutaten.map((currentIngredient, key) => (
                                     <View>
                                         <Flex direction="row" mt="2">
                                             <Input
@@ -109,8 +131,8 @@ const CreateRecipe = () => {
                                                 size="md"
                                                 mr="2"
                                                 width="20%"
-                                                onChangeText={(text) => inputHandlerZutaten(text, key)}
-                                                value={input.value}
+                                                onChangeText={(text) => handleAmountInput(text, key)}
+                                                value={currentIngredient.amount}
                                             />
                                             <Input
                                                 direction="column"
@@ -118,8 +140,8 @@ const CreateRecipe = () => {
                                                 variant="filled"
                                                 size="md"
                                                 width="69%"
-                                                onChangeText={(text) => inputHandlerZutaten(text, key)}
-                                                value={input.value}
+                                                onChangeText={(text) => handleIngredientNameInput(text, key)}
+                                                value={currentIngredient.ingredient}
                                             />
                                             <TouchableOpacity onPress={() => deleteHandlerZutaten(key)}>
                                                 <DeleteIcon m="2" />
@@ -154,8 +176,8 @@ const CreateRecipe = () => {
                                                     ml="2"
                                                     width="62%"
                                                     h={100}
-                                                    onChangeText={(text) => inputHandlerZubereitung(text, key)}
-                                                    value={input.value}
+                                                    onChangeText={(text) => setRecipeStep(text)}
+                                                    value={recipeStep}
                                                 />
                                                 <TouchableOpacity onPress={() => deleteHandlerZubereitung(key)}>
                                                     <DeleteIcon m="2" />
@@ -175,7 +197,9 @@ const CreateRecipe = () => {
                         </View>
 
                         {/* Eintrag speichern */}
-                        <Button mt="6">Speichern</Button>
+                        <Button mt="6" onPress={saveData}>
+                            Speichern
+                        </Button>
                     </Flex>
                 </Flex>
             </ScrollView>
