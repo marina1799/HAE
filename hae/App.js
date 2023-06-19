@@ -1,9 +1,13 @@
 import * as React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import RecipesList from "./routes/RecipesList";
-import CreateRecipe from "./routes/CreateRecipe";
+
+import RecipeBooks from "./routes/RecipeBooks";
 import ShoppingList from "./routes/ShoppingList";
+import RecipesList from "./routes/RecipesList";
+import CreateRecipeList from "./routes/CreateRecipeList";
+import CreateRecipe from "./routes/CreateRecipe";
+import Recipe from "./routes/Recipe";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,7 +15,7 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'white'
+    background: "white",
   },
 };
 
@@ -20,9 +24,14 @@ const App = () => {
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
         <Stack.Screen
+          name="RecipeBooks"
+          component={RecipeBooks}
+          options={{ title: "RecipeBooks" }}
+        />
+        <Stack.Screen
           name="RecipesList"
           component={RecipesList}
-          options={{ title: "RezepteListe" }}
+          options={{ title: "RecipesList" }}
         />
         <Stack.Screen
           name="CreateRecipe"
@@ -33,6 +42,16 @@ const App = () => {
           name="ShoppingList"
           component={ShoppingList}
           options={{ title: "Einkaufszettel" }}
+        />
+        <Stack.Screen
+          name="CreateRecipeList"
+          component={CreateRecipeList}
+          options={{ title: "CreateRecipeList" }}
+        />
+        <Stack.Screen
+          name="Recipe"
+          component={Recipe}
+          options={{ title: "Rezept" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -67,23 +67,22 @@ const CreateRecipe = () => {
         setInputsZubereitung(_inputsZubereitung);
     };
 
-    return (
-        <NativeBaseProvider>
-            <ScrollView>
-                <Flex p="3">
-                    {/* Titel */}
-                    <Input
-                        placeholder="Rezepttitel"
-                        variant="filled"
-                        size="lg"
-                        width="250"
-                        mx="auto"
-                        mt="1"
-                        mb="4"
-                        onChangeText={(text) => setRecipeTitle(text)}
-                        value={recipeTitle}
-                    />
-
+  return (
+    <NativeBaseProvider>
+      <ScrollView>
+        <Flex p="3">
+          {/* Titel */}
+          <Input
+            placeholder="Rezepttitel"
+            variant="filled"
+            size="lg"
+            width="250"
+            mx="auto"
+            mt="1"
+            mb="4"
+            onChangeText={(text) => setRecipeTitle(text)}
+            value={recipeTitle}
+          />
                     {/* Rezeptliste & Dauer */}
                     <Flex mt="2">
                         <Flex direction="row">
