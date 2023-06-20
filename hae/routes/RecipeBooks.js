@@ -10,6 +10,8 @@ import {
   Flex,
   Modal,
   FlatList,
+  Image,
+  View
 } from "native-base";
 import { FabStyles, buttonStyles } from "../theme/Components";
 
@@ -56,6 +58,19 @@ const RecipeBooks = ({ navigation }) => {
     console.log("Data saved successfully!");
 
     setDeleteModal(false);
+  };
+
+  const DisplayImage = ({ selectedImage }) => {
+    return (
+      <View>
+        {selectedImage && (
+          <Image
+            source={{ uri: selectedImage }}
+            style={{ width: 200, height: 200 }}
+          />
+        )}
+      </View>
+    );
   };
 
   return (
@@ -117,42 +132,48 @@ const RecipeBooks = ({ navigation }) => {
         data={inputList}
         renderItem={({ item, index }) => (
           <TouchableOpacity
-            onPress={() => handlePress(item)}
-            style={{
-              marginTop: 2,
-              backgroundColor: "white",
-              padding: 12,
-              borderRadius: 8,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            key={item.key}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                color: "black",
-                marginRight: 8,
-              }}
-            >
-              {item.bookName}
-              {"\n"}
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "gray",
-                  marginRight: 8,
-                }}
-              >
-                {item.bookDescription}
-              </Text>
-            </Text>
-            <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>-</Text>
-            </Button>
+  onPress={() => handlePress(item)}
+  style={{
+    marginTop: 2,
+    backgroundColor: "white",
+    padding: 12,
+    borderRadius: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }}
+  key={item.key}
+>
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    {item.selectedImage && (
+      <Image
+        source={{ uri: item.selectedImage }}
+        style={{ width: 50, height: 50, marginRight: 8 }}
+      />
+    )}
+    <Text
+      style={{
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "black",
+      }}
+    >
+      {item.bookName}
+      {"\n"}
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: "bold",
+          color: "gray",
+        }}
+      >
+        {item.bookDescription}
+      </Text>
+    </Text>
+  </View>
+  <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
+    <Text>-</Text>
+  </Button>
 
             <Modal
               isOpen={deleteModal}
