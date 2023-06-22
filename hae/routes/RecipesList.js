@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { NativeBaseProvider, Modal, Button, Flex, Text, Fab, FlatList } from "native-base";
+import {
+  NativeBaseProvider,
+  Modal,
+  Button,
+  Flex,
+  Text,
+  Fab,
+  FlatList,
+} from "native-base";
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -55,8 +63,9 @@ const RecipesList = ({ navigation, route }) => {
         {item.selectedImage && (
           <Image
             source={{ uri: item.selectedImage }}
-            style={{ width: '100%', height: 200, marginRight: 8 }}
+            style={{ width: "100%", height: 200, marginRight: 8 }}
             resizeMode="cover"
+            alt="selectedImage"
           />
         )}
       </Flex>
@@ -133,8 +142,6 @@ const RecipesList = ({ navigation, route }) => {
                 </Modal.Body>
               </Modal.Content>
             </Modal>
-
-
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}

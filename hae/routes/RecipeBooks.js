@@ -68,6 +68,7 @@ const RecipeBooks = ({ navigation }) => {
           <Image
             source={{ uri: selectedImage }}
             style={{ width: 200, height: 200 }}
+            alt="selectedImage"
           />
         )}
       </View>
@@ -150,6 +151,7 @@ const RecipeBooks = ({ navigation }) => {
                 <Image
                   source={{ uri: item.selectedImage }}
                   style={{ width: 50, height: 50, marginRight: 8 }}
+                  alt="selectedImage"
                 />
               )}
               <Text

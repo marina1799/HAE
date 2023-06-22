@@ -26,19 +26,19 @@ const CreateRecipeList = ({ navigation }) => {
     fetchData();
   }, []);
 
-// Update the addBook function to include the selectedImage in the newBook object
-const addBook = async () => {
-  //if (bookName === "" || bookDescription === "") {
+  // Update the addBook function to include the selectedImage in the newBook object
+  const addBook = async () => {
+    //if (bookName === "" || bookDescription === "") {
     //setErrorMessage("Bitte füllen Sie alle Felder aus.");
     //setTimeout(() => {
-     // setErrorMessage("");
-   // }, 3000);
- // } else {
+    // setErrorMessage("");
+    // }, 3000);
+    // } else {
     try {
       const newBook = {
         bookName,
         bookDescription,
-        selectedImage
+        selectedImage,
       };
       const updatedInputList = [...inputList, newBook];
 
@@ -53,9 +53,8 @@ const addBook = async () => {
       console.log("Error saving data:", error);
     }
     setErrorMessage("");
-  //}
-};
-
+    //}
+  };
 
   //images
   const pickImage = async () => {
@@ -65,7 +64,7 @@ const addBook = async () => {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.cancelled) {
       setSelectedImage(result.uri);
     }
@@ -99,15 +98,17 @@ const addBook = async () => {
       <Button onPress={pickImage}>Bild Hinzufügen</Button>
 
       {selectedImage && (
-  <NativeBaseProvider style={{ alignItems: 'center' }}>
-    <Image
-      source={{ uri: selectedImage }}
-      style={{ width: 200, height: 200 }}
-    />
-    <Button title="Bild löschen" onPress={deleteImage}>Bild löschen</Button>
-  </NativeBaseProvider>
-)}
-
+        <NativeBaseProvider style={{ alignItems: "center" }}>
+          <Image
+            source={{ uri: selectedImage }}
+            style={{ width: 200, height: 200 }}
+            alt="selectedImage"
+          />
+          <Button title="Bild löschen" onPress={deleteImage}>
+            Bild löschen
+          </Button>
+        </NativeBaseProvider>
+      )}
     </NativeBaseProvider>
   );
 };
