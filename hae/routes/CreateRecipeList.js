@@ -28,12 +28,12 @@ const CreateRecipeList = ({ navigation }) => {
 
 // Update the addBook function to include the selectedImage in the newBook object
 const addBook = async () => {
-  if (bookName === "" || bookDescription === "") {
-    setErrorMessage("Bitte füllen Sie alle Felder aus.");
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  } else {
+  //if (bookName === "" || bookDescription === "") {
+    //setErrorMessage("Bitte füllen Sie alle Felder aus.");
+    //setTimeout(() => {
+     // setErrorMessage("");
+   // }, 3000);
+ // } else {
     try {
       const newBook = {
         bookName,
@@ -53,7 +53,7 @@ const addBook = async () => {
       console.log("Error saving data:", error);
     }
     setErrorMessage("");
-  }
+  //}
 };
 
 
@@ -107,8 +107,6 @@ const addBook = async () => {
     <Button title="Bild löschen" onPress={deleteImage}>Bild löschen</Button>
   </NativeBaseProvider>
 )}
-
-
 
     </NativeBaseProvider>
   );
