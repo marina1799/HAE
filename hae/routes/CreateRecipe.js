@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   NativeBaseProvider,
@@ -20,6 +20,7 @@ import {
 import { TouchableOpacity } from "react-native";
 
 const CreateRecipe = () => {
+  const [recipes, setRecipes] = useState();
   // States fürs Kopieren der Inputfelder-Elemente
   const [inputsZutaten, setInputsZutaten] = useState([{}]);
   const [inputsZubereitung, setInputsZubereitung] = useState([
@@ -34,6 +35,24 @@ const CreateRecipe = () => {
   // State für das komplette neu erstellte Rezept
   const [inputRecipe, setInputRecipe] = useState("");
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedRecipes = await AsyncStorage.getItem("recipes");
+        const parsedRecipes = JSON.parse(storedRecipes) || [];
+        setRecipes(parsedRecipes);
+      } catch (error) {
+        console.log("Error retrieving data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(recipes);
+  }, [recipes]);
+
   // Alle eingegebenen Daten lokal speichern
   const saveData = async () => {
     try {
@@ -46,8 +65,14 @@ const CreateRecipe = () => {
       const updatedRecipe = [...inputRecipe, newRecipe];
       setInputRecipe(updatedRecipe);
 
+      const updatedRecipes = [...recipes, newRecipe];
+      setRecipes(updatedRecipes);
+      // console.log(recipes);
+
+      await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipes));
+
       await AsyncStorage.setItem("inputRecipe", JSON.stringify(updatedRecipe));
-      console.log(updatedRecipe[0].inputsZutaten);
+      // console.log(updatedRecipe[0].inputsZutaten);
     } catch (error) {
       console.log("Error saving data:", error);
     }
@@ -111,14 +136,14 @@ const CreateRecipe = () => {
           {/* Rezeptliste & Dauer */}
           <Flex mt="2">
             <Flex direction="row">
-              <Flex direction="column">
+              {/* <Flex direction="column">
                 <Text mt="2" mb="8">
                   Rezeptliste:
                 </Text>
                 <Text>Dauer:</Text>
-              </Flex>
+              </Flex> */}
 
-              <Flex direction="column" width="100%">
+              {/* <Flex direction="column" width="100%">
                 <FormControl ml="2" w="3/4" maxW="300" isRequired>
                   <Select
                     maxWidth="100%"
@@ -151,9 +176,8 @@ const CreateRecipe = () => {
                   value={recipeDuration}
                   onChangeText={(text) => setRecipeDuration(text)}
                 />
-              </Flex>
+              </Flex> */}
             </Flex>
-
             {/* Zutaten */}
             <Text mt="6" fontSize="md">
               Zutaten
@@ -161,7 +185,7 @@ const CreateRecipe = () => {
             <View>
               <ScrollView>
                 {inputsZutaten.map((currentIngredient, key) => (
-                  <View>
+                  <View key={key}>
                     <Flex direction="row" mt="2">
                       <Input
                         direction="column"
@@ -206,7 +230,6 @@ const CreateRecipe = () => {
                 </Button>
               </Flex>
             </View>
-
             {/* Zubereitung */}
             <Text mt="6" fontSize="md">
               Zubereitungsschritte
@@ -214,7 +237,7 @@ const CreateRecipe = () => {
             <View>
               <ScrollView>
                 {inputsZubereitung.map((input, key) => (
-                  <View>
+                  <View key={key}>
                     <Flex direction="column" mt="2">
                       <Text mb="1">Schritt 1</Text>
                       <Flex direction="row">
@@ -255,13 +278,23 @@ const CreateRecipe = () => {
                 </Button>
               </Flex>
             </View>
-
             {/* Eintrag speichern */}
             <Button mt="6" onPress={saveData}>
               Speichern
             </Button>
           </Flex>
         </Flex>
+        {recipes &&
+          recipes.map((recipe, index) => (
+            <View key={index} display={"flex"} flexDirection={"row"}>
+              <Text>
+                {recipe.recipeTitle}
+                {recipe.recipeDuration}
+                {recipe.inputsZutaten.amount}
+                {recipe.recipeStep}
+              </Text>
+            </View>
+          ))}
       </ScrollView>
     </NativeBaseProvider>
   );

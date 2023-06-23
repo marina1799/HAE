@@ -41,7 +41,7 @@ const RecipeBooks = ({ navigation }) => {
       const parsedInputList = JSON.parse(storedInputList);
 
       setInputList(parsedInputList || []);
-      console.log("Stored data:", parsedInputList);
+      // console.log("Stored data:", parsedInputList);
     } catch (error) {
       console.log("Error retrieving data:", error);
     }

@@ -11,30 +11,31 @@ import {
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { buttonStyles } from "../theme/Components";
 
-import { FabStyles, buttonStyles } from "../theme/Components";
 const RecipesList = ({ navigation, route }) => {
   const item = route.params.selectedItem; // Das ausgewählte Objekt aus route.params abrufen
-  const [inputRecipe, setInputRecipe] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
 
   const fetchData = async () => {
     try {
-      const storedInputList = await AsyncStorage.getItem("inputRecipe");
+      const storedInputList = await AsyncStorage.getItem("recipes");
       const parsedInputList = JSON.parse(storedInputList);
 
-      setInputRecipe(parsedInputList || []);
-      console.log("Stored data:", parsedInputList);
+      // console.log("inputRecipe", parsedInputList); // Log the fetched inputRecipe here
+
+      setRecipes(parsedInputList || []);
     } catch (error) {
       console.log("Error retrieving data:", error);
     }
   };
 
   const deleteRecipe = async (index) => {
-    const updatedRecipe = [...inputRecipe];
+    const updatedRecipe = [...recipes];
     updatedRecipe.splice(index, 1);
-    setInputRecipe(updatedRecipe);
-    await AsyncStorage.setItem("inputRecipe", JSON.stringify(updatedRecipe));
+    setRecipes(updatedRecipe);
+    await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipe));
     console.log("Data saved successfully!");
 
     setDeleteModal(false);
@@ -71,7 +72,7 @@ const RecipesList = ({ navigation, route }) => {
       </Flex>
 
       <FlatList
-        data={inputRecipe}
+        data={recipes}
         renderItem={({ item, index }) => (
           <TouchableOpacity
             style={{
