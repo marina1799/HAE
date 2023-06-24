@@ -73,11 +73,8 @@ const Recipe = ({ navigation, route }) => {
               })}
             </Flex>
             <Button.Group space={2}>
-              <Button
-                style={buttonStyles.primaryButton}
-                onPress={() => deleteBook(index)}
-              >
-                <Text>Delete</Text>
+              <Button style={buttonStyles.primaryButton}>
+                <Text>Hinzufügen</Text>
               </Button>
             </Button.Group>
           </Modal.Body>
