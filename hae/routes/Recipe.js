@@ -1,7 +1,18 @@
 import React from "react";
-import { NativeBaseProvider, Text, Flex, Checkbox } from "native-base";
+import { useState } from "react";
+import { buttonStyles } from "../theme/Components";
+import {
+  NativeBaseProvider,
+  Text,
+  Flex,
+  Checkbox,
+  Button,
+  Modal,
+} from "native-base";
 
 const Recipe = ({ navigation, route }) => {
+  const [deleteModal, setDeleteModal] = useState(false);
+
   const recipeTitle = route.params.selectedItem.recipeTitle;
   const recipeDuration = route.params.selectedItem.recipeDuration;
   const ingredientsList = route.params.selectedItem.ingredients;
@@ -26,6 +37,52 @@ const Recipe = ({ navigation, route }) => {
         );
       })}
       <Text>Zubereitungsschritte: {recipeStep}</Text>
+
+      <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
+        <Text>Zu Einkaufszettel hinzufügen</Text>
+      </Button>
+      <Modal
+        isOpen={deleteModal}
+        onClose={() => setDeleteModal(false)}
+        _backdrop={{
+          _dark: {
+            bg: "coolGray.800",
+          },
+          bg: "warmGray.50",
+        }}
+      >
+        <Modal.Content maxWidth="350" maxH="212">
+          <Modal.CloseButton />
+          <Modal.Header>Zutaten</Modal.Header>
+          <Modal.Body>
+            <Flex direction="column">
+              {ingredientsList.map((ingredient, index) => {
+                return (
+                  <Flex
+                    key={index}
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Text>
+                      {ingredient?.amount} {ingredient?.ingredients}
+                    </Text>
+                    <Checkbox isChecked={false} accessibilityLabel="done" />
+                  </Flex>
+                );
+              })}
+            </Flex>
+            <Button.Group space={2}>
+              <Button
+                style={buttonStyles.primaryButton}
+                onPress={() => deleteBook(index)}
+              >
+                <Text>Delete</Text>
+              </Button>
+            </Button.Group>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </NativeBaseProvider>
   );
 };
