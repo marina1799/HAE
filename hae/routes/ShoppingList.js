@@ -11,7 +11,7 @@ import {
 } from "native-base";
 
 const ShoppingList = () => {
-  const [quantity, setQuantity] = useState("");
+  const [amount, setAmount] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [ingredientsList, setIngredientsList] = useState([]);
   const [removedIngredientsList, setRemovedIngredientsList] = useState([]);
@@ -44,17 +44,17 @@ const ShoppingList = () => {
 
   const saveIngredient = async () => {
     try {
-      const newIngredient = { quantity, ingredient };
+      const newIngredient = { amount, ingredient };
       const updatedIngredientsList = [...ingredientsList, newIngredient];
       setIngredientsList(updatedIngredientsList);
-      setQuantity("");
+      setAmount("");
       setIngredient("");
 
       await AsyncStorage.setItem(
         "ingredientsList",
         JSON.stringify(updatedIngredientsList)
       );
-      console.log("Data saved successfully!");
+      console.log("Data saved!");
     } catch (error) {
       console.log("Error saving data:", error);
     }
@@ -84,7 +84,6 @@ const ShoppingList = () => {
           JSON.stringify(parsedIngredients)
         );
 
-        console.log("removedIngredients:", updatedRemovedIngredients);
         setRemovedIngredientsList(updatedRemovedIngredients);
         setIngredientsList(parsedIngredients);
       }
@@ -118,7 +117,6 @@ const ShoppingList = () => {
           JSON.stringify(parsedRemovedIngredients)
         );
 
-        console.log("ingredientsList:", updatedIngredientsList);
         setIngredientsList(updatedIngredientsList);
         setRemovedIngredientsList(parsedRemovedIngredients);
       }
@@ -153,7 +151,7 @@ const ShoppingList = () => {
               alignItems="center"
             >
               <Text>
-                {ingredient?.quantity} {ingredient?.ingredient}
+                {ingredient?.amount} {ingredient?.ingredient}
               </Text>
               <Checkbox
                 isChecked={false}
@@ -169,8 +167,8 @@ const ShoppingList = () => {
         <Input
           placeholder="Menge"
           width="20"
-          onChangeText={(text) => setQuantity(text)}
-          value={quantity}
+          onChangeText={(text) => setAmount(text)}
+          value={amount}
           keyboardType="numeric"
         />
         <Input
@@ -197,7 +195,7 @@ const ShoppingList = () => {
               alignItems="center"
             >
               <Text strikeThrough>
-                {ingredient?.quantity} {ingredient?.ingredient}
+                {ingredient?.amount} {ingredient?.ingredient}
               </Text>
               <Checkbox
                 isChecked={true}
@@ -219,58 +217,6 @@ const ShoppingList = () => {
             </Button>
           )}
         </Flex>
-        <Flex mt="40" alignItems="center">
-          <Button
-            size="sm"
-            variant="subtle"
-            colorScheme="secondary"
-            onPress={() => setDeleteModal(true)}
-            renderInPortal={false}
-          >
-            <Text>(DUMMY) Zu Einkaufszettel hinzufügen</Text>
-          </Button>
-        </Flex>
-
-        <Modal
-          isOpen={deleteModal}
-          onClose={() => setDeleteModal(false)}
-          _backdrop={{
-            _dark: {
-              bg: "coolGray.800",
-            },
-            bg: "warmGray.50",
-          }}
-        >
-          <Modal.Content maxWidth="350" maxH="212">
-            <Modal.CloseButton />
-            <Modal.Header>Zutaten:</Modal.Header>
-            <Modal.Body>
-              <Flex direction="column">
-                {ingredientsList.map((ingredient, index) => {
-                  if (removedIngredientsList.includes(ingredient)) {
-                    return null;
-                  }
-                  return (
-                    <Flex
-                      key={index}
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Text>
-                        {ingredient?.quantity} {ingredient?.ingredient}
-                      </Text>
-                      <Checkbox accessibilityLabel="add" defaultIsChecked />
-                    </Flex>
-                  );
-                })}
-              </Flex>
-              <Button mt={4} colorScheme="green">
-                <Text>Hinzufügen</Text>
-              </Button>
-            </Modal.Body>
-          </Modal.Content>
-        </Modal>
       </Flex>
     </NativeBaseProvider>
   );

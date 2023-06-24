@@ -11,31 +11,30 @@ import {
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { buttonStyles } from "../theme/Components";
 
-import { FabStyles, buttonStyles } from "../theme/Components";
 const RecipesList = ({ navigation, route }) => {
   const item = route.params.selectedItem; // Das ausgewählte Objekt aus route.params abrufen
-  const [inputRecipe, setInputRecipe] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
 
   const fetchData = async () => {
     try {
-      const storedInputList = await AsyncStorage.getItem("inputRecipe");
+      const storedInputList = await AsyncStorage.getItem("recipes");
       const parsedInputList = JSON.parse(storedInputList);
 
-      setInputRecipe(parsedInputList || []);
-      console.log("Stored data:", parsedInputList);
+      setRecipes(parsedInputList || []);
     } catch (error) {
       console.log("Error retrieving data:", error);
     }
   };
 
   const deleteRecipe = async (index) => {
-    const updatedRecipe = [...inputRecipe];
+    const updatedRecipe = [...recipes];
     updatedRecipe.splice(index, 1);
-    setInputRecipe(updatedRecipe);
-    await AsyncStorage.setItem("inputRecipe", JSON.stringify(updatedRecipe));
-    console.log("Data saved successfully!");
+    setRecipes(updatedRecipe);
+    await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipe));
+    console.log("Data saved!");
 
     setDeleteModal(false);
   };
@@ -71,9 +70,10 @@ const RecipesList = ({ navigation, route }) => {
       </Flex>
 
       <FlatList
-        data={inputRecipe}
+        data={recipes}
         renderItem={({ item, index }) => (
           <TouchableOpacity
+            key={item.key}
             style={{
               marginTop: 2,
               backgroundColor: "white",
@@ -83,7 +83,9 @@ const RecipesList = ({ navigation, route }) => {
               justifyContent: "space-between",
               alignItems: "center",
             }}
-            key={item.key}
+            onPress={() =>
+              navigation.navigate("Recipe", { selectedItem: item })
+            }
           >
             <Text
               style={{
@@ -107,7 +109,7 @@ const RecipesList = ({ navigation, route }) => {
               </Text>
             </Text>
             <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>-</Text>
+              <Text>Löschen</Text>
             </Button>
 
             <Modal
@@ -150,6 +152,7 @@ const RecipesList = ({ navigation, route }) => {
       <Fab
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
+        label="Rezept erstellen"
       />
     </NativeBaseProvider>
   );
