@@ -23,8 +23,6 @@ const RecipesList = ({ navigation, route }) => {
       const storedInputList = await AsyncStorage.getItem("recipes");
       const parsedInputList = JSON.parse(storedInputList);
 
-      // console.log("inputRecipe", parsedInputList); // Log the fetched inputRecipe here
-
       setRecipes(parsedInputList || []);
     } catch (error) {
       console.log("Error retrieving data:", error);
@@ -36,7 +34,7 @@ const RecipesList = ({ navigation, route }) => {
     updatedRecipe.splice(index, 1);
     setRecipes(updatedRecipe);
     await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipe));
-    console.log("Data saved successfully!");
+    console.log("Data saved!");
 
     setDeleteModal(false);
   };
@@ -75,6 +73,7 @@ const RecipesList = ({ navigation, route }) => {
         data={recipes}
         renderItem={({ item, index }) => (
           <TouchableOpacity
+            key={item.key}
             style={{
               marginTop: 2,
               backgroundColor: "white",
@@ -84,7 +83,9 @@ const RecipesList = ({ navigation, route }) => {
               justifyContent: "space-between",
               alignItems: "center",
             }}
-            key={item.key}
+            onPress={() =>
+              navigation.navigate("Recipe", { selectedItem: item })
+            }
           >
             <Text
               style={{
@@ -108,7 +109,7 @@ const RecipesList = ({ navigation, route }) => {
               </Text>
             </Text>
             <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>-</Text>
+              <Text>Löschen</Text>
             </Button>
 
             <Modal
@@ -151,6 +152,7 @@ const RecipesList = ({ navigation, route }) => {
       <Fab
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
+        label="Rezept erstellen"
       />
     </NativeBaseProvider>
   );

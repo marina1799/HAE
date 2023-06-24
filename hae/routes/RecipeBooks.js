@@ -41,7 +41,6 @@ const RecipeBooks = ({ navigation }) => {
       const parsedInputList = JSON.parse(storedInputList);
 
       setInputList(parsedInputList || []);
-      // console.log("Stored data:", parsedInputList);
     } catch (error) {
       console.log("Error retrieving data:", error);
     }
@@ -56,7 +55,7 @@ const RecipeBooks = ({ navigation }) => {
     updatedInputList.splice(index, 1);
     setInputList(updatedInputList);
     await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
-    console.log("Data saved successfully!");
+    console.log("Data saved!");
 
     setDeleteModal(false);
   };
@@ -96,6 +95,7 @@ const RecipeBooks = ({ navigation }) => {
         style={FabStyles.primaryFab}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
+        label={"Erstellen"}
       />
 
       <Modal
@@ -175,9 +175,8 @@ const RecipeBooks = ({ navigation }) => {
               </Text>
             </View>
             <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>-</Text>
+              <Text>Löschen</Text>
             </Button>
-
             <Modal
               isOpen={deleteModal}
               onClose={() => setDeleteModal(false)}

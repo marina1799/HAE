@@ -43,7 +43,7 @@ const CreateRecipeList = ({ navigation }) => {
       const updatedInputList = [...inputList, newBook];
 
       await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
-      console.log("Data saved successfully!");
+      console.log("Data saved!");
 
       setInputList(updatedInputList);
       console.log("Updated inputList:", updatedInputList);
