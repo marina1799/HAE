@@ -18,6 +18,7 @@ import {
   TextArea,
 } from "native-base";
 import { TouchableOpacity } from "react-native";
+import { CommonActions } from '@react-navigation/native';
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
@@ -61,7 +62,7 @@ const CreateRecipe = ({ navigation }) => {
 
   const handlePress = (item) => {
     saveData();
-    navigation.navigate("RecipeBooks");
+    navigation.dispatch(CommonActions.goBack());
   };
 
   // Input der Zutaten neu schreiben
