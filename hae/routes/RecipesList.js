@@ -7,7 +7,10 @@ import {
   Text,
   Fab,
   FlatList,
+  DeleteIcon,
+  AddIcon,
 } from "native-base";
+import { FabStyles } from "../theme/Components";
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -108,9 +111,12 @@ const RecipesList = ({ navigation, route }) => {
                 {item.recipeDuration}
               </Text>
             </Text>
-            <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>Löschen</Text>
-            </Button>
+            <TouchableOpacity
+              renderInPortal={false}
+              onPress={() => setDeleteModal(true)}
+            >
+              <DeleteIcon size={"lg"} />
+            </TouchableOpacity>
 
             <Modal
               isOpen={deleteModal}
@@ -124,21 +130,15 @@ const RecipesList = ({ navigation, route }) => {
             >
               <Modal.Content maxWidth="350" maxH="212">
                 <Modal.CloseButton />
-                <Modal.Header>Delete recipe?</Modal.Header>
+                <Modal.Header>Rezept löschen?</Modal.Header>
                 <Modal.Body>
                   <Button.Group space={2}>
                     <Button
-                      variant="ghost"
-                      colorScheme="blueGray"
-                      onPress={() => setDeleteModal(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
                       style={buttonStyles.primaryButton}
                       onPress={() => deleteRecipe(index)}
+                      width={"100%"}
                     >
-                      <Text>Delete</Text>
+                      <Text>Löschen</Text>
                     </Button>
                   </Button.Group>
                 </Modal.Body>
@@ -150,9 +150,11 @@ const RecipesList = ({ navigation, route }) => {
       />
 
       <Fab
+        size={"lg"}
+        style={FabStyles.primaryFab}
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
-        label="Rezept erstellen"
+        icon={<AddIcon />}
       />
     </NativeBaseProvider>
   );

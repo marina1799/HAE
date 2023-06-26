@@ -12,7 +12,8 @@ import {
   FlatList,
   Image,
   View,
-  Input,
+  DeleteIcon,
+  AddIcon,
 } from "native-base";
 import { FabStyles, buttonStyles } from "../theme/Components";
 
@@ -88,14 +89,15 @@ const RecipeBooks = ({ navigation }) => {
         </Button>
       </Flex>
       <Flex direction="row" p="3">
-        <Text>Rezepteliste:</Text>
+        <Text>Rezeptelisten:</Text>
       </Flex>
 
       <Fab
+        size={"lg"}
         style={FabStyles.primaryFab}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
-        label={"Erstellen"}
+        icon={<AddIcon />}
       />
 
       <Modal
@@ -110,20 +112,22 @@ const RecipeBooks = ({ navigation }) => {
       >
         <Modal.Content maxWidth="350" maxH="212">
           <Modal.CloseButton />
-          <Modal.Header>Add</Modal.Header>
+          <Modal.Header>Erstellen:</Modal.Header>
           <Modal.Body>
             <Button.Group space={2}>
               <Button
                 size="lg"
+                width={"50%"}
                 onPress={() => navigation.navigate("CreateRecipeList")}
               >
-                Recipe Book
+                Rezepteliste
               </Button>
               <Button
                 size="lg"
+                width={"50%"}
                 onPress={() => navigation.navigate("CreateRecipe")}
               >
-                Recipe
+                Rezept
               </Button>
             </Button.Group>
           </Modal.Body>
@@ -174,9 +178,12 @@ const RecipeBooks = ({ navigation }) => {
                 </Text>
               </Text>
             </View>
-            <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>Löschen</Text>
-            </Button>
+            <TouchableOpacity
+              renderInPortal={false}
+              onPress={() => setDeleteModal(true)}
+            >
+              <DeleteIcon size={"lg"} />
+            </TouchableOpacity>
             <Modal
               isOpen={deleteModal}
               onClose={() => setDeleteModal(false)}
@@ -189,21 +196,15 @@ const RecipeBooks = ({ navigation }) => {
             >
               <Modal.Content maxWidth="350" maxH="212">
                 <Modal.CloseButton />
-                <Modal.Header>Delete recipe book?</Modal.Header>
+                <Modal.Header>Rezeptsammlung löschen?</Modal.Header>
                 <Modal.Body>
                   <Button.Group space={2}>
                     <Button
-                      variant="ghost"
-                      colorScheme="blueGray"
-                      onPress={() => setDeleteModal(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
                       style={buttonStyles.primaryButton}
                       onPress={() => deleteBook(index)}
+                      width={"100%"}
                     >
-                      <Text>Delete</Text>
+                      <Text>Löschen</Text>
                     </Button>
                   </Button.Group>
                 </Modal.Body>

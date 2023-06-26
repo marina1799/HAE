@@ -136,6 +136,7 @@ const Recipe = ({ navigation, route }) => {
               <Button
                 style={buttonStyles.primaryButton}
                 onPress={addIngredientsToShoppinglist}
+                width={"100%"}
               >
                 <Text>Hinzufügen</Text>
               </Button>

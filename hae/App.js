@@ -26,12 +26,12 @@ const App = () => {
         <Stack.Screen
           name="RecipeBooks"
           component={RecipeBooks}
-          options={{ title: "RecipeBooks" }}
+          options={{ title: "Rezepte" }}
         />
         <Stack.Screen
           name="RecipesList"
           component={RecipesList}
-          options={{ title: "RecipesList" }}
+          options={{ title: "Rezepteliste" }}
         />
         <Stack.Screen
           name="CreateRecipe"
@@ -46,7 +46,7 @@ const App = () => {
         <Stack.Screen
           name="CreateRecipeList"
           component={CreateRecipeList}
-          options={{ title: "CreateRecipeList" }}
+          options={{ title: "Rezepteliste erstellen" }}
         />
         <Stack.Screen
           name="Recipe"
