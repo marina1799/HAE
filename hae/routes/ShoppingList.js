@@ -16,9 +16,6 @@ const ShoppingList = () => {
   const [ingredientsList, setIngredientsList] = useState([]);
   const [removedIngredientsList, setRemovedIngredientsList] = useState([]);
 
-  const [showModal, setShowModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
