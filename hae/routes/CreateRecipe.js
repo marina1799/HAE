@@ -52,6 +52,7 @@ const CreateRecipe = ({ navigation }) => {
       };
       const updatedRecipes = [...recipes, newRecipe];
       setRecipes(updatedRecipes);
+      console.log(newRecipe);
 
       await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipes));
     } catch (error) {
@@ -68,7 +69,7 @@ const CreateRecipe = ({ navigation }) => {
   const handleAmountInput = (text, key) => {
     const tempingredients = [...ingredients];
     tempingredients[key].amount = text;
-    setIngredients(tempingredients);
+    setRecipeSteps(tempingredients);
   };
 
   const handleingredientsNameInput = (text, key) => {
@@ -89,10 +90,22 @@ const CreateRecipe = ({ navigation }) => {
     setIngredients(_ingredients);
   };
 
+  // Input der Zubereitungsschritte neu schreiben
+  // const handleStepTextInput = (text, key) => {
+  //   const tempsteps = [...recipeSteps];
+  //   tempsteps[key].stepText = text;
+  //   setRecipeSteps(tempsteps);
+  // };
+  const handleStepTextInput = (text, key) => {
+    const tempsteps = [...preparation];
+    tempsteps[key] = { ...tempsteps[key], stepText: text };
+    setPreparation(tempsteps);
+  };
+
   // Zubereitungsschritte-Inputs-Elemente hinzufügen
   const addHandlerZubereitung = () => {
     const _preparation = [...preparation];
-    _preparation.push({ key: "", value: "" });
+    _preparation.push({});
     setPreparation(_preparation);
   };
 
@@ -162,10 +175,10 @@ const CreateRecipe = ({ navigation }) => {
             </Flex>
           </Flex>
           {/* Zutaten */}
-          <Text mt="6" fontSize="md">
-            Zutaten
-          </Text>
           <ScrollView>
+            <Text mt="6" fontSize="md">
+              Zutaten
+            </Text>
             <View>
               <ScrollView>
                 {ingredients.map((currentingredients, key) => (
@@ -178,7 +191,8 @@ const CreateRecipe = ({ navigation }) => {
                         size="md"
                         mr="2"
                         width="20%"
-                        onChangeText={(text) => handleAmountInput(text, key)}
+                        onChangeText={(text) =>
+                          handleAmountInput(text, key)}
                         value={currentingredients.amount}
                       />
                       <Input
@@ -220,7 +234,7 @@ const CreateRecipe = ({ navigation }) => {
             </Text>
             <View>
               <ScrollView>
-                {preparation.map((input, key) => (
+                {preparation.map((currentpreparation, key) => (
                   <View key={key}>
                     <Flex direction="column" mt="2">
                       <Text mb="1">Schritt 1</Text>
@@ -236,8 +250,9 @@ const CreateRecipe = ({ navigation }) => {
                           ml="2"
                           width="62%"
                           h={100}
-                          onChangeText={(text) => setRecipeSteps(text)}
-                          value={recipeSteps}
+                          onChangeText={(text) =>
+                            handleStepTextInput(text, key)}
+                          value={currentpreparation.stepText}
                         />
                         <TouchableOpacity
                           onPress={() => deleteHandlerZubereitung(key)}
@@ -262,11 +277,11 @@ const CreateRecipe = ({ navigation }) => {
                 </Button>
               </Flex>
             </View>
-          </ScrollView>
           {/* Eintrag speichern */}
           <Button mt="6" onPress={handlePress}>
             Speichern
           </Button>
+          </ScrollView>
         </Flex>
       </Flex>
     </NativeBaseProvider>
