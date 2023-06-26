@@ -21,7 +21,7 @@ import { TouchableOpacity } from "react-native";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
-  const [ingredients, setIngredients] = useState([{}]);
+  const [ingredient, setIngredient] = useState([{}]);
   const [preparation, setPreparation] = useState([{ key: "", value: "" }]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
@@ -47,7 +47,7 @@ const CreateRecipe = ({ navigation }) => {
       const newRecipe = {
         recipeTitle,
         recipeDuration,
-        ingredients,
+        ingredient,
         recipeSteps,
       };
       const updatedRecipes = [...recipes, newRecipe];
@@ -66,27 +66,27 @@ const CreateRecipe = ({ navigation }) => {
 
   // Input der Zutaten neu schreiben
   const handleAmountInput = (text, key) => {
-    const tempingredients = [...ingredients];
-    tempingredients[key].amount = text;
-    setIngredients(tempingredients);
+    const tempIngredient = [...ingredient];
+    tempIngredient[key].amount = text;
+    setIngredient(tempIngredient);
   };
 
-  const handleingredientsNameInput = (text, key) => {
-    const tempingredients = [...ingredients];
-    tempingredients[key].ingredients = text;
-    setIngredients(tempingredients);
+  const handleIngredientNameInput = (text, key) => {
+    const tempIngredient = [...ingredient];
+    tempIngredient[key].ingredient = text;
+    setIngredient(tempIngredient);
   };
 
   // Zutaten-Inputs-Elemente hinzufügen
   const addHandlerZutaten = () => {
-    const _ingredients = [...ingredients];
-    _ingredients.push({});
-    setIngredients(_ingredients);
+    const _ingredient = [...ingredient];
+    _ingredient.push({});
+    setIngredient(_ingredient);
   };
 
   const deleteHandlerZutaten = (key) => {
-    const _ingredients = ingredients.filter((input, index) => index != key);
-    setIngredients(_ingredients);
+    const _ingredient = ingredient.filter((input, index) => index != key);
+    setIngredient(_ingredient);
   };
 
   // Zubereitungsschritte-Inputs-Elemente hinzufügen
@@ -168,7 +168,7 @@ const CreateRecipe = ({ navigation }) => {
           <ScrollView>
             <View>
               <ScrollView>
-                {ingredients.map((currentingredients, key) => (
+                {ingredient.map((currentIngredient, key) => (
                   <View key={key}>
                     <Flex direction="row" mt="2">
                       <Input
@@ -179,7 +179,7 @@ const CreateRecipe = ({ navigation }) => {
                         mr="2"
                         width="20%"
                         onChangeText={(text) => handleAmountInput(text, key)}
-                        value={currentingredients.amount}
+                        value={currentIngredient.amount}
                       />
                       <Input
                         direction="column"
@@ -188,9 +188,9 @@ const CreateRecipe = ({ navigation }) => {
                         size="md"
                         width="69%"
                         onChangeText={(text) =>
-                          handleingredientsNameInput(text, key)
+                          handleIngredientNameInput(text, key)
                         }
-                        value={currentingredients.ingredients}
+                        value={currentIngredient.ingredient}
                       />
                       <TouchableOpacity
                         onPress={() => deleteHandlerZutaten(key)}
