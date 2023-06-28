@@ -70,7 +70,7 @@ const CreateRecipe = ({ navigation }) => {
   const handleAmountInput = (text, key) => {
     const tempingredients = [...ingredients];
     tempingredients[key].amount = text;
-    setRecipeSteps(tempingredients);
+    setIngredients(tempingredients);
   };
 
   const handleingredientsNameInput = (text, key) => {
@@ -94,14 +94,13 @@ const CreateRecipe = ({ navigation }) => {
   // Input der Zubereitungsschritte neu schreiben
   const handleStepTextInput = (text, key) => {
     const tempsteps = [...recipeSteps];
+    if (!tempsteps[key]) {
+      tempsteps[key] = {};
+    }
     tempsteps[key].stepText = text;
     setRecipeSteps(tempsteps);
+    console.log(key, tempsteps);
   };
-  // const handleStepTextInput = (text, key) => {
-  //   const tempsteps = [...preparation];
-  //   tempsteps[key] = { ...tempsteps[key], stepText: text };
-  //   setPreparation(tempsteps);
-  // };
 
   // Zubereitungsschritte-Inputs-Elemente hinzufügen
   const addHandlerZubereitung = () => {
