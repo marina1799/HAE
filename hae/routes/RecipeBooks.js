@@ -60,20 +60,6 @@ const RecipeBooks = ({ navigation }) => {
     setDeleteModal(false);
   };
 
-  const DisplayImage = ({ selectedImage }) => {
-    return (
-      <View>
-        {selectedImage && (
-          <Image
-            source={{ uri: selectedImage }}
-            style={{ width: 200, height: 200 }}
-            alt="selectedImage"
-          />
-        )}
-      </View>
-    );
-  };
-
   return (
     <NativeBaseProvider>
       <Flex direction="row-reverse">
@@ -147,13 +133,6 @@ const RecipeBooks = ({ navigation }) => {
             key={item.key}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              {item.selectedImage && (
-                <Image
-                  source={{ uri: item.selectedImage }}
-                  style={{ width: 50, height: 50, marginRight: 8 }}
-                  alt="selectedImage"
-                />
-              )}
               <Text
                 style={{
                   fontSize: 18,
