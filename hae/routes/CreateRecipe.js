@@ -17,7 +17,7 @@ import {
   AddIcon,
   TextArea,
 } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
@@ -118,7 +118,7 @@ const CreateRecipe = ({ navigation }) => {
         />
         {/* Rezeptliste & Dauer */}
         <Flex mt="2">
-          <Flex direction="row">
+          <Flex direction="row" mb="4">
             <Flex direction="column">
               <Text mt="2" mb="8">
                 Rezeptliste:
@@ -161,46 +161,44 @@ const CreateRecipe = ({ navigation }) => {
               />
             </Flex>
           </Flex>
-          {/* Zutaten */}
-          <Text mt="6" fontSize="md">
-            Zutaten
-          </Text>
-          <ScrollView>
+          <ScrollView style={styles.scrollView}>
+            {/* Zutaten */}
+            <Text mt="2" fontSize="md">
+              Zutaten
+            </Text>
             <View>
-              <ScrollView>
-                {ingredient.map((currentIngredient, key) => (
-                  <View key={key}>
-                    <Flex direction="row" mt="2">
-                      <Input
-                        direction="column"
-                        placeholder="Menge"
-                        variant="filled"
-                        size="md"
-                        mr="2"
-                        width="20%"
-                        onChangeText={(text) => handleAmountInput(text, key)}
-                        value={currentIngredient.amount}
-                      />
-                      <Input
-                        direction="column"
-                        placeholder="Zutat"
-                        variant="filled"
-                        size="md"
-                        width="69%"
-                        onChangeText={(text) =>
-                          handleIngredientNameInput(text, key)
-                        }
-                        value={currentIngredient.ingredient}
-                      />
-                      <TouchableOpacity
-                        onPress={() => deleteHandlerZutaten(key)}
-                      >
-                        <DeleteIcon m="2" />
-                      </TouchableOpacity>
-                    </Flex>
-                  </View>
-                ))}
-              </ScrollView>
+              {ingredient.map((currentIngredient, key) => (
+                <View key={key}>
+                  <Flex direction="row" mt="2">
+                    <Input
+                      direction="column"
+                      placeholder="Menge"
+                      variant="filled"
+                      size="md"
+                      mr="2"
+                      width="20%"
+                      onChangeText={(text) => handleAmountInput(text, key)}
+                      value={currentIngredient.amount}
+                    />
+                    <Input
+                      direction="column"
+                      placeholder="Zutat"
+                      variant="filled"
+                      size="md"
+                      width="69%"
+                      onChangeText={(text) =>
+                        handleIngredientNameInput(text, key)
+                      }
+                      value={currentIngredient.ingredient}
+                    />
+                    <TouchableOpacity
+                      onPress={() => deleteHandlerZutaten(key)}
+                    >
+                      <DeleteIcon m="2" />
+                    </TouchableOpacity>
+                  </Flex>
+                </View>
+              ))}
               {/* Neue Zeile hinzufügen - Button */}
               <Flex direction="row" mt="4" justifyContent="center">
                 <Button
@@ -219,36 +217,34 @@ const CreateRecipe = ({ navigation }) => {
               Zubereitungsschritte
             </Text>
             <View>
-              <ScrollView>
-                {preparation.map((input, key) => (
-                  <View key={key}>
-                    <Flex direction="column" mt="2">
-                      <Text mb="1">Schritt 1</Text>
-                      <Flex direction="row">
-                        <Button width="100" height="100" variant="outline">
-                          <AddIcon color="info.600" />
-                        </Button>
-                        <TextArea
-                          direction="column"
-                          placeholder="Zubereitung"
-                          variant="filled"
-                          size="md"
-                          ml="2"
-                          width="62%"
-                          h={100}
-                          onChangeText={(text) => setRecipeSteps(text)}
-                          value={recipeSteps}
-                        />
-                        <TouchableOpacity
-                          onPress={() => deleteHandlerZubereitung(key)}
-                        >
-                          <DeleteIcon m="2" />
-                        </TouchableOpacity>
-                      </Flex>
+              {preparation.map((input, key) => (
+                <View key={key}>
+                  <Flex direction="column" mt="2">
+                    <Text mb="1">Schritt 1</Text>
+                    <Flex direction="row">
+                      <Button width="100" height="100" variant="outline">
+                        <AddIcon color="info.600" />
+                      </Button>
+                      <TextArea
+                        direction="column"
+                        placeholder="Zubereitung"
+                        variant="filled"
+                        size="md"
+                        ml="2"
+                        width="62%"
+                        h={100}
+                        onChangeText={(text) => setRecipeSteps(text)}
+                        value={recipeSteps}
+                      />
+                      <TouchableOpacity
+                        onPress={() => deleteHandlerZubereitung(key)}
+                      >
+                        <DeleteIcon m="2" />
+                      </TouchableOpacity>
                     </Flex>
-                  </View>
-                ))}
-              </ScrollView>
+                  </Flex>
+                </View>
+              ))}
               {/* Neue Zeile hinzufügen - Button */}
               <Flex direction="row" mt="4" justifyContent="center">
                 <Button
@@ -262,15 +258,24 @@ const CreateRecipe = ({ navigation }) => {
                 </Button>
               </Flex>
             </View>
+            {/* Eintrag speichern */}
+            <Button mt="6" onPress={handlePress}>
+              Speichern
+            </Button>
           </ScrollView>
-          {/* Eintrag speichern */}
-          <Button mt="6" onPress={handlePress}>
-            Speichern
-          </Button>
         </Flex>
       </Flex>
     </NativeBaseProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollView: {
+    height: '77%',
+    width: '100%',
+    alignSelf: 'center',
+
+  }
+});
 
 export default CreateRecipe;
