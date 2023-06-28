@@ -16,8 +16,11 @@ import {
   ScrollView,
   AddIcon,
   TextArea,
+  Image,
 } from "native-base";
 import { TouchableOpacity } from "react-native";
+import { CommonActions } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
@@ -26,6 +29,8 @@ const CreateRecipe = ({ navigation }) => {
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
   const [recipeSteps, setRecipeSteps] = useState("");
+  const [recipeImage, setRecipeImage] = useState(null);
+  const [stepImage, setStepImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +54,8 @@ const CreateRecipe = ({ navigation }) => {
         recipeDuration,
         ingredient,
         recipeSteps,
+        recipeImage,
+        stepImage,
       };
       const updatedRecipes = [...recipes, newRecipe];
       setRecipes(updatedRecipes);
@@ -61,7 +68,7 @@ const CreateRecipe = ({ navigation }) => {
 
   const handlePress = (item) => {
     saveData();
-    navigation.navigate("RecipeBooks");
+    navigation.dispatch(CommonActions.goBack());
   };
 
   // Input der Zutaten neu schreiben
@@ -101,8 +108,74 @@ const CreateRecipe = ({ navigation }) => {
     setPreparation(_preparation);
   };
 
+  //image picker recipe
+  const pickRecipeImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setRecipeImage(result.uri);
+    }
+  };
+
+  const deleteRecipeImage = () => {
+    setRecipeImage(null);
+  };
+
+  //image picker recipe step
+  const pickStepImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setStepImage(result.uri);
+    }
+  };
+
+  const deleteStepImage = () => {
+    setStepImage(null);
+  };
+
   return (
     <NativeBaseProvider>
+      <ScrollView>
+      {/* Recipe Image */}
+      <>
+        {!recipeImage && (
+          <Button
+            width="400"
+            height="300"
+            variant="outline"
+            mb="4"
+            onPress={pickRecipeImage}
+          >
+            Bild hinzufügen
+          </Button>
+        )}
+        {recipeImage && (
+          <Flex mb="10">
+            <TouchableOpacity onPress={pickRecipeImage}>
+              <Image
+                source={{ uri: recipeImage }}
+                style={{ width: 400, height: 300 }}
+                alt="recipeImage"
+                mb="4"
+              />
+            </TouchableOpacity>
+            <Button title="Bild löschen" onPress={deleteRecipeImage}>
+              Bild löschen
+            </Button>
+          </Flex>
+        )}
+      </>
       <Flex p="3">
         {/* Titel */}
         <Input
@@ -225,9 +298,38 @@ const CreateRecipe = ({ navigation }) => {
                     <Flex direction="column" mt="2">
                       <Text mb="1">Schritt 1</Text>
                       <Flex direction="row">
-                        <Button width="100" height="100" variant="outline">
-                          <AddIcon color="info.600" />
-                        </Button>
+                        {/* Recipestep Image*/}
+                        <>
+                          {!stepImage && (
+                            <Button
+                              width="100"
+                              height="100"
+                              variant="outline"
+                              onPress={pickStepImage}
+                            >
+                              <AddIcon color="info.600" />
+                            </Button>
+                          )}
+                          {stepImage && (
+                            <Flex mb="10">
+                                          <TouchableOpacity onPress={pickStepImage}>
+                              <Image
+                                source={{ uri: stepImage }}
+                                style={{ width: 100, height: 100 }}
+                                alt="stepImage"
+                                mb="4"
+                                onPress={pickStepImage}
+                              />
+                              </TouchableOpacity>
+                              <Button
+                                title="Bild löschen"
+                                onPress={deleteStepImage}
+                              >
+                                Bild löschen
+                              </Button>
+                            </Flex>
+                          )}
+                        </>
                         <TextArea
                           direction="column"
                           placeholder="Zubereitung"
@@ -269,6 +371,7 @@ const CreateRecipe = ({ navigation }) => {
           </Button>
         </Flex>
       </Flex>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };

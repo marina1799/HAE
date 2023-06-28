@@ -48,6 +48,20 @@ const RecipesList = ({ navigation, route }) => {
     }, [])
   );
 
+  const DisplayImage = ({ recipeImage }) => {
+    return (
+      <View>
+        {recipeImage && (
+          <Image
+            source={{ uri: recipeImage }}
+            style={{ width: 200, height: 200 }}
+            alt="recipeImage"
+          />
+        )}
+      </View>
+    );
+  };
+
   return (
     <NativeBaseProvider>
       <Flex direction="row-reverse">
@@ -62,14 +76,6 @@ const RecipesList = ({ navigation, route }) => {
         </Button>
       </Flex>
       <Flex direction="row" p="3">
-        {item.selectedImage && (
-          <Image
-            source={{ uri: item.selectedImage }}
-            style={{ width: "100%", height: 200, marginRight: 8 }}
-            resizeMode="cover"
-            alt="selectedImage"
-          />
-        )}
       </Flex>
 
       <FlatList
@@ -90,6 +96,14 @@ const RecipesList = ({ navigation, route }) => {
               navigation.navigate("Recipe", { selectedItem: item })
             }
           >
+                    {item.recipeImage && (
+          <Image
+            source={{ uri: item.recipeImage }}
+            style={{ width: 40, height: 40, marginRight: 8 }}
+            resizeMode="cover"
+            alt="recipeImage"
+          />
+        )}
             <Text
               style={{
                 fontSize: 18,
