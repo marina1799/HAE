@@ -19,7 +19,7 @@ const Recipe = ({ navigation, route }) => {
 
   const recipeTitle = route.params.selectedItem.recipeTitle;
   const recipeDuration = route.params.selectedItem.recipeDuration;
-  const recipeIngredientsList = route.params.selectedItem.ingredient;
+  const recipeIngredientsList = route.params.selectedItem.ingredients;
   const recipeStep = route.params.selectedItem.recipeSteps;
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const Recipe = ({ navigation, route }) => {
             alignItems="center"
           >
             <Text>
-              Menge: {ingredient?.amount}, Zutat: {ingredient?.ingredient}
+              Menge: {ingredient?.amount}, Zutat: {ingredient?.ingredients}
             </Text>
           </Flex>
         );

@@ -23,7 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
-  const [ingredients, setIngredients] = useState([{}]);
+  const [ingredients, setIngredients] = useState([{}]);   //ingredient!!
   const [preparation, setPreparation] = useState([{}]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
