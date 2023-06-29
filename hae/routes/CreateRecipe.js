@@ -23,7 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
-  const [ingredients, setIngredients] = useState([{}]);   //ingredient!!
+  const [ingredient, setingredient] = useState([{}]);   //ingredient!!
   const [preparation, setPreparation] = useState([{}]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
@@ -51,7 +51,7 @@ const CreateRecipe = ({ navigation }) => {
       const newRecipe = {
         recipeTitle,
         recipeDuration,
-        ingredients,
+        ingredient,
         recipeSteps,
         recipeImage,
         stepImage,
@@ -74,29 +74,29 @@ const CreateRecipe = ({ navigation }) => {
 
   // Input der Zutaten neu schreiben
   const handleAmountInput = (text, key) => {
-    const tempingredients = [...ingredients];
-    tempingredients[key].amount = text;
-    setIngredients(tempingredients);
+    const tempingredient = [...ingredient];
+    tempingredient[key].amount = text;
+    setingredient(tempingredient);
   };
 
 
-  const handleIngredientsNameInput = (text, key) => {
-    const tempingredients = [...ingredients];
-    tempingredients[key].ingredients = text;
-    setIngredients(tempingredients);
+  const handleingredientNameInput = (text, key) => {
+    const tempingredient = [...ingredient];
+    tempingredient[key].ingredient = text;
+    setingredient(tempingredient);
   };
 
   // Zutaten-Inputs-Elemente hinzufügen
   const addHandlerZutaten = () => {
-    const _ingredients = [...ingredients];
-    _ingredients.push({});
-    setIngredients(_ingredients);
+    const _ingredient = [...ingredient];
+    _ingredient.push({});
+    setingredient(_ingredient);
   };
 
 
   const deleteHandlerZutaten = (key) => {
-    const _ingredients = ingredients.filter((input, index) => index != key);
-    setIngredients(_ingredients);
+    const _ingredient = ingredient.filter((input, index) => index != key);
+    setingredient(_ingredient);
   };
 
 
@@ -255,7 +255,7 @@ const CreateRecipe = ({ navigation }) => {
               Zutaten
             </Text>
             <View>
-              {ingredients.map((currentingredients, key) => (
+              {ingredient.map((currentingredient, key) => (
                 <View key={key}>
                   <Flex direction="row" mt="2">
                     <Input
@@ -267,7 +267,7 @@ const CreateRecipe = ({ navigation }) => {
                       width="20%"
                       onChangeText={(text) =>
                         handleAmountInput(text, key)}
-                      value={currentingredients.amount}
+                      value={currentingredient.amount}
                     />
                     <Input
                       direction="column"
@@ -276,9 +276,9 @@ const CreateRecipe = ({ navigation }) => {
                       size="md"
                       width="69%"
                       onChangeText={(text) =>
-                        handleIngredientsNameInput(text, key)
+                        handleingredientNameInput(text, key)
                       }
-                      value={currentingredients.ingredients}
+                      value={currentingredient.ingredient}
                     />
                     <TouchableOpacity
                       onPress={() => deleteHandlerZutaten(key)}

@@ -13,23 +13,23 @@ import {
 
 const Recipe = ({ navigation, route }) => {
   const [deleteModal, setDeleteModal] = useState(false);
-  const [ingredientsList, setIngredientsList] = useState([]);
-  const [checkedIngredients, setCheckedIngredients] = useState([]);
+  const [ingredientList, setingredientList] = useState([]);
+  const [checkedingredient, setCheckedingredient] = useState([]);
   const [checkedIndex, setCheckedIndex] = useState([]);
 
   const recipeTitle = route.params.selectedItem.recipeTitle;
   const recipeDuration = route.params.selectedItem.recipeDuration;
-  const recipeIngredientsList = route.params.selectedItem.ingredients;
+  const recipeingredientList = route.params.selectedItem.ingredient;
   const recipeStep = route.params.selectedItem.recipeSteps;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const storedIngredientsList = await AsyncStorage.getItem(
-          "ingredientsList"
+        const storedingredientList = await AsyncStorage.getItem(
+          "ingredientList"
         );
-        const parsedIngredientsList = JSON.parse(storedIngredientsList) || [];
-        setIngredientsList(parsedIngredientsList);
+        const parsedingredientList = JSON.parse(storedingredientList) || [];
+        setingredientList(parsedingredientList);
       } catch (error) {
         console.log("Error retrieving data:", error);
       }
@@ -38,13 +38,13 @@ const Recipe = ({ navigation, route }) => {
     fetchData();
   }, []);
 
-  const addIngredientsToShoppinglist = async () => {
+  const addingredientToShoppinglist = async () => {
     try {
-      const updatedIngredientsList = ingredientsList.concat(checkedIngredients);
-      setIngredientsList(updatedIngredientsList);
+      const updatedingredientList = ingredientList.concat(checkedingredient);
+      setingredientList(updatedingredientList);
       await AsyncStorage.setItem(
-        "ingredientsList",
-        JSON.stringify(updatedIngredientsList)
+        "ingredientList",
+        JSON.stringify(updatedingredientList)
       );
       setDeleteModal(false);
       console.log("Data saved!");
@@ -57,8 +57,8 @@ const Recipe = ({ navigation, route }) => {
     return () => {
       setCheckedIndex((prevCheckedIndex) => {
         const isChecked = prevCheckedIndex.includes(index);
-        setCheckedIngredients((prevCheckedIngredients) => {
-          return [...prevCheckedIngredients, recipeIngredientsList[index]];
+        setCheckedingredient((prevCheckedingredient) => {
+          return [...prevCheckedingredient, recipeingredientList[index]];
         });
 
         if (isChecked) {
@@ -78,7 +78,7 @@ const Recipe = ({ navigation, route }) => {
     <NativeBaseProvider>
       <Text>Titel: {recipeTitle}</Text>
       <Text>Dauer: {recipeDuration}</Text>
-      {recipeIngredientsList.map((ingredient, index) => {
+      {recipeingredientList.map((ingredient, index) => {
         return (
           <Flex
             key={index}
@@ -87,7 +87,7 @@ const Recipe = ({ navigation, route }) => {
             alignItems="center"
           >
             <Text>
-              Menge: {ingredient?.amount}, Zutat: {ingredient?.ingredients}
+              Menge: {ingredient?.amount}, Zutat: {ingredient?.ingredient}
             </Text>
           </Flex>
         );
@@ -112,7 +112,7 @@ const Recipe = ({ navigation, route }) => {
           <Modal.Header>Zutaten</Modal.Header>
           <Modal.Body>
             <Flex direction="column">
-              {recipeIngredientsList.map((ingredient, index) => {
+              {recipeingredientList.map((ingredient, index) => {
                 return (
                   <Flex
                     key={index}
@@ -135,7 +135,7 @@ const Recipe = ({ navigation, route }) => {
             <Button.Group space={2}>
               <Button
                 style={buttonStyles.primaryButton}
-                onPress={addIngredientsToShoppinglist}
+                onPress={addingredientToShoppinglist}
                 width={"100%"}
               >
                 <Text>Hinzufügen</Text>
