@@ -42,7 +42,7 @@ const RecipesList = ({ navigation, route }) => {
       console.log("Data saved!");
       setDeleteRecipeModal(false);
     }
-  };  
+  };
 
   const openDeleteRecipeModal = (index) => {
     setDeleteRecipeIndex(index);
