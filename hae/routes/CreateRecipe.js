@@ -118,7 +118,7 @@ const CreateRecipe = ({ navigation }) => {
     setPreparation(_preparation);
   };
 
-  //image picker recipe
+  // Image Picker für das Titelbild
   const pickRecipeImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -136,7 +136,7 @@ const CreateRecipe = ({ navigation }) => {
     setRecipeImage(null);
   };
 
-  //image picker recipe step
+  // Image Picker für einen Zubereitungsschritt
   const pickStepImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -156,7 +156,7 @@ const CreateRecipe = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      {/* Recipe Image */}
+      {/* Titelbild */}
       <>
         {!recipeImage && (
           <Button
@@ -304,7 +304,7 @@ const CreateRecipe = ({ navigation }) => {
                   <Flex direction="column" mt="2">
                     <Text mb="1">Schritt 1</Text>
                     <Flex direction="row">
-                      {/* Recipestep Image*/}
+                      {/* Bild Zubereitungsschritt */}
                       <>
                         {!stepImage && (
                           <Button
