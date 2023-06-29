@@ -9,6 +9,8 @@ import {
   Checkbox,
   Button,
   Modal,
+  Image,
+  FlatList,
 } from "native-base";
 
 const Recipe = ({ navigation, route }) => {
@@ -20,7 +22,9 @@ const Recipe = ({ navigation, route }) => {
   const recipeTitle = route.params.selectedItem.recipeTitle;
   const recipeDuration = route.params.selectedItem.recipeDuration;
   const recipeIngredientsList = route.params.selectedItem.ingredient;
-  const recipeStep = route.params.selectedItem.recipeSteps;
+  const recipeStepList = route.params.selectedItem.recipeSteps;
+  const recipeImage = route.params.selectedItem.recipeImage;
+  const stepImage = route.params.selectedItem.stepImage;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,6 +80,12 @@ const Recipe = ({ navigation, route }) => {
 
   return (
     <NativeBaseProvider>
+            <Image
+              source={{ uri: recipeImage }}
+              style={{ width: 40, height: 40, marginRight: 8 }}
+              resizeMode="cover"
+              alt="recipeImage"
+            />
       <Text>Titel: {recipeTitle}</Text>
       <Text>Dauer: {recipeDuration}</Text>
       {recipeIngredientsList.map((ingredient, index) => {
@@ -92,7 +102,26 @@ const Recipe = ({ navigation, route }) => {
           </Flex>
         );
       })}
-      <Text>Zubereitungsschritte: {recipeStep}</Text>
+      {recipeStepList.map((recipeSteps, index) => {
+        return (
+          <Flex
+            key={index}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+          <Image
+            source={{ uri: stepImage }}
+            style={{ width: 40, height: 40, marginRight: 8 }}
+            resizeMode="cover"
+            alt="recipeImage"
+          />
+            <Text>
+              Zubereitungsschritte: {recipeSteps.stepText}
+            </Text>
+          </Flex>
+        );
+      })}
 
       <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
         <Text>Zu Einkaufszettel hinzufügen</Text>
