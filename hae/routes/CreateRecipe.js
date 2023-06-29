@@ -8,7 +8,6 @@ import {
   Flex,
   Select,
   FormControl,
-  CheckIcon,
   DeleteIcon,
   WarningOutlineIcon,
   Circle,
@@ -30,13 +29,21 @@ const CreateRecipe = ({ navigation }) => {
   const [recipeSteps, setRecipeSteps] = useState([{}]);
   const [recipeImage, setRecipeImage] = useState(null);
   const [stepImage, setStepImage] = useState(null);
+  const [recipeBook, setRecipeBook] = useState("");
+  const [inputList, setInputList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // recipes fetching
         const storedRecipes = await AsyncStorage.getItem("recipes");
         const parsedRecipes = JSON.parse(storedRecipes) || [];
         setRecipes(parsedRecipes);
+
+        // inputList fetching
+        const storedInputList = await AsyncStorage.getItem("inputList");
+        const parsedInputList = JSON.parse(storedInputList);
+        setInputList(parsedInputList || []);
       } catch (error) {
         console.log("Error retrieving data:", error);
       }
@@ -55,10 +62,10 @@ const CreateRecipe = ({ navigation }) => {
         recipeSteps,
         recipeImage,
         stepImage,
+        recipeBook,
       };
       const updatedRecipes = [...recipes, newRecipe];
       setRecipes(updatedRecipes);
-      console.log(updatedRecipes);
 
       await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipes));
     } catch (error) {
@@ -211,6 +218,7 @@ const CreateRecipe = ({ navigation }) => {
             <Flex direction="column" width="100%">
               <FormControl ml="2" w="3/4" maxW="300" isRequired>
                 <Select
+                  onValueChange={(itemValue) => setRecipeBook(itemValue)}
                   maxWidth="100%"
                   height="9"
                   mb="4"
@@ -219,12 +227,19 @@ const CreateRecipe = ({ navigation }) => {
                   placeholder="Rezeptliste wählen"
                   _selectedItem={{
                     bg: "teal.900",
-                    endIcon: <CheckIcon size={5} />,
                   }}
                   mt="1"
                 >
-                  <Select.Item label="Numero uno" value="1" />
-                  <Select.Item label="Neue Rezeptliste erstellen" value="0" />
+                  {inputList.map((item, index) => {
+                    return (
+                      <Select.Item
+                        label={item.bookName}
+                        value={item.bookName}
+                        key={index}
+                        // onPress={() => console.log(item)}
+                      />
+                    );
+                  })}
                 </Select>
                 <FormControl.ErrorMessage
                   leftIcon={<WarningOutlineIcon size="xs" />}
@@ -273,9 +288,7 @@ const CreateRecipe = ({ navigation }) => {
                       }
                       value={currentIngredient.ingredient}
                     />
-                    <TouchableOpacity
-                      onPress={() => deleteHandlerZutaten(key)}
-                    >
+                    <TouchableOpacity onPress={() => deleteHandlerZutaten(key)}>
                       <DeleteIcon m="2" />
                     </TouchableOpacity>
                   </Flex>
@@ -382,10 +395,10 @@ const CreateRecipe = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: '36%',
-    width: '100%',
-    alignSelf: 'center',
-  }
+    height: "36%",
+    width: "100%",
+    alignSelf: "center",
+  },
 });
 
 export default CreateRecipe;
