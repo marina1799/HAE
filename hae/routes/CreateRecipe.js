@@ -381,7 +381,7 @@ const CreateRecipe = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: '50%',
+    height: '36%',
     width: '100%',
     alignSelf: 'center',
 
