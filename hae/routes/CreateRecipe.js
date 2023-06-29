@@ -58,6 +58,7 @@ const CreateRecipe = ({ navigation }) => {
       };
       const updatedRecipes = [...recipes, newRecipe];
       setRecipes(updatedRecipes);
+      console.log(updatedRecipes);
 
       await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipes));
     } catch (error) {
@@ -384,9 +385,7 @@ const styles = StyleSheet.create({
     height: '36%',
     width: '100%',
     alignSelf: 'center',
-
   }
 });
-
 
 export default CreateRecipe;

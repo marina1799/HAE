@@ -20,7 +20,9 @@ const Recipe = ({ navigation, route }) => {
   const recipeTitle = route.params.selectedItem.recipeTitle;
   const recipeDuration = route.params.selectedItem.recipeDuration;
   const recipeIngredientsList = route.params.selectedItem.ingredient;
-  const recipeStep = route.params.selectedItem.recipeSteps;
+  const recipeStepList = route.params.selectedItem.recipeSteps;
+  const recipeImage = route.params.selectedItem.recipeImage;
+  const stepImage = route.params.selectedItem.stepImage;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,7 +94,20 @@ const Recipe = ({ navigation, route }) => {
           </Flex>
         );
       })}
-      <Text>Zubereitungsschritte: {recipeStep}</Text>
+      {recipeStepList.map((recipeSteps, index) => {
+        return (
+          <Flex
+            key={index}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Text>
+              Zubereitungsschritte: {recipeSteps.stepText}
+            </Text>
+          </Flex>
+        );
+      })}
 
       <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
         <Text>Zu Einkaufszettel hinzufügen</Text>
