@@ -23,7 +23,7 @@ import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
-  const [ingredient, setingredient] = useState([{}]);   //ingredient!!
+  const [ingredient, setIngredient] = useState([{}]);
   const [preparation, setPreparation] = useState([{}]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
@@ -76,27 +76,27 @@ const CreateRecipe = ({ navigation }) => {
   const handleAmountInput = (text, key) => {
     const tempingredient = [...ingredient];
     tempingredient[key].amount = text;
-    setingredient(tempingredient);
+    setIngredient(tempingredient);
   };
 
 
-  const handleingredientNameInput = (text, key) => {
+  const handleIngredientNameInput = (text, key) => {
     const tempingredient = [...ingredient];
     tempingredient[key].ingredient = text;
-    setingredient(tempingredient);
+    setIngredient(tempingredient);
   };
 
   // Zutaten-Inputs-Elemente hinzufügen
   const addHandlerZutaten = () => {
     const _ingredient = [...ingredient];
     _ingredient.push({});
-    setingredient(_ingredient);
+    setIngredient(_ingredient);
   };
 
 
   const deleteHandlerZutaten = (key) => {
     const _ingredient = ingredient.filter((input, index) => index != key);
-    setingredient(_ingredient);
+    setIngredient(_ingredient);
   };
 
 
@@ -276,7 +276,7 @@ const CreateRecipe = ({ navigation }) => {
                       size="md"
                       width="69%"
                       onChangeText={(text) =>
-                        handleingredientNameInput(text, key)
+                        handleIngredientNameInput(text, key)
                       }
                       value={currentingredient.ingredient}
                     />
