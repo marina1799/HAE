@@ -10,7 +10,6 @@ import {
   Button,
   Modal,
   Image,
-  FlatList,
 } from "native-base";
 
 const Recipe = ({ navigation, route }) => {
@@ -25,6 +24,8 @@ const Recipe = ({ navigation, route }) => {
   const recipeStepList = route.params.selectedItem.recipeSteps;
   const recipeImage = route.params.selectedItem.recipeImage;
   const stepImage = route.params.selectedItem.stepImage;
+
+  // console.log(route.params.selectedItem.recipeBook);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,16 +77,14 @@ const Recipe = ({ navigation, route }) => {
     };
   };
 
-  // console.log(checkedIndex);
-
   return (
     <NativeBaseProvider>
-            <Image
-              source={{ uri: recipeImage }}
-              style={{ width: 40, height: 40, marginRight: 8 }}
-              resizeMode="cover"
-              alt="recipeImage"
-            />
+      <Image
+        source={{ uri: recipeImage }}
+        style={{ width: 40, height: 40, marginRight: 8 }}
+        resizeMode="cover"
+        alt="recipeImage"
+      />
       <Text>Titel: {recipeTitle}</Text>
       <Text>Dauer: {recipeDuration}</Text>
       {recipeIngredientsList.map((ingredient, index) => {
@@ -110,15 +109,13 @@ const Recipe = ({ navigation, route }) => {
             justifyContent="space-between"
             alignItems="center"
           >
-          <Image
-            source={{ uri: stepImage }}
-            style={{ width: 40, height: 40, marginRight: 8 }}
-            resizeMode="cover"
-            alt="recipeImage"
-          />
-            <Text>
-              Zubereitungsschritte: {recipeSteps.stepText}
-            </Text>
+            <Image
+              source={{ uri: stepImage }}
+              style={{ width: 40, height: 40, marginRight: 8 }}
+              resizeMode="cover"
+              alt="recipeImage"
+            />
+            <Text>Zubereitungsschritte: {recipeSteps.stepText}</Text>
           </Flex>
         );
       })}

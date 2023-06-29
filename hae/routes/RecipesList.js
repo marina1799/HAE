@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   NativeBaseProvider,
   Modal,
@@ -14,13 +14,23 @@ import { FabStyles } from "../theme/Components";
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-import { buttonStyles } from "../theme/Components";
 
 const RecipesList = ({ navigation, route }) => {
-  const item = route.params.selectedItem; // Das ausgewählte Objekt aus route.params abrufen
+  const recipeBook = route.params.selectedItem.bookName; // Das ausgewählte Objekt aus route.params abrufen
   const [recipes, setRecipes] = useState([]);
   const [deleteRecipeModal, setDeleteRecipeModal] = useState(false);
   const [deleteRecipeIndex, setDeleteRecipeIndex] = useState(null);
+  const [recipeBookNames, setRecipeBookNames] = useState([]);
+
+  useEffect(() => {
+    // Filter the recipes array based on bookName
+    const filteredRecipes = recipes.filter(
+      (recipe) => recipe.recipeBook === recipeBook
+    );
+
+    // Update the bookNameRecipes array
+    setRecipeBookNames(filteredRecipes);
+  }, [recipes, recipeBook]);
 
   const fetchData = async () => {
     try {
@@ -89,7 +99,7 @@ const RecipesList = ({ navigation, route }) => {
       <Flex direction="row" p="3"></Flex>
 
       <FlatList
-        data={recipes}
+        data={recipeBookNames}
         renderItem={({ item, index }) => (
           <TouchableOpacity
             key={item.key}

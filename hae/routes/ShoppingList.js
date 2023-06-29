@@ -143,24 +143,22 @@ const ShoppingList = () => {
             }
 
             return (
-              <>
-                <Flex
-                  my={1}
-                  key={index}
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Text>
-                    {ingredient?.amount}&nbsp;&nbsp;{ingredient?.ingredient}
-                  </Text>
-                  <Checkbox
-                    isChecked={false}
-                    onChange={() => checkIngredient(index)}
-                    accessibilityLabel="done"
-                  />
-                </Flex>
-              </>
+              <Flex
+                my={1}
+                key={index}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text>
+                  {ingredient?.amount}&nbsp;&nbsp;{ingredient?.ingredient}
+                </Text>
+                <Checkbox
+                  isChecked={false}
+                  onChange={() => checkIngredient(index)}
+                  accessibilityLabel="done"
+                />
+              </Flex>
             );
           })}
         </Flex>
