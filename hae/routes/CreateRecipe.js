@@ -19,16 +19,15 @@ import {
   Image,
 } from "native-base";
 import { TouchableOpacity, StyleSheet } from "react-native";
-import { CommonActions } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
   const [ingredient, setIngredient] = useState([{}]);
-  const [preparation, setPreparation] = useState([{ key: "", value: "" }]);
+  const [preparation, setPreparation] = useState([{}]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
-  const [recipeSteps, setRecipeSteps] = useState("");
+  const [recipeSteps, setRecipeSteps] = useState([{}]);
   const [recipeImage, setRecipeImage] = useState(null);
   const [stepImage, setStepImage] = useState(null);
 
@@ -68,7 +67,7 @@ const CreateRecipe = ({ navigation }) => {
 
   const handlePress = (item) => {
     saveData();
-    navigation.dispatch(CommonActions.goBack());
+    navigation.navigate("RecipeBooks");
   };
 
   // Input der Zutaten neu schreiben
@@ -96,10 +95,20 @@ const CreateRecipe = ({ navigation }) => {
     setIngredient(_ingredient);
   };
 
+  // Input der Zubereitungsschritte neu schreiben
+  const handleStepTextInput = (text, key) => {
+    const tempSteps = [...recipeSteps];
+    if (!tempSteps[key]) {
+      tempSteps[key] = {};
+    }
+    tempSteps[key].stepText = text;
+    setRecipeSteps(tempSteps);
+  };
+
   // Zubereitungsschritte-Inputs-Elemente hinzufügen
   const addHandlerZubereitung = () => {
     const _preparation = [...preparation];
-    _preparation.push({ key: "", value: "" });
+    _preparation.push({});
     setPreparation(_preparation);
   };
 
@@ -190,7 +199,7 @@ const CreateRecipe = ({ navigation }) => {
         />
         {/* Rezeptliste & Dauer */}
         <Flex mt="2">
-          <Flex direction="row">
+          <Flex direction="row" mb="4">
             <Flex direction="column">
               <Text mt="2" mb="8">
                 Rezeptliste:
@@ -235,7 +244,7 @@ const CreateRecipe = ({ navigation }) => {
           </Flex>
           <ScrollView style={styles.scrollView}>
             {/* Zutaten */}
-            <Text mt="6" fontSize="md">
+            <Text mt="2" fontSize="md">
               Zutaten
             </Text>
             <View>
@@ -289,7 +298,7 @@ const CreateRecipe = ({ navigation }) => {
               Zubereitungsschritte
             </Text>
             <View>
-              {preparation.map((input, key) => (
+              {preparation.map((currentPreparation, key) => (
                 <View key={key}>
                   <Flex direction="column" mt="2">
                     <Text mb="1">Schritt 1</Text>
@@ -334,8 +343,8 @@ const CreateRecipe = ({ navigation }) => {
                         ml="2"
                         width="62%"
                         h={100}
-                        onChangeText={(text) => setRecipeSteps(text)}
-                        value={recipeSteps}
+                        onChangeText={(text) => handleStepTextInput(text, key)}
+                        value={currentPreparation.stepText}
                       />
                       <TouchableOpacity
                         onPress={() => deleteHandlerZubereitung(key)}
