@@ -7,7 +7,10 @@ import {
   Text,
   Fab,
   FlatList,
+  DeleteIcon,
+  AddIcon,
 } from "native-base";
+import { FabStyles } from "../theme/Components";
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -16,7 +19,8 @@ import { buttonStyles } from "../theme/Components";
 const RecipesList = ({ navigation, route }) => {
   const item = route.params.selectedItem; // Das ausgewählte Objekt aus route.params abrufen
   const [recipes, setRecipes] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteRecipeModal, setDeleteRecipeModal] = useState(false);
+  const [deleteRecipeIndex, setDeleteRecipeIndex] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -29,14 +33,24 @@ const RecipesList = ({ navigation, route }) => {
     }
   };
 
-  const deleteRecipe = async (index) => {
-    const updatedRecipe = [...recipes];
-    updatedRecipe.splice(index, 1);
-    setRecipes(updatedRecipe);
-    await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipe));
-    console.log("Data saved!");
+  const deleteRecipe = async () => {
+    if (deleteRecipeIndex !== null) {
+      const updatedRecipe = [...recipes];
+      updatedRecipe.splice(deleteRecipeIndex, 1);
+      setRecipes(updatedRecipe);
+      await AsyncStorage.setItem("recipes", JSON.stringify(updatedRecipe)); // Korrekter Key "recipes" statt "inputList"
+      console.log("Data saved!");
+      setDeleteRecipeModal(false);
+    }
+  };  
 
-    setDeleteModal(false);
+  const openDeleteRecipeModal = (index) => {
+    setDeleteRecipeIndex(index);
+    setDeleteRecipeModal(true);
+  };
+
+  const closeDeleteRecipeModal = () => {
+    setDeleteRecipeModal(false);
   };
 
   useFocusEffect(
@@ -44,6 +58,20 @@ const RecipesList = ({ navigation, route }) => {
       fetchData();
     }, [])
   );
+
+  const DisplayImage = ({ recipeImage }) => {
+    return (
+      <View>
+        {recipeImage && (
+          <Image
+            source={{ uri: recipeImage }}
+            style={{ width: 200, height: 200 }}
+            alt="recipeImage"
+          />
+        )}
+      </View>
+    );
+  };
 
   return (
     <NativeBaseProvider>
@@ -58,16 +86,7 @@ const RecipesList = ({ navigation, route }) => {
           </Text>
         </Button>
       </Flex>
-      <Flex direction="row" p="3">
-        {item.selectedImage && (
-          <Image
-            source={{ uri: item.selectedImage }}
-            style={{ width: "100%", height: 200, marginRight: 8 }}
-            resizeMode="cover"
-            alt="selectedImage"
-          />
-        )}
-      </Flex>
+      <Flex direction="row" p="3"></Flex>
 
       <FlatList
         data={recipes}
@@ -87,6 +106,14 @@ const RecipesList = ({ navigation, route }) => {
               navigation.navigate("Recipe", { selectedItem: item })
             }
           >
+            {item.recipeImage && (
+              <Image
+                source={{ uri: item.recipeImage }}
+                style={{ width: 40, height: 40, marginRight: 8 }}
+                resizeMode="cover"
+                alt="recipeImage"
+              />
+            )}
             <Text
               style={{
                 fontSize: 18,
@@ -108,13 +135,16 @@ const RecipesList = ({ navigation, route }) => {
                 {item.recipeDuration}
               </Text>
             </Text>
-            <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>Löschen</Text>
-            </Button>
+            <TouchableOpacity
+              renderInPortal={false}
+              onPress={() => openDeleteRecipeModal(index)}
+            >
+              <DeleteIcon size={"lg"} />
+            </TouchableOpacity>
 
             <Modal
-              isOpen={deleteModal}
-              onClose={() => setDeleteModal(false)}
+              isOpen={deleteRecipeModal}
+              onClose={closeDeleteRecipeModal}
               _backdrop={{
                 _dark: {
                   bg: "coolGray.800",
@@ -124,21 +154,11 @@ const RecipesList = ({ navigation, route }) => {
             >
               <Modal.Content maxWidth="350" maxH="212">
                 <Modal.CloseButton />
-                <Modal.Header>Delete recipe?</Modal.Header>
+                <Modal.Header>Rezept löschen?</Modal.Header>
                 <Modal.Body>
                   <Button.Group space={2}>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blueGray"
-                      onPress={() => setDeleteModal(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      style={buttonStyles.primaryButton}
-                      onPress={() => deleteRecipe(index)}
-                    >
-                      <Text>Delete</Text>
+                    <Button onPress={deleteRecipe} width={"100%"}>
+                      <Text>Löschen</Text>
                     </Button>
                   </Button.Group>
                 </Modal.Body>
@@ -150,9 +170,11 @@ const RecipesList = ({ navigation, route }) => {
       />
 
       <Fab
+        size={"lg"}
+        style={FabStyles.primaryFab}
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
-        label="Rezept erstellen"
+        icon={<AddIcon />}
       />
     </NativeBaseProvider>
   );

@@ -15,17 +15,22 @@ import {
   Button,
   ScrollView,
   AddIcon,
-  TextArea
+  TextArea,
+  Image,
 } from "native-base";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { CommonActions } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
-  const [ingredients, setIngredients] = useState([{}]);
-  const [preparation, setPreparation] = useState([{}]);
+  const [ingredient, setIngredient] = useState([{}]);
+  const [preparation, setPreparation] = useState([{ key: "", value: "" }]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
-  const [recipeSteps, setRecipeSteps] = useState([{}]);
+  const [recipeSteps, setRecipeSteps] = useState("");
+  const [recipeImage, setRecipeImage] = useState(null);
+  const [stepImage, setStepImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,8 +52,10 @@ const CreateRecipe = ({ navigation }) => {
       const newRecipe = {
         recipeTitle,
         recipeDuration,
-        ingredients,
+        ingredient,
         recipeSteps,
+        recipeImage,
+        stepImage,
       };
       const updatedRecipes = [...recipes, newRecipe];
       setRecipes(updatedRecipes);
@@ -63,32 +70,32 @@ const CreateRecipe = ({ navigation }) => {
 
   const handlePress = (item) => {
     saveData();
-    navigation.navigate("RecipeBooks");
+    navigation.dispatch(CommonActions.goBack());
   };
 
   // Input der Zutaten neu schreiben
   const handleAmountInput = (text, key) => {
-    const tempingredients = [...ingredients];
-    tempingredients[key].amount = text;
-    setIngredients(tempingredients);
+    const tempIngredient = [...ingredient];
+    tempIngredient[key].amount = text;
+    setIngredient(tempIngredient);
   };
 
-  const handleingredientsNameInput = (text, key) => {
-    const tempingredients = [...ingredients];
-    tempingredients[key].ingredients = text;
-    setIngredients(tempingredients);
+  const handleIngredientNameInput = (text, key) => {
+    const tempIngredient = [...ingredient];
+    tempIngredient[key].ingredient = text;
+    setIngredient(tempIngredient);
   };
 
   // Zutaten-Inputs-Elemente hinzufügen
   const addHandlerZutaten = () => {
-    const _ingredients = [...ingredients];
-    _ingredients.push({});
-    setIngredients(_ingredients);
+    const _ingredient = [...ingredient];
+    _ingredient.push({});
+    setIngredient(_ingredient);
   };
 
   const deleteHandlerZutaten = (key) => {
-    const _ingredients = ingredients.filter((input, index) => index != key);
-    setIngredients(_ingredients);
+    const _ingredient = ingredient.filter((input, index) => index != key);
+    setIngredient(_ingredient);
   };
 
   // Input der Zubereitungsschritte neu schreiben
@@ -114,8 +121,74 @@ const CreateRecipe = ({ navigation }) => {
     setPreparation(_preparation);
   };
 
+  //image picker recipe
+  const pickRecipeImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setRecipeImage(result.uri);
+    }
+  };
+
+  const deleteRecipeImage = () => {
+    setRecipeImage(null);
+  };
+
+  //image picker recipe step
+  const pickStepImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setStepImage(result.uri);
+    }
+  };
+
+  const deleteStepImage = () => {
+    setStepImage(null);
+  };
+
   return (
     <NativeBaseProvider>
+      <ScrollView>
+      {/* Recipe Image */}
+      <>
+        {!recipeImage && (
+          <Button
+            width="400"
+            height="300"
+            variant="outline"
+            mb="4"
+            onPress={pickRecipeImage}
+          >
+            Bild hinzufügen
+          </Button>
+        )}
+        {recipeImage && (
+          <Flex mb="10">
+            <TouchableOpacity onPress={pickRecipeImage}>
+              <Image
+                source={{ uri: recipeImage }}
+                style={{ width: 400, height: 300 }}
+                alt="recipeImage"
+                mb="4"
+              />
+            </TouchableOpacity>
+            <Button title="Bild löschen" onPress={deleteRecipeImage}>
+              Bild löschen
+            </Button>
+          </Flex>
+        )}
+      </>
       <Flex p="3">
         {/* Titel */}
         <Input
@@ -231,15 +304,45 @@ const CreateRecipe = ({ navigation }) => {
               Zubereitungsschritte
             </Text>
             <View>
+              <ScrollView>
               {preparation.map((currentpreparation, key) => (
-                <View key={key}>
-                  <Flex direction="column" mt="2">
-                    <Text mb="1">Schritt 1</Text>
-                    <Flex direction="row">
-                      <Button width="100" height="100" variant="outline">
-                        <AddIcon color="info.600" />
-                      </Button>
-                      <TextArea
+                  <View key={key}>
+                    <Flex direction="column" mt="2">
+                      <Text mb="1">Schritt 1</Text>
+                      <Flex direction="row">
+                        {/* Recipestep Image*/}
+                        <>
+                          {!stepImage && (
+                            <Button
+                              width="100"
+                              height="100"
+                              variant="outline"
+                              onPress={pickStepImage}
+                            >
+                              <AddIcon color="info.600" />
+                            </Button>
+                          )}
+                          {stepImage && (
+                            <Flex mb="10">
+                                          <TouchableOpacity onPress={pickStepImage}>
+                              <Image
+                                source={{ uri: stepImage }}
+                                style={{ width: 100, height: 100 }}
+                                alt="stepImage"
+                                mb="4"
+                                onPress={pickStepImage}
+                              />
+                              </TouchableOpacity>
+                              <Button
+                                title="Bild löschen"
+                                onPress={deleteStepImage}
+                              >
+                                Bild löschen
+                              </Button>
+                            </Flex>
+                          )}
+                        </>
+                        <TextArea
                         direction="column"
                         placeholder="Zubereitung"
                         variant="filled"
@@ -251,11 +354,12 @@ const CreateRecipe = ({ navigation }) => {
                           handleStepTextInput(text, key)}
                         value={currentpreparation.stepText}
                       />
-                      <TouchableOpacity
-                        onPress={() => deleteHandlerZubereitung(key)}
-                      >
-                        <DeleteIcon m="2" />
-                      </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => deleteHandlerZubereitung(key)}
+                        >
+                          <DeleteIcon m="2" />
+                        </TouchableOpacity>
+                      </Flex>
                     </Flex>
                   </Flex>
                 </View>
@@ -280,7 +384,8 @@ const CreateRecipe = ({ navigation }) => {
           </ScrollView>
         </Flex>
       </Flex>
-    </NativeBaseProvider >
+      </ScrollView>
+    </NativeBaseProvider>
   );
 };
 

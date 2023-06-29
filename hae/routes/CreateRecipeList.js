@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeBaseProvider, Text, Input, Button, Image } from "native-base";
 import { buttonStyles } from "../theme/Components";
-import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipeList = ({ navigation }) => {
   const [bookName, setBookName] = useState("");
   const [bookDescription, setDescription] = useState("");
   const [inputList, setInputList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +35,7 @@ const CreateRecipeList = ({ navigation }) => {
     try {
       const newBook = {
         bookName,
-        bookDescription,
-        selectedImage,
+        bookDescription
       };
       const updatedInputList = [...inputList, newBook];
 
@@ -54,24 +51,6 @@ const CreateRecipeList = ({ navigation }) => {
     }
     setErrorMessage("");
     //}
-  };
-
-  //images
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setSelectedImage(result.uri);
-    }
-  };
-
-  const deleteImage = () => {
-    setSelectedImage(null);
   };
 
   return (
@@ -94,21 +73,6 @@ const CreateRecipeList = ({ navigation }) => {
         <Text>Hinzufügen</Text>
       </Button>
       {errorMessage !== "" && <Text>{errorMessage}</Text>}
-
-      <Button onPress={pickImage}>Bild Hinzufügen</Button>
-
-      {selectedImage && (
-        <NativeBaseProvider style={{ alignItems: "center" }}>
-          <Image
-            source={{ uri: selectedImage }}
-            style={{ width: 200, height: 200 }}
-            alt="selectedImage"
-          />
-          <Button title="Bild löschen" onPress={deleteImage}>
-            Bild löschen
-          </Button>
-        </NativeBaseProvider>
-      )}
     </NativeBaseProvider>
   );
 };

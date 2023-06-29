@@ -10,9 +10,9 @@ import {
   Flex,
   Modal,
   FlatList,
-  Image,
   View,
-  Input,
+  DeleteIcon,
+  AddIcon,
 } from "native-base";
 import { FabStyles, buttonStyles } from "../theme/Components";
 
@@ -20,6 +20,7 @@ const RecipeBooks = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
   const isFocused = useIsFocused();
 
@@ -50,28 +51,25 @@ const RecipeBooks = ({ navigation }) => {
     navigation.navigate("RecipesList", { selectedItem: item });
   };
 
-  const deleteBook = async (index) => {
-    const updatedInputList = [...inputList];
-    updatedInputList.splice(index, 1);
-    setInputList(updatedInputList);
-    await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
-    console.log("Data saved!");
-
-    setDeleteModal(false);
+  const deleteBook = async () => {
+    if (deleteIndex !== null) {
+      const updatedInputList = [...inputList];
+      updatedInputList.splice(deleteIndex, 1);
+      setInputList(updatedInputList);
+      await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
+      console.log("Data saved!");
+      setDeleteModal(false);
+    }
   };
 
-  const DisplayImage = ({ selectedImage }) => {
-    return (
-      <View>
-        {selectedImage && (
-          <Image
-            source={{ uri: selectedImage }}
-            style={{ width: 200, height: 200 }}
-            alt="selectedImage"
-          />
-        )}
-      </View>
-    );
+  const openDeleteModal = (index) => {
+    setDeleteIndex(index);
+    setDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModal(false);
+    setDeleteIndex(null);
   };
 
   return (
@@ -88,14 +86,15 @@ const RecipeBooks = ({ navigation }) => {
         </Button>
       </Flex>
       <Flex direction="row" p="3">
-        <Text>Rezepteliste:</Text>
+        <Text>Rezeptelisten:</Text>
       </Flex>
 
       <Fab
+        size={"lg"}
         style={FabStyles.primaryFab}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
-        label={"Erstellen"}
+        icon={<AddIcon />}
       />
 
       <Modal
@@ -110,26 +109,27 @@ const RecipeBooks = ({ navigation }) => {
       >
         <Modal.Content maxWidth="350" maxH="212">
           <Modal.CloseButton />
-          <Modal.Header>Add</Modal.Header>
+          <Modal.Header>Erstellen:</Modal.Header>
           <Modal.Body>
             <Button.Group space={2}>
               <Button
                 size="lg"
+                width={"50%"}
                 onPress={() => navigation.navigate("CreateRecipeList")}
               >
-                Recipe Book
+                Rezepteliste
               </Button>
               <Button
                 size="lg"
+                width={"50%"}
                 onPress={() => navigation.navigate("CreateRecipe")}
               >
-                Recipe
+                Rezept
               </Button>
             </Button.Group>
           </Modal.Body>
         </Modal.Content>
       </Modal>
-
       <FlatList
         data={inputList}
         renderItem={({ item, index }) => (
@@ -147,13 +147,6 @@ const RecipeBooks = ({ navigation }) => {
             key={item.key}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              {item.selectedImage && (
-                <Image
-                  source={{ uri: item.selectedImage }}
-                  style={{ width: 50, height: 50, marginRight: 8 }}
-                  alt="selectedImage"
-                />
-              )}
               <Text
                 style={{
                   fontSize: 18,
@@ -174,45 +167,43 @@ const RecipeBooks = ({ navigation }) => {
                 </Text>
               </Text>
             </View>
-            <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-              <Text>Löschen</Text>
-            </Button>
-            <Modal
-              isOpen={deleteModal}
-              onClose={() => setDeleteModal(false)}
-              _backdrop={{
-                _dark: {
-                  bg: "coolGray.800",
-                },
-                bg: "warmGray.50",
-              }}
+            <TouchableOpacity
+              renderInPortal={false}
+              onPress={() => openDeleteModal(index)}
             >
-              <Modal.Content maxWidth="350" maxH="212">
-                <Modal.CloseButton />
-                <Modal.Header>Delete recipe book?</Modal.Header>
-                <Modal.Body>
-                  <Button.Group space={2}>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blueGray"
-                      onPress={() => setDeleteModal(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      style={buttonStyles.primaryButton}
-                      onPress={() => deleteBook(index)}
-                    >
-                      <Text>Delete</Text>
-                    </Button>
-                  </Button.Group>
-                </Modal.Body>
-              </Modal.Content>
-            </Modal>
+              <DeleteIcon size={"lg"} />
+            </TouchableOpacity>
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
       />
+
+      <Modal
+        isOpen={deleteModal}
+        onClose={closeDeleteModal}
+        _backdrop={{
+          _dark: {
+            bg: "coolGray.800",
+          },
+          bg: "warmGray.50",
+        }}
+      >
+        <Modal.Content maxWidth="350" maxH="212">
+          <Modal.CloseButton />
+          <Modal.Header>Rezeptsammlung löschen?</Modal.Header>
+          <Modal.Body>
+            <Button.Group space={2}>
+              <Button
+                style={buttonStyles.primaryButton}
+                onPress={deleteBook}
+                width={"100%"}
+              >
+                <Text>Löschen</Text>
+              </Button>
+            </Button.Group>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </NativeBaseProvider>
   );
 };
