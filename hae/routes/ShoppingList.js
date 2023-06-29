@@ -7,7 +7,8 @@ import {
   Input,
   Button,
   Checkbox,
-  Modal,
+  Box,
+  Divider,
 } from "native-base";
 
 const ShoppingList = () => {
@@ -134,87 +135,95 @@ const ShoppingList = () => {
 
   return (
     <NativeBaseProvider>
-      <Flex direction="column">
-        {ingredientsList.map((ingredient, index) => {
-          if (removedIngredientsList.includes(ingredient)) {
-            return null;
-          }
+      <Box p={4}>
+        <Flex direction="column">
+          {ingredientsList.map((ingredient, index) => {
+            if (removedIngredientsList.includes(ingredient)) {
+              return null;
+            }
 
-          return (
-            <Flex
-              key={index}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text>
-                {ingredient?.amount} {ingredient?.ingredient}
-              </Text>
-              <Checkbox
-                isChecked={false}
-                onChange={() => checkIngredient(index)}
-                accessibilityLabel="done"
-              />
-            </Flex>
-          );
-        })}
-      </Flex>
-
-      <Flex direction="row" alignItems="center">
-        <Input
-          placeholder="Menge"
-          width="20"
-          onChangeText={(text) => setAmount(text)}
-          value={amount}
-          keyboardType="numeric"
-        />
-        <Input
-          placeholder="Zutat"
-          width="20"
-          onChangeText={(text) => setIngredient(text)}
-          value={ingredient}
-        />
-        <Button size="sm" ml="auto" onPress={saveIngredient}>
-          Hinzufügen
-        </Button>
-      </Flex>
-
-      <Flex direction="column">
-        {removedIngredientsList.map((ingredient, index) => {
-          if (!ingredient) {
-            return null; // Skip rendering null values
-          }
-          return (
-            <Flex
-              key={index}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text strikeThrough>
-                {ingredient?.amount} {ingredient?.ingredient}
-              </Text>
-              <Checkbox
-                isChecked={true}
-                onChange={() => uncheckIngredient(index)}
-                accessibilityLabel="undo"
-              />
-            </Flex>
-          );
-        })}
-        <Flex alignItems="flex-end">
-          {removedIngredientsList.length > 0 && (
-            <Button
-              size="sm"
-              colorScheme="secondary"
-              onPress={clearRemovedIngredients}
-              ios_ripple={{ color: "#000000" }}
-            >
-              Abgehakte löschen
-            </Button>
-          )}
+            return (
+              <>
+                <Flex
+                  my={1}
+                  key={index}
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Text>
+                    {ingredient?.amount}&nbsp;&nbsp;{ingredient?.ingredient}
+                  </Text>
+                  <Checkbox
+                    isChecked={false}
+                    onChange={() => checkIngredient(index)}
+                    accessibilityLabel="done"
+                  />
+                </Flex>
+              </>
+            );
+          })}
         </Flex>
-      </Flex>
+
+        <Flex direction="row" alignItems="center" my={4}>
+          <Input
+            placeholder="Menge..."
+            width="20"
+            onChangeText={(text) => setAmount(text)}
+            value={amount}
+            keyboardType="numeric"
+          />
+          <Input
+            ml={2}
+            placeholder="Zutat..."
+            width="20"
+            onChangeText={(text) => setIngredient(text)}
+            value={ingredient}
+          />
+          <Button size="sm" ml="auto" onPress={saveIngredient}>
+            Hinzufügen
+          </Button>
+        </Flex>
+
+        <Flex direction="column">
+          {removedIngredientsList.map((ingredient, index) => {
+            if (!ingredient) {
+              return null; // Skip rendering null values
+            }
+            return (
+              <Flex
+                my={1}
+                key={index}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text strikeThrough>
+                  {ingredient?.amount} {ingredient?.ingredient}
+                </Text>
+                <Checkbox
+                  isChecked={true}
+                  onChange={() => uncheckIngredient(index)}
+                  accessibilityLabel="undo"
+                />
+              </Flex>
+            );
+          })}
+          <Flex alignItems="center">
+            {removedIngredientsList.length > 0 && (
+              <Button
+                variant={"outline"}
+                size="sm"
+                colorScheme="secondary"
+                onPress={clearRemovedIngredients}
+                ios_ripple={{ color: "#000000" }}
+              >
+                Abgehakte löschen
+              </Button>
+            )}
+          </Flex>
+        </Flex>
+      </Box>
     </NativeBaseProvider>
   );
 };
