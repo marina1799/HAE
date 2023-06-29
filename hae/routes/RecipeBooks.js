@@ -10,7 +10,6 @@ import {
   Flex,
   Modal,
   FlatList,
-  Image,
   View,
   DeleteIcon,
   AddIcon,
@@ -21,6 +20,7 @@ const RecipeBooks = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
   const isFocused = useIsFocused();
 
@@ -51,14 +51,25 @@ const RecipeBooks = ({ navigation }) => {
     navigation.navigate("RecipesList", { selectedItem: item });
   };
 
-  const deleteBook = async (index) => {
-    const updatedInputList = [...inputList];
-    updatedInputList.splice(index, 1);
-    setInputList(updatedInputList);
-    await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
-    console.log("Data saved!");
+  const deleteBook = async () => {
+    if (deleteIndex !== null) {
+      const updatedInputList = [...inputList];
+      updatedInputList.splice(deleteIndex, 1);
+      setInputList(updatedInputList);
+      await AsyncStorage.setItem("inputList", JSON.stringify(updatedInputList));
+      console.log("Data saved!");
+      setDeleteModal(false);
+    }
+  };
 
+  const openDeleteModal = (index) => {
+    setDeleteIndex(index);
+    setDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
     setDeleteModal(false);
+    setDeleteIndex(null);
   };
 
   return (
@@ -119,7 +130,6 @@ const RecipeBooks = ({ navigation }) => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-
       <FlatList
         data={inputList}
         renderItem={({ item, index }) => (
@@ -159,40 +169,41 @@ const RecipeBooks = ({ navigation }) => {
             </View>
             <TouchableOpacity
               renderInPortal={false}
-              onPress={() => setDeleteModal(true)}
+              onPress={() => openDeleteModal(index)}
             >
               <DeleteIcon size={"lg"} />
             </TouchableOpacity>
-            <Modal
-              isOpen={deleteModal}
-              onClose={() => setDeleteModal(false)}
-              _backdrop={{
-                _dark: {
-                  bg: "coolGray.800",
-                },
-                bg: "warmGray.50",
-              }}
-            >
-              <Modal.Content maxWidth="350" maxH="212">
-                <Modal.CloseButton />
-                <Modal.Header>Rezeptsammlung löschen?</Modal.Header>
-                <Modal.Body>
-                  <Button.Group space={2}>
-                    <Button
-                      style={buttonStyles.primaryButton}
-                      onPress={() => deleteBook(index)}
-                      width={"100%"}
-                    >
-                      <Text>Löschen</Text>
-                    </Button>
-                  </Button.Group>
-                </Modal.Body>
-              </Modal.Content>
-            </Modal>
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
       />
+
+      <Modal
+        isOpen={deleteModal}
+        onClose={closeDeleteModal}
+        _backdrop={{
+          _dark: {
+            bg: "coolGray.800",
+          },
+          bg: "warmGray.50",
+        }}
+      >
+        <Modal.Content maxWidth="350" maxH="212">
+          <Modal.CloseButton />
+          <Modal.Header>Rezeptsammlung löschen?</Modal.Header>
+          <Modal.Body>
+            <Button.Group space={2}>
+              <Button
+                style={buttonStyles.primaryButton}
+                onPress={deleteBook}
+                width={"100%"}
+              >
+                <Text>Löschen</Text>
+              </Button>
+            </Button.Group>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </NativeBaseProvider>
   );
 };
