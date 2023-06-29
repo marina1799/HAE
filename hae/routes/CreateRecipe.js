@@ -18,17 +18,16 @@ import {
   TextArea,
   Image,
 } from "native-base";
-import { TouchableOpacity } from "react-native";
-import { CommonActions } from "@react-navigation/native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 const CreateRecipe = ({ navigation }) => {
   const [recipes, setRecipes] = useState();
-  const [ingredient, setIngredient] = useState([{}]);
-  const [preparation, setPreparation] = useState([{ key: "", value: "" }]);
+  const [ingredients, setIngredients] = useState([{}]);
+  const [preparation, setPreparation] = useState([{}]);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
-  const [recipeSteps, setRecipeSteps] = useState("");
+  const [recipeSteps, setRecipeSteps] = useState([{}]);
   const [recipeImage, setRecipeImage] = useState(null);
   const [stepImage, setStepImage] = useState(null);
 
@@ -52,7 +51,7 @@ const CreateRecipe = ({ navigation }) => {
       const newRecipe = {
         recipeTitle,
         recipeDuration,
-        ingredient,
+        ingredients,
         recipeSteps,
         recipeImage,
         stepImage,
@@ -70,33 +69,36 @@ const CreateRecipe = ({ navigation }) => {
 
   const handlePress = (item) => {
     saveData();
-    navigation.dispatch(CommonActions.goBack());
+    navigation.navigate("RecipeBooks");
   };
 
   // Input der Zutaten neu schreiben
   const handleAmountInput = (text, key) => {
-    const tempIngredient = [...ingredient];
-    tempIngredient[key].amount = text;
-    setIngredient(tempIngredient);
+    const tempingredients = [...ingredients];
+    tempingredients[key].amount = text;
+    setIngredients(tempingredients);
   };
 
-  const handleIngredientNameInput = (text, key) => {
-    const tempIngredient = [...ingredient];
-    tempIngredient[key].ingredient = text;
-    setIngredient(tempIngredient);
+
+  const handleIngredientsNameInput = (text, key) => {
+    const tempingredients = [...ingredients];
+    tempingredients[key].ingredients = text;
+    setIngredients(tempingredients);
   };
 
   // Zutaten-Inputs-Elemente hinzufügen
   const addHandlerZutaten = () => {
-    const _ingredient = [...ingredient];
-    _ingredient.push({});
-    setIngredient(_ingredient);
+    const _ingredients = [...ingredients];
+    _ingredients.push({});
+    setIngredients(_ingredients);
   };
 
+
   const deleteHandlerZutaten = (key) => {
-    const _ingredient = ingredient.filter((input, index) => index != key);
-    setIngredient(_ingredient);
+    const _ingredients = ingredients.filter((input, index) => index != key);
+    setIngredients(_ingredients);
   };
+
 
   // Input der Zubereitungsschritte neu schreiben
   const handleStepTextInput = (text, key) => {
@@ -108,6 +110,7 @@ const CreateRecipe = ({ navigation }) => {
     setRecipeSteps(tempsteps);
     console.log(key, tempsteps);
   };
+
 
   // Zubereitungsschritte-Inputs-Elemente hinzufügen
   const addHandlerZubereitung = () => {
@@ -159,7 +162,6 @@ const CreateRecipe = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <ScrollView>
       {/* Recipe Image */}
       <>
         {!recipeImage && (
@@ -274,7 +276,7 @@ const CreateRecipe = ({ navigation }) => {
                       size="md"
                       width="69%"
                       onChangeText={(text) =>
-                        handleingredientsNameInput(text, key)
+                        handleIngredientsNameInput(text, key)
                       }
                       value={currentingredients.ingredients}
                     />
@@ -304,27 +306,26 @@ const CreateRecipe = ({ navigation }) => {
               Zubereitungsschritte
             </Text>
             <View>
-              <ScrollView>
               {preparation.map((currentpreparation, key) => (
-                  <View key={key}>
-                    <Flex direction="column" mt="2">
-                      <Text mb="1">Schritt 1</Text>
-                      <Flex direction="row">
-                        {/* Recipestep Image*/}
-                        <>
-                          {!stepImage && (
-                            <Button
-                              width="100"
-                              height="100"
-                              variant="outline"
-                              onPress={pickStepImage}
-                            >
-                              <AddIcon color="info.600" />
-                            </Button>
-                          )}
-                          {stepImage && (
-                            <Flex mb="10">
-                                          <TouchableOpacity onPress={pickStepImage}>
+                <View key={key}>
+                  <Flex direction="column" mt="2">
+                    <Text mb="1">Schritt 1</Text>
+                    <Flex direction="row">
+                      {/* Recipestep Image*/}
+                      <>
+                        {!stepImage && (
+                          <Button
+                            width="100"
+                            height="100"
+                            variant="outline"
+                            onPress={pickStepImage}
+                          >
+                            <AddIcon color="info.600" />
+                          </Button>
+                        )}
+                        {stepImage && (
+                          <Flex mb="10">
+                            <TouchableOpacity onPress={pickStepImage}>
                               <Image
                                 source={{ uri: stepImage }}
                                 style={{ width: 100, height: 100 }}
@@ -332,17 +333,17 @@ const CreateRecipe = ({ navigation }) => {
                                 mb="4"
                                 onPress={pickStepImage}
                               />
-                              </TouchableOpacity>
-                              <Button
-                                title="Bild löschen"
-                                onPress={deleteStepImage}
-                              >
-                                Bild löschen
-                              </Button>
-                            </Flex>
-                          )}
-                        </>
-                        <TextArea
+                            </TouchableOpacity>
+                            <Button
+                              title="Bild löschen"
+                              onPress={deleteStepImage}
+                            >
+                              Bild löschen
+                            </Button>
+                          </Flex>
+                        )}
+                      </>
+                      <TextArea
                         direction="column"
                         placeholder="Zubereitung"
                         variant="filled"
@@ -354,44 +355,42 @@ const CreateRecipe = ({ navigation }) => {
                           handleStepTextInput(text, key)}
                         value={currentpreparation.stepText}
                       />
-                        <TouchableOpacity
-                          onPress={() => deleteHandlerZubereitung(key)}
-                        >
-                          <DeleteIcon m="2" />
-                        </TouchableOpacity>
-                      </Flex>
+                      <TouchableOpacity
+                        onPress={() => deleteHandlerZubereitung(key)}
+                      >
+                        <DeleteIcon m="2" />
+                      </TouchableOpacity>
                     </Flex>
                   </Flex>
                 </View>
               ))}
-              {/* Neue Zeile hinzufügen - Button */}
-              <Flex direction="row" mt="4" justifyContent="center">
-                <Button
-                  variant="unstyled"
-                  title="Add"
-                  onPress={addHandlerZubereitung}
-                >
-                  <Circle size="40px" bg="lightgrey">
-                    <AddIcon color="darkText" />
-                  </Circle>
-                </Button>
-              </Flex>
-            </View>
-            {/* Eintrag speichern */}
-            <Button mt="6" onPress={handlePress}>
-              Speichern
-            </Button>
-          </ScrollView>
-        </Flex>
+            {/* Neue Zeile hinzufügen - Button */}
+            <Flex direction="row" mt="4" justifyContent="center">
+              <Button
+                variant="unstyled"
+                title="Add"
+                onPress={addHandlerZubereitung}
+              >
+                <Circle size="40px" bg="lightgrey">
+                  <AddIcon color="darkText" />
+                </Circle>
+              </Button>
+            </Flex>
+          </View>
+          {/* Eintrag speichern */}
+          <Button mt="6" onPress={handlePress}>
+            Speichern
+          </Button>
+        </ScrollView>
       </Flex>
-      </ScrollView>
-    </NativeBaseProvider>
+    </Flex>
+    </NativeBaseProvider >
   );
 };
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: '77%',
+    height: '50%',
     width: '100%',
     alignSelf: 'center',
 
