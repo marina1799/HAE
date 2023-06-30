@@ -106,6 +106,11 @@ const CreateRecipe = ({ navigation }) => {
     setRecipeSteps(tempSteps);
   };
 
+  // Input des Bildes vom Zubereitungsschritt neu schreiben
+  const handleStepImage = (uri, key) => {
+    console.log("Changed step image");
+  };
+
   // Zubereitungsschritte-Inputs-Elemente hinzufügen
   const addHandlerZubereitung = () => {
     const _preparation = [...preparation];
@@ -114,6 +119,7 @@ const CreateRecipe = ({ navigation }) => {
   };
 
   const deleteHandlerZubereitung = (key) => {
+    setStepImage(null);
     const _preparation = preparation.filter((input, index) => index != key);
     setPreparation(_preparation);
   };
@@ -127,7 +133,7 @@ const CreateRecipe = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setRecipeImage(result.uri);
     }
   };
@@ -145,7 +151,7 @@ const CreateRecipe = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setStepImage(result.uri);
     }
   };
@@ -312,18 +318,19 @@ const CreateRecipe = ({ navigation }) => {
                             height="100"
                             variant="outline"
                             onPress={pickStepImage}
+                            onChange={(uri) => handleStepImage(uri, key)}
                           >
                             <AddIcon color="info.600" />
                           </Button>
                         )}
                         {stepImage && (
-                          <Flex mb="10">
+                          <Flex mb="1">
                             <TouchableOpacity onPress={pickStepImage}>
                               <Image
                                 source={{ uri: stepImage }}
                                 style={{ width: 100, height: 100 }}
                                 alt="stepImage"
-                                mb="4"
+                                mb="2"
                                 onPress={pickStepImage}
                               />
                             </TouchableOpacity>

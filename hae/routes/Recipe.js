@@ -116,7 +116,7 @@ const Recipe = ({ navigation, route }) => {
             resizeMode="cover"
             alt="recipeImage"
           />
-            <Text>
+            <Text mr="56">
               Zubereitungsschritte: {recipeSteps.stepText}
             </Text>
           </Flex>
