@@ -174,6 +174,7 @@ const RecipesList = ({ navigation, route }) => {
         size={"lg"}
         mb={2}
         bg={"secondary.600"}
+        _pressed={{ bg: "secondary.700" }}
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
         icon={<AddIcon />}
