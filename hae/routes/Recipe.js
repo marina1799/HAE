@@ -10,9 +10,13 @@ import {
   Button,
   Modal,
   Image,
+  Box,
+  Heading,
+  Divider,
+  ScrollView,
 } from "native-base";
 
-const Recipe = ({ navigation, route }) => {
+const Recipe = ({ route }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [ingredientsList, setIngredientsList] = useState([]);
   const [checkedIngredients, setCheckedIngredients] = useState([]);
@@ -79,97 +83,122 @@ const Recipe = ({ navigation, route }) => {
 
   return (
     <NativeBaseProvider>
-      <Image
-        source={{ uri: recipeImage }}
-        style={{ width: 40, height: 40, marginRight: 8 }}
-        resizeMode="cover"
-        alt="recipeImage"
-      />
-      <Text>Titel: {recipeTitle}</Text>
-      <Text>Dauer: {recipeDuration}</Text>
-      {recipeIngredientsList.map((ingredient, index) => {
-        return (
-          <Flex
-            key={index}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Text>
-              Menge: {ingredient?.amount}, Zutat: {ingredient?.ingredient}
-            </Text>
-          </Flex>
-        );
-      })}
-      {recipeStepList.map((recipeSteps, index) => {
-        return (
-          <Flex
-            key={index}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+      {/* conditional rendering */}
+      <ScrollView>
+        {recipeImage && (
+          <Box shadow={2}>
             <Image
-              source={{ uri: stepImage }}
-              style={{ width: 40, height: 40, marginRight: 8 }}
+              source={{ uri: recipeImage }}
+              style={{ width: "100%", height: 120 }}
               resizeMode="cover"
               alt="recipeImage"
             />
-            <Text>Zubereitungsschritte: {recipeSteps.stepText}</Text>
-          </Flex>
-        );
-      })}
-
-      <Button onPress={() => setDeleteModal(true)} renderInPortal={false}>
-        <Text>Zu Einkaufszettel hinzufügen</Text>
-      </Button>
-      <Modal
-        isOpen={deleteModal}
-        onClose={() => setDeleteModal(false)}
-        _backdrop={{
-          _dark: {
-            bg: "coolGray.800",
-          },
-          bg: "warmGray.50",
-        }}
-      >
-        <Modal.Content maxWidth="350" maxH="212">
-          <Modal.CloseButton />
-          <Modal.Header>Zutaten</Modal.Header>
-          <Modal.Body>
-            <Flex direction="column">
-              {recipeIngredientsList.map((ingredient, index) => {
-                return (
-                  <Flex
-                    key={index}
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Text>
-                      {ingredient?.amount} {ingredient?.ingredient}
-                    </Text>
-                    <Checkbox
-                      onChange={handleChange(index)}
-                      isChecked={checkedIndex.includes(index)}
-                      accessibilityLabel="done"
-                    />
-                  </Flex>
-                );
-              })}
-            </Flex>
-            <Button.Group space={2}>
-              <Button
-                style={buttonStyles.primaryButton}
-                onPress={addIngredientsToShoppinglist}
-                width={"100%"}
+          </Box>
+        )}
+        <Box m={4}>
+          <Heading size={"lg"}>{recipeTitle}</Heading>
+          <Text mb={2}>{recipeDuration}</Text>
+          <Divider mb={2} />
+          <Heading size={"sm"} mb={2}>
+            Zutaten
+          </Heading>
+          {recipeIngredientsList.map((ingredient, index) => {
+            return (
+              <Flex
+                key={index}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Text>Hinzufügen</Text>
-              </Button>
-            </Button.Group>
-          </Modal.Body>
-        </Modal.Content>
-      </Modal>
+                <Text>
+                  &#8226; {ingredient?.amount} {ingredient?.ingredient}
+                </Text>
+              </Flex>
+            );
+          })}
+          <Divider my={2} />
+          <Heading size={"sm"} mb={2}>
+            Zubereitungsschritte
+          </Heading>
+          {recipeStepList.map((recipeSteps, index) => {
+            return (
+              <Flex key={index} direction="column" alignItems="left">
+                {stepImage && (
+                  <Image
+                    source={{ uri: stepImage }}
+                    style={{ width: 60, height: 60 }}
+                    resizeMode="cover"
+                    alt="recipeImage"
+                  />
+                )}
+                <Text mb={2}>&#8226; {recipeSteps.stepText}</Text>
+              </Flex>
+            );
+          })}
+          <Divider mt={2} />
+
+          <Flex alignItems={"center"}>
+            <Button
+              mt={8}
+              onPress={() => setDeleteModal(true)}
+              variant={"outline"}
+              colorScheme={"success"}
+            >
+              Zu Einkaufszettel hinzufügen
+            </Button>
+          </Flex>
+        </Box>
+
+        <Modal
+          isOpen={deleteModal}
+          onClose={() => setDeleteModal(false)}
+          _backdrop={{
+            _dark: {
+              bg: "coolGray.800",
+            },
+            bg: "warmGray.50",
+          }}
+        >
+          <Modal.Content>
+            <Modal.CloseButton />
+            <Modal.Header>Zutaten</Modal.Header>
+            <Modal.Body>
+              <Flex direction="column">
+                {recipeIngredientsList.map((ingredient, index) => {
+                  return (
+                    <Flex
+                      my={2}
+                      key={index}
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Text>
+                        {ingredient?.amount} {ingredient?.ingredient}
+                      </Text>
+                      <Checkbox
+                        onChange={handleChange(index)}
+                        isChecked={checkedIndex.includes(index)}
+                        accessibilityLabel="done"
+                      />
+                    </Flex>
+                  );
+                })}
+              </Flex>
+              <Button.Group space={2}>
+                <Button
+                  onPress={addIngredientsToShoppinglist}
+                  width={"100%"}
+                  colorScheme={"success"}
+                  my={2}
+                >
+                  Hinzufügen
+                </Button>
+              </Button.Group>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };
