@@ -3,7 +3,7 @@ import {
   NativeBaseProvider,
   Modal,
   Button,
-  Flex,
+  Box,
   Text,
   Fab,
   FlatList,
@@ -85,103 +85,99 @@ const RecipesList = ({ navigation, route }) => {
 
   return (
     <NativeBaseProvider>
-      <Flex direction="row-reverse">
-        <Button
-          size="lg"
-          variant="unstyled"
-          onPress={() => navigation.navigate("ShoppingList")}
-        >
-          <Text color="primary.400" underline>
-            Einkaufszettel
-          </Text>
-        </Button>
-      </Flex>
-      <Flex direction="row" p="3"></Flex>
-
-      <FlatList
-        data={recipeBookNames}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            key={item.key}
-            style={{
-              marginTop: 2,
-              backgroundColor: "white",
-              padding: 12,
-              borderRadius: 8,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            onPress={() =>
-              navigation.navigate("Recipe", { selectedItem: item })
-            }
-          >
-            {item.recipeImage && (
-              <Image
-                source={{ uri: item.recipeImage }}
-                style={{ width: 40, height: 40, marginRight: 8 }}
-                resizeMode="cover"
-                alt="recipeImage"
-              />
-            )}
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                color: "black",
-                marginRight: 8,
-              }}
-            >
-              {item.recipeTitle}
-              {"\n"}
-              <Text
+      <Box m={4} shadow={1}>
+        <FlatList
+          data={recipeBookNames}
+          renderItem={({ item, index }) => (
+            <Box bg={"white"} borderRadius={8} marginY={2}>
+              <TouchableOpacity
+                key={item.key}
                 style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "gray",
-                  marginRight: 8,
+                  padding: 12,
+                  borderRadius: 8,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
+                onPress={() =>
+                  navigation.navigate("Recipe", { selectedItem: item })
+                }
               >
-                {item.recipeDuration}
-              </Text>
-            </Text>
-            <TouchableOpacity
-              renderInPortal={false}
-              onPress={() => openDeleteRecipeModal(index)}
-            >
-              <DeleteIcon size={"lg"} />
-            </TouchableOpacity>
+                {item.recipeImage && (
+                  <Image
+                    source={{ uri: item.recipeImage }}
+                    style={{ width: 40, height: 40, marginRight: 8 }}
+                    resizeMode="cover"
+                    alt="recipeImage"
+                  />
+                )}
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "black",
+                    marginRight: 8,
+                  }}
+                >
+                  {item.recipeTitle}
+                  {"\n"}
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      color: "gray",
+                      marginRight: 8,
+                    }}
+                  >
+                    {item.recipeDuration}
+                  </Text>
+                </Text>
+                <TouchableOpacity
+                  renderInPortal={false}
+                  onPress={() => openDeleteRecipeModal(index)}
+                >
+                  <DeleteIcon size={"lg"} />
+                </TouchableOpacity>
 
-            <Modal
-              isOpen={deleteRecipeModal}
-              onClose={closeDeleteRecipeModal}
-              _backdrop={{
-                _dark: {
-                  bg: "coolGray.800",
-                },
-                bg: "warmGray.50",
-              }}
-            >
-              <Modal.Content maxWidth="350" maxH="212">
-                <Modal.CloseButton />
-                <Modal.Header>Rezept löschen?</Modal.Header>
-                <Modal.Body>
-                  <Button.Group space={2}>
-                    <Button onPress={deleteRecipe} width={"100%"}>
-                      <Text>Löschen</Text>
-                    </Button>
-                  </Button.Group>
-                </Modal.Body>
-              </Modal.Content>
-            </Modal>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+                <Modal
+                  shadow={1}
+                  isOpen={deleteRecipeModal}
+                  onClose={closeDeleteRecipeModal}
+                  _backdrop={{
+                    _dark: {
+                      bg: "coolGray.800",
+                    },
+                    bg: "warmGray.50",
+                  }}
+                >
+                  <Modal.Content maxWidth="350" maxH="212">
+                    <Modal.CloseButton />
+                    <Modal.Header>Rezept löschen?</Modal.Header>
+                    <Modal.Body>
+                      <Button.Group space={2}>
+                        <Button
+                          onPress={deleteRecipe}
+                          width={"100%"}
+                          variant={"outline"}
+                          colorScheme={"secondary"}
+                        >
+                          Löschen
+                        </Button>
+                      </Button.Group>
+                    </Modal.Body>
+                  </Modal.Content>
+                </Modal>
+              </TouchableOpacity>
+            </Box>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </Box>
 
       <Fab
         size={"lg"}
-        style={FabStyles.primaryFab}
+        mb={2}
+        bg={"secondary.600"}
         onPress={() => navigation.navigate("CreateRecipe")}
         renderInPortal={false}
         icon={<AddIcon />}

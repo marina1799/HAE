@@ -76,6 +76,7 @@ const RecipeBooks = ({ navigation }) => {
     <NativeBaseProvider>
       <Fab
         size={"lg"}
+        mb={2}
         bg={"secondary.600"}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
@@ -83,6 +84,7 @@ const RecipeBooks = ({ navigation }) => {
       />
 
       <Modal
+        shadow={1}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         _backdrop={{
@@ -101,6 +103,8 @@ const RecipeBooks = ({ navigation }) => {
                 size="lg"
                 width={"50%"}
                 onPress={() => navigation.navigate("CreateRecipeList")}
+                colorScheme={"primary"}
+                variant={"outline"}
               >
                 Rezepteliste
               </Button>
@@ -108,6 +112,8 @@ const RecipeBooks = ({ navigation }) => {
                 size="lg"
                 width={"50%"}
                 onPress={() => navigation.navigate("CreateRecipe")}
+                variant={"outline"}
+                colorScheme={"secondary"}
               >
                 Rezept
               </Button>
@@ -115,11 +121,11 @@ const RecipeBooks = ({ navigation }) => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-      <Box m={4} shadow={2}>
+      <Box m={4} shadow={1}>
         <FlatList
           data={inputList}
           renderItem={({ item, index }) => (
-            <Box bg={"light.100"} borderRadius={8} marginY={2}>
+            <Box bg={"white"} borderRadius={8} marginY={2}>
               <TouchableOpacity
                 onPress={() => handlePress(item)}
                 style={{
@@ -165,6 +171,7 @@ const RecipeBooks = ({ navigation }) => {
         />
 
         <Modal
+          shadow={1}
           isOpen={deleteModal}
           onClose={closeDeleteModal}
           _backdrop={{
@@ -180,11 +187,12 @@ const RecipeBooks = ({ navigation }) => {
             <Modal.Body>
               <Button.Group space={2}>
                 <Button
-                  style={buttonStyles.primaryButton}
                   onPress={deleteBook}
                   width={"100%"}
+                  colorScheme={"secondary"}
+                  variant={"outline"}
                 >
-                  <Text>Löschen</Text>
+                  Löschen
                 </Button>
               </Button.Group>
             </Modal.Body>
