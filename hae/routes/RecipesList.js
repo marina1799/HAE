@@ -11,7 +11,6 @@ import {
   AddIcon,
   Flex,
 } from "native-base";
-import { FabStyles } from "../theme/Components";
 import { TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
