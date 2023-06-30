@@ -302,7 +302,7 @@ const CreateRecipe = ({ navigation }) => {
               {preparation.map((currentPreparation, key) => (
                 <View key={key}>
                   <Flex direction="column" mt="2">
-                    <Text mb="1">Schritt 1</Text>
+                    <Text mb="1">Schritt {key+1}</Text>
                     <Flex direction="row">
                       {/* Bild Zubereitungsschritt */}
                       <>
@@ -382,7 +382,7 @@ const CreateRecipe = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: '36%',
+    height: '46%',
     width: '100%',
     alignSelf: 'center',
   }
