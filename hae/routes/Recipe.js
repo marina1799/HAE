@@ -86,7 +86,7 @@ const Recipe = ({ route }) => {
       {/* conditional rendering */}
       <ScrollView>
         {recipeImage && (
-          <Box shadow={2}>
+          <Box>
             <Image
               source={{ uri: recipeImage }}
               style={{ width: "100%", height: 120 }}
@@ -149,16 +149,7 @@ const Recipe = ({ route }) => {
           </Flex>
         </Box>
 
-        <Modal
-          isOpen={deleteModal}
-          onClose={() => setDeleteModal(false)}
-          _backdrop={{
-            _dark: {
-              bg: "coolGray.800",
-            },
-            bg: "warmGray.50",
-          }}
-        >
+        <Modal isOpen={deleteModal} onClose={() => setDeleteModal(false)}>
           <Modal.Content>
             <Modal.CloseButton />
             <Modal.Header>Zutaten</Modal.Header>

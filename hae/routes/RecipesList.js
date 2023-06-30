@@ -86,11 +86,12 @@ const RecipesList = ({ navigation, route }) => {
 
   return (
     <NativeBaseProvider>
-      <Box m={4} shadow={1}>
+      <Box m={4}>
         <FlatList
           data={recipeBookNames}
+          overflow={"visible"}
           renderItem={({ item, index }) => (
-            <Box bg={"white"} borderRadius={8} marginY={2}>
+            <Box bg={"white"} borderRadius={8} marginY={2} shadow={1}>
               <TouchableOpacity
                 key={item.key}
                 style={{
@@ -143,15 +144,8 @@ const RecipesList = ({ navigation, route }) => {
                 </TouchableOpacity>
 
                 <Modal
-                  shadow={1}
                   isOpen={deleteRecipeModal}
                   onClose={closeDeleteRecipeModal}
-                  _backdrop={{
-                    _dark: {
-                      bg: "coolGray.800",
-                    },
-                    bg: "warmGray.50",
-                  }}
                 >
                   <Modal.Content maxWidth="350" maxH="212">
                     <Modal.CloseButton />
