@@ -7,12 +7,12 @@ import {
   Button,
   Fab,
   Text,
-  Flex,
   Modal,
   FlatList,
   View,
   DeleteIcon,
   AddIcon,
+  Box,
 } from "native-base";
 import { FabStyles, buttonStyles } from "../theme/Components";
 
@@ -74,24 +74,9 @@ const RecipeBooks = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <Flex direction="row-reverse">
-        <Button
-          size="lg"
-          variant="unstyled"
-          onPress={() => navigation.navigate("ShoppingList")}
-        >
-          <Text color="primary.400" underline>
-            Einkaufszettel
-          </Text>
-        </Button>
-      </Flex>
-      <Flex direction="row" p="3">
-        <Text>Rezeptelisten:</Text>
-      </Flex>
-
       <Fab
         size={"lg"}
-        style={FabStyles.primaryFab}
+        bg={"secondary.600"}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
         icon={<AddIcon />}
@@ -130,80 +115,82 @@ const RecipeBooks = ({ navigation }) => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-      <FlatList
-        data={inputList}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            onPress={() => handlePress(item)}
-            style={{
-              marginTop: 2,
-              backgroundColor: "white",
-              padding: 12,
-              borderRadius: 8,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            key={item.key}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text
+      <Box m={4} shadow={2}>
+        <FlatList
+          data={inputList}
+          renderItem={({ item, index }) => (
+            <Box bg={"light.100"} borderRadius={8} marginY={2}>
+              <TouchableOpacity
+                onPress={() => handlePress(item)}
                 style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "black",
+                  padding: 12,
+                  borderRadius: 8,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
+                key={item.key}
               >
-                {item.bookName}
-                {"\n"}
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    color: "gray",
-                  }}
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      color: "black",
+                    }}
+                  >
+                    {item.bookName}
+                    {"\n"}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        color: "gray",
+                      }}
+                    >
+                      {item.bookDescription}
+                    </Text>
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  renderInPortal={false}
+                  onPress={() => openDeleteModal(index)}
                 >
-                  {item.bookDescription}
-                </Text>
-              </Text>
-            </View>
-            <TouchableOpacity
-              renderInPortal={false}
-              onPress={() => openDeleteModal(index)}
-            >
-              <DeleteIcon size={"lg"} />
-            </TouchableOpacity>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+                  <DeleteIcon size={"lg"} />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </Box>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
 
-      <Modal
-        isOpen={deleteModal}
-        onClose={closeDeleteModal}
-        _backdrop={{
-          _dark: {
-            bg: "coolGray.800",
-          },
-          bg: "warmGray.50",
-        }}
-      >
-        <Modal.Content maxWidth="350" maxH="212">
-          <Modal.CloseButton />
-          <Modal.Header>Rezeptsammlung löschen?</Modal.Header>
-          <Modal.Body>
-            <Button.Group space={2}>
-              <Button
-                style={buttonStyles.primaryButton}
-                onPress={deleteBook}
-                width={"100%"}
-              >
-                <Text>Löschen</Text>
-              </Button>
-            </Button.Group>
-          </Modal.Body>
-        </Modal.Content>
-      </Modal>
+        <Modal
+          isOpen={deleteModal}
+          onClose={closeDeleteModal}
+          _backdrop={{
+            _dark: {
+              bg: "coolGray.800",
+            },
+            bg: "warmGray.50",
+          }}
+        >
+          <Modal.Content maxWidth="350" maxH="212">
+            <Modal.CloseButton />
+            <Modal.Header>Rezeptsammlung löschen?</Modal.Header>
+            <Modal.Body>
+              <Button.Group space={2}>
+                <Button
+                  style={buttonStyles.primaryButton}
+                  onPress={deleteBook}
+                  width={"100%"}
+                >
+                  <Text>Löschen</Text>
+                </Button>
+              </Button.Group>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+      </Box>
     </NativeBaseProvider>
   );
 };
