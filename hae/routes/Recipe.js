@@ -1,7 +1,6 @@
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useEffect } from "react";
-import { buttonStyles } from "../theme/Components";
 import {
   NativeBaseProvider,
   Text,
@@ -28,8 +27,6 @@ const Recipe = ({ route }) => {
   const recipeStepList = route.params.selectedItem.recipeSteps;
   const recipeImage = route.params.selectedItem.recipeImage;
   const stepImage = route.params.selectedItem.stepImage;
-
-  console.log(route.params.selectedItem.stepImage[0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,11 +85,10 @@ const Recipe = ({ route }) => {
         {recipeImage && (
           <Box>
             <Image
-              source={{ uri: stepImage[index] }}
+              source={{ uri: recipeImage }}
               style={{ width: "100%", height: 120 }}
               resizeMode="cover"
               alt="recipeImage"
-              key={index}
             />
           </Box>
         )}
@@ -126,7 +122,7 @@ const Recipe = ({ route }) => {
               <Flex key={index} direction="column" alignItems="left">
                 {stepImage && (
                   <Image
-                    source={{ uri: stepImage }}
+                    source={{ uri: stepImage[index] }}
                     style={{ width: 60, height: 60 }}
                     resizeMode="cover"
                     alt="recipeImage"

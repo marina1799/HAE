@@ -134,7 +134,7 @@ const CreateRecipe = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setRecipeImage(result.uri);
     }
   };
@@ -152,7 +152,7 @@ const CreateRecipe = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       const tempStepImages = [...stepImage];
       tempStepImages[key] = result.uri;
       setStepImage(tempStepImages);
@@ -320,7 +320,7 @@ const CreateRecipe = ({ navigation }) => {
               {preparation.map((currentPreparation, key) => (
                 <View key={key}>
                   <Flex direction="column" mt="2">
-                    <Text mb="1">Schritt {key+1}</Text>
+                    <Text mb="1">Schritt {key + 1}</Text>
                     <Flex direction="row">
                       {/* Recipestep Image*/}
                       <>
