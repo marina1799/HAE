@@ -163,6 +163,7 @@ const CreateRecipe = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
+      <ScrollView style={styles.scrollView}>
       {/* Recipe Image */}
       <>
         {!recipeImage && (
@@ -258,7 +259,7 @@ const CreateRecipe = ({ navigation }) => {
               />
             </Flex>
           </Flex>
-          <ScrollView style={styles.scrollView}>
+          
             {/* Zutaten */}
             <Text mt="2" fontSize="md">
               Zutaten
@@ -386,9 +387,10 @@ const CreateRecipe = ({ navigation }) => {
             <Button mt="6" onPress={handlePress}>
               Speichern
             </Button>
-          </ScrollView>
+          
         </Flex>
       </Flex>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };
