@@ -14,7 +14,6 @@ import {
   AddIcon,
   Box,
 } from "native-base";
-import { FabStyles, buttonStyles } from "../theme/Components";
 
 const RecipeBooks = ({ navigation }) => {
   const [inputList, setInputList] = useState([]);
@@ -83,18 +82,8 @@ const RecipeBooks = ({ navigation }) => {
         icon={<AddIcon />}
       />
 
-      <Modal
-        shadow={1}
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        _backdrop={{
-          _dark: {
-            bg: "coolGray.800",
-          },
-          bg: "warmGray.50",
-        }}
-      >
-        <Modal.Content maxWidth="350" maxH="212">
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content>
           <Modal.CloseButton />
           <Modal.Header>Erstellen:</Modal.Header>
           <Modal.Body>
@@ -121,11 +110,12 @@ const RecipeBooks = ({ navigation }) => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-      <Box m={4} shadow={1}>
+      <Box m={4}>
         <FlatList
+          overflow={"visible"}
           data={inputList}
           renderItem={({ item, index }) => (
-            <Box bg={"white"} borderRadius={8} marginY={2}>
+            <Box bg={"white"} borderRadius={8} marginY={2} shadow={1}>
               <TouchableOpacity
                 onPress={() => handlePress(item)}
                 style={{
@@ -170,17 +160,7 @@ const RecipeBooks = ({ navigation }) => {
           keyExtractor={(item, index) => index.toString()}
         />
 
-        <Modal
-          shadow={1}
-          isOpen={deleteModal}
-          onClose={closeDeleteModal}
-          _backdrop={{
-            _dark: {
-              bg: "coolGray.800",
-            },
-            bg: "warmGray.50",
-          }}
-        >
+        <Modal isOpen={deleteModal} onClose={closeDeleteModal}>
           <Modal.Content maxWidth="350" maxH="212">
             <Modal.CloseButton />
             <Modal.Header>Rezeptsammlung löschen?</Modal.Header>

@@ -9,6 +9,7 @@ import {
   FlatList,
   DeleteIcon,
   AddIcon,
+  Flex,
 } from "native-base";
 import { FabStyles } from "../theme/Components";
 import { TouchableOpacity, Image } from "react-native";
@@ -85,11 +86,12 @@ const RecipesList = ({ navigation, route }) => {
 
   return (
     <NativeBaseProvider>
-      <Box m={4} shadow={1}>
+      <Box m={4}>
         <FlatList
           data={recipeBookNames}
+          overflow={"visible"}
           renderItem={({ item, index }) => (
-            <Box bg={"white"} borderRadius={8} marginY={2}>
+            <Box bg={"white"} borderRadius={8} marginY={2} shadow={1}>
               <TouchableOpacity
                 key={item.key}
                 style={{
@@ -103,35 +105,37 @@ const RecipesList = ({ navigation, route }) => {
                   navigation.navigate("Recipe", { selectedItem: item })
                 }
               >
-                {item.recipeImage && (
-                  <Image
-                    source={{ uri: item.recipeImage }}
-                    style={{ width: 40, height: 40, marginRight: 8 }}
-                    resizeMode="cover"
-                    alt="recipeImage"
-                  />
-                )}
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    color: "black",
-                    marginRight: 8,
-                  }}
-                >
-                  {item.recipeTitle}
-                  {"\n"}
+                <Flex flexDirection={"row"}>
+                  {item.recipeImage && (
+                    <Image
+                      source={{ uri: item.recipeImage }}
+                      style={{ width: 40, height: 40, marginRight: 8 }}
+                      resizeMode="cover"
+                      alt="recipeImage"
+                    />
+                  )}
                   <Text
                     style={{
                       fontSize: 18,
                       fontWeight: "bold",
-                      color: "gray",
+                      color: "black",
                       marginRight: 8,
                     }}
                   >
-                    {item.recipeDuration}
+                    {item.recipeTitle}
+                    {"\n"}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        color: "gray",
+                        marginRight: 8,
+                      }}
+                    >
+                      {item.recipeDuration}
+                    </Text>
                   </Text>
-                </Text>
+                </Flex>
                 <TouchableOpacity
                   renderInPortal={false}
                   onPress={() => openDeleteRecipeModal(index)}
@@ -140,15 +144,8 @@ const RecipesList = ({ navigation, route }) => {
                 </TouchableOpacity>
 
                 <Modal
-                  shadow={1}
                   isOpen={deleteRecipeModal}
                   onClose={closeDeleteRecipeModal}
-                  _backdrop={{
-                    _dark: {
-                      bg: "coolGray.800",
-                    },
-                    bg: "warmGray.50",
-                  }}
                 >
                   <Modal.Content maxWidth="350" maxH="212">
                     <Modal.CloseButton />

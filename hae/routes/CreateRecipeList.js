@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NativeBaseProvider, Text, Input, Button, Image } from "native-base";
-import { buttonStyles } from "../theme/Components";
+import {
+  NativeBaseProvider,
+  Text,
+  Input,
+  Button,
+  Flex,
+  Box,
+} from "native-base";
 
 const CreateRecipeList = ({ navigation }) => {
   const [bookName, setBookName] = useState("");
@@ -35,7 +41,7 @@ const CreateRecipeList = ({ navigation }) => {
     try {
       const newBook = {
         bookName,
-        bookDescription
+        bookDescription,
       };
       const updatedInputList = [...inputList, newBook];
 
@@ -55,38 +61,34 @@ const CreateRecipeList = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <Input
-        placeholder="Name"
-        width="100%"
-        mt="28"
-        onChangeText={(text) => setBookName(text)}
-        value={bookName}
-      />
-      <Input
-        placeholder="Beschreibung"
-        width="100%"
-        mt="28"
-        onChangeText={(text) => setDescription(text)}
-        value={bookDescription}
-      />
-      <Button style={buttonStyles.primaryButton} onPress={addBook}>
-        <Text>Hinzufügen</Text>
-      </Button>
-      {errorMessage !== "" && <Text>{errorMessage}</Text>}
+      <Box m={4}>
+        <Flex flexDirection={"column"}>
+          <Input
+            placeholder="Name"
+            onChangeText={(text) => setBookName(text)}
+            value={bookName}
+          />
+          <Input
+            mt={2}
+            placeholder="Beschreibung"
+            onChangeText={(text) => setDescription(text)}
+            value={bookDescription}
+          />
+          <Flex alignItems={"center"}>
+            <Button
+              onPress={addBook}
+              variant={"outline"}
+              colorScheme={"success"}
+              mt={4}
+            >
+              Hinzufügen
+            </Button>
+          </Flex>
+          {errorMessage !== "" && <Text>{errorMessage}</Text>}
+        </Flex>
+      </Box>
     </NativeBaseProvider>
   );
 };
 
 export default CreateRecipeList;
-
-const styles = {
-  recipeImage: {
-    width: 200,
-    height: 200,
-    resizeMode: "cover",
-    marginTop: 10,
-  },
-  deleteButton: {
-    marginTop: 10,
-  },
-};
