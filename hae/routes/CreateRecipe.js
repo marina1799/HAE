@@ -7,15 +7,15 @@ import {
   Input,
   Flex,
   Select,
-  FormControl,
   DeleteIcon,
-  WarningOutlineIcon,
   Circle,
   Button,
   ScrollView,
   AddIcon,
   TextArea,
   Image,
+  Box,
+  Heading,
 } from "native-base";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -135,7 +135,7 @@ const CreateRecipe = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setRecipeImage(result.uri);
+      setRecipeImage(result.assets[0].uri);
     }
   };
 
@@ -154,7 +154,7 @@ const CreateRecipe = ({ navigation }) => {
 
     if (!result.canceled) {
       const tempStepImages = [...stepImage];
-      tempStepImages[key] = result.uri;
+      tempStepImages[key] = result.assets[0].uri;
       setStepImage(tempStepImages);
     }
   };
@@ -167,216 +167,194 @@ const CreateRecipe = ({ navigation }) => {
 
   return (
     <NativeBaseProvider>
-      <ScrollView style={styles.scrollView}>
-        {/* Recipe Image */}
-        <>
-          {!recipeImage && (
-            <Button
-              width="400"
-              height="300"
-              variant="outline"
-              mb="4"
-              onPress={pickRecipeImage}
-            >
-              Bild hinzufügen
-            </Button>
-          )}
-          {recipeImage && (
-            <Flex mb="10">
-              <TouchableOpacity onPress={pickRecipeImage}>
-                <Image
-                  source={{ uri: recipeImage }}
-                  style={{ width: 400, height: 300 }}
-                  alt="recipeImage"
-                  mb="4"
-                />
-              </TouchableOpacity>
-              <Button title="Bild löschen" onPress={deleteRecipeImage}>
-                Bild löschen
+      <Select
+        mx={4}
+        mt={4}
+        size={"lg"}
+        accessibilityLabel="Rezeptliste"
+        placeholder="Rezeptliste"
+        onValueChange={(itemValue) => setRecipeBook(itemValue)}
+      >
+        {inputList.map((item, index) => {
+          return (
+            <Select.Item
+              label={item.bookName}
+              value={item.bookName}
+              key={index}
+            />
+          );
+        })}
+      </Select>
+      <ScrollView>
+        <Box m={4}>
+          <>
+            {!recipeImage && (
+              <Button
+                width={"100%"}
+                height={"120"}
+                variant={"outline"}
+                colorScheme={"success"}
+                onPress={pickRecipeImage}
+              >
+                Bild hinzufügen
               </Button>
-            </Flex>
-          )}
-        </>
-        <Flex p="3">
-          {/* Titel */}
-          <Input
-            placeholder="Rezepttitel"
-            variant="filled"
-            size="lg"
-            width="250"
-            mx="auto"
-            mt="1"
-            mb="4"
-            onChangeText={(text) => setRecipeTitle(text)}
-            value={recipeTitle}
-          />
-          {/* Rezeptliste & Dauer */}
-          <Flex mt="2">
-            <Flex direction="row" mb="4">
-              <Flex direction="column">
-                <Text mt="2" mb="8">
-                  Rezeptliste:
-                </Text>
-                <Text>Dauer:</Text>
+            )}
+            {recipeImage && (
+              <Flex mb={2}>
+                <Flex>
+                  <TouchableOpacity onPress={pickRecipeImage}>
+                    <Image
+                      source={{ uri: recipeImage }}
+                      style={{ width: "100%", height: 120 }}
+                      alt="recipeImage"
+                    />
+                  </TouchableOpacity>
+                </Flex>
+                <Flex alignItems={"center"} my={2}>
+                  <Button
+                    variant={"outline"}
+                    colorScheme={"secondary"}
+                    onPress={deleteRecipeImage}
+                  >
+                    Bild löschen
+                  </Button>
+                </Flex>
               </Flex>
+            )}
+          </>
+          <Flex>
+            <Input
+              my={2}
+              placeholder="Titel"
+              variant="filled"
+              size="lg"
+              width="100%"
+              onChangeText={(text) => setRecipeTitle(text)}
+              value={recipeTitle}
+            />
 
-              <Flex direction="column" width="100%">
-                <FormControl ml="2" w="3/4" maxW="300" isRequired>
-                  <Select
-                    onValueChange={(itemValue) => setRecipeBook(itemValue)}
-                    maxWidth="100%"
-                    height="9"
-                    mb="4"
-                    fontSize="sm"
-                    accessibilityLabel="Rezeptliste wählen"
-                    placeholder="Rezeptliste wählen"
-                    _selectedItem={{
-                      bg: "teal.900",
-                    }}
-                    mt="1"
-                  >
-                    {inputList.map((item, index) => {
-                      return (
-                        <Select.Item
-                          label={item.bookName}
-                          value={item.bookName}
-                          key={index}
-                          // onPress={() => console.log(item)}
-                        />
-                      );
-                    })}
-                  </Select>
-                  <FormControl.ErrorMessage
-                    leftIcon={<WarningOutlineIcon size="xs" />}
-                  >
-                    Bitte eine Auswahl treffen.
-                  </FormControl.ErrorMessage>
-                </FormControl>
-                <Input
-                  placeholder="Dauer eingeben"
-                  variant="filled"
-                  size="md"
-                  ml="2"
-                  width="75%"
-                  value={recipeDuration}
-                  onChangeText={(text) => setRecipeDuration(text)}
-                />
-              </Flex>
-            </Flex>
+            <Input
+              my={2}
+              placeholder="Zubereitungsdauer"
+              variant="filled"
+              size="lg"
+              value={recipeDuration}
+              onChangeText={(text) => setRecipeDuration(text)}
+            />
 
             {/* Zutaten */}
-            <Text mt="2" fontSize="md">
+            <Heading size={"sm"} my={2}>
               Zutaten
-            </Text>
-            <View>
-              {ingredient.map((currentIngredient, key) => (
-                <View key={key}>
-                  <Flex direction="row" mt="2">
-                    <Input
-                      direction="column"
-                      placeholder="Menge"
-                      variant="filled"
-                      size="md"
-                      mr="2"
-                      width="20%"
-                      onChangeText={(text) => handleAmountInput(text, key)}
-                      value={currentIngredient.amount}
-                    />
-                    <Input
-                      direction="column"
-                      placeholder="Zutat"
-                      variant="filled"
-                      size="md"
-                      width="69%"
-                      onChangeText={(text) =>
-                        handleIngredientNameInput(text, key)
-                      }
-                      value={currentIngredient.ingredient}
-                    />
-                    <TouchableOpacity onPress={() => deleteHandlerZutaten(key)}>
-                      <DeleteIcon m="2" />
-                    </TouchableOpacity>
-                  </Flex>
-                </View>
-              ))}
-              {/* Neue Zeile hinzufügen - Button */}
-              <Flex direction="row" mt="4" justifyContent="center">
-                <Button
-                  variant="unstyled"
-                  title="Add"
-                  onPress={addHandlerZutaten}
-                >
-                  <Circle size="40px" bg="lightgrey">
-                    <AddIcon color="darkText" />
-                  </Circle>
-                </Button>
+            </Heading>
+            {ingredient.map((currentIngredient, key) => (
+              <Flex
+                my={2}
+                direction={"row"}
+                key={key}
+                justifyContent={"space-between"}
+              >
+                <Flex flexDirection={"row"}>
+                  <Input
+                    mr={4}
+                    direction="column"
+                    placeholder="Menge"
+                    variant="filled"
+                    size="lg"
+                    width={"25%"}
+                    onChangeText={(text) => handleAmountInput(text, key)}
+                    value={currentIngredient.amount}
+                  />
+                  <Input
+                    direction="column"
+                    placeholder="Zutat"
+                    variant="filled"
+                    size="lg"
+                    width={"60%"}
+                    onChangeText={(text) =>
+                      handleIngredientNameInput(text, key)
+                    }
+                    value={currentIngredient.ingredient}
+                  />
+                </Flex>
+                <Flex justifyContent={"center"} mr={1}>
+                  <TouchableOpacity onPress={() => deleteHandlerZutaten(key)}>
+                    <DeleteIcon />
+                  </TouchableOpacity>
+                </Flex>
               </Flex>
-            </View>
-            {/* Zubereitung */}
-            <Text mt="6" fontSize="md">
+            ))}
+            <Flex direction={"row"} justifyContent={"center"}>
+              <Button
+                variant="unstyled"
+                title="Add"
+                onPress={addHandlerZutaten}
+              >
+                <Circle size="40px" bg="lightgrey">
+                  <AddIcon color="darkText" />
+                </Circle>
+              </Button>
+            </Flex>
+            <Heading my={2} size={"sm"}>
               Zubereitungsschritte
-            </Text>
+            </Heading>
             <View>
               {preparation.map((currentPreparation, key) => (
-                <View key={key}>
-                  <Flex direction="column" mt="2">
-                    <Text mb="1">Schritt {key + 1}</Text>
-                    <Flex direction="row">
-                      {/* Recipestep Image*/}
-                      <>
-                        {!stepImage[key] && (
+                <Flex direction="column" key={key}>
+                  <Text my={2}>Schritt {key + 1}</Text>
+                  <Flex direction="row">
+                    <>
+                      {!stepImage[key] && (
+                        <Button
+                          mr={2}
+                          width="100"
+                          height="100"
+                          variant="outline"
+                          onPress={() => pickStepImage(key)}
+                        >
+                          <AddIcon color="info.600" />
+                        </Button>
+                      )}
+                      {stepImage[key] && (
+                        <Flex>
+                          <TouchableOpacity onPress={() => pickStepImage(key)}>
+                            <Image
+                              borderRadius={8}
+                              mr={2}
+                              source={{ uri: stepImage[key] }}
+                              style={{ width: 100, height: 100 }}
+                              alt="stepImage"
+                            />
+                          </TouchableOpacity>
                           <Button
-                            width="100"
-                            height="100"
-                            variant="outline"
-                            onPress={() => pickStepImage(key)}
+                            my={2}
+                            variant={"outline"}
+                            colorScheme={"secondary"}
+                            onPress={() => deleteStepImage(key)}
                           >
-                            <AddIcon color="info.600" />
+                            Bild löschen
                           </Button>
-                        )}
-                        {stepImage[key] && (
-                          <Flex mb="10">
-                            <TouchableOpacity
-                              onPress={() => pickStepImage(key)}
-                            >
-                              <Image
-                                source={{ uri: stepImage[key] }}
-                                style={{ width: 100, height: 100 }}
-                                alt="stepImage"
-                                mb="4"
-                              />
-                            </TouchableOpacity>
-                            <Button
-                              title="Bild löschen"
-                              onPress={() => deleteStepImage(key)}
-                            >
-                              Bild löschen
-                            </Button>
-                          </Flex>
-                        )}
-                      </>
-                      <TextArea
-                        direction="column"
-                        placeholder="Zubereitung"
-                        variant="filled"
-                        size="md"
-                        ml="2"
-                        width="62%"
-                        h={100}
-                        onChangeText={(text) => handleStepTextInput(text, key)}
-                        value={currentPreparation.stepText}
-                      />
-                      <TouchableOpacity
-                        onPress={() => deleteHandlerZubereitung(key)}
-                      >
-                        <DeleteIcon m="2" />
-                      </TouchableOpacity>
-                    </Flex>
+                        </Flex>
+                      )}
+                    </>
+                    <TextArea
+                      direction="column"
+                      placeholder="Zubereitung"
+                      variant="filled"
+                      size="lg"
+                      width="60%"
+                      h={100}
+                      onChangeText={(text) => handleStepTextInput(text, key)}
+                      value={currentPreparation.stepText}
+                    />
+                    <TouchableOpacity
+                      onPress={() => deleteHandlerZubereitung(key)}
+                    >
+                      <DeleteIcon ml={8} />
+                    </TouchableOpacity>
                   </Flex>
-                </View>
+                </Flex>
               ))}
-              {/* Neue Zeile hinzufügen - Button */}
-              <Flex direction="row" mt="4" justifyContent="center">
+              <Flex direction="row" justifyContent="center">
                 <Button
                   variant="unstyled"
                   title="Add"
@@ -388,23 +366,14 @@ const CreateRecipe = ({ navigation }) => {
                 </Button>
               </Flex>
             </View>
-            {/* Eintrag speichern */}
-            <Button mt="6" onPress={handlePress}>
+            <Button colorScheme={"success"} onPress={handlePress}>
               Speichern
             </Button>
           </Flex>
-        </Flex>
+        </Box>
       </ScrollView>
     </NativeBaseProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollView: {
-    height: "20%",
-    width: "100%",
-    alignSelf: "center",
-  },
-});
 
 export default CreateRecipe;

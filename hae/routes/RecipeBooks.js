@@ -77,6 +77,7 @@ const RecipeBooks = ({ navigation }) => {
         size={"lg"}
         mb={2}
         bg={"secondary.600"}
+        _pressed={{ bg: "secondary.700" }}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
         icon={<AddIcon />}
