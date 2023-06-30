@@ -9,6 +9,7 @@ import {
   FlatList,
   DeleteIcon,
   AddIcon,
+  Flex,
 } from "native-base";
 import { FabStyles } from "../theme/Components";
 import { TouchableOpacity, Image } from "react-native";
@@ -103,35 +104,37 @@ const RecipesList = ({ navigation, route }) => {
                   navigation.navigate("Recipe", { selectedItem: item })
                 }
               >
-                {item.recipeImage && (
-                  <Image
-                    source={{ uri: item.recipeImage }}
-                    style={{ width: 40, height: 40, marginRight: 8 }}
-                    resizeMode="cover"
-                    alt="recipeImage"
-                  />
-                )}
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    color: "black",
-                    marginRight: 8,
-                  }}
-                >
-                  {item.recipeTitle}
-                  {"\n"}
+                <Flex flexDirection={"row"}>
+                  {item.recipeImage && (
+                    <Image
+                      source={{ uri: item.recipeImage }}
+                      style={{ width: 40, height: 40, marginRight: 8 }}
+                      resizeMode="cover"
+                      alt="recipeImage"
+                    />
+                  )}
                   <Text
                     style={{
                       fontSize: 18,
                       fontWeight: "bold",
-                      color: "gray",
+                      color: "black",
                       marginRight: 8,
                     }}
                   >
-                    {item.recipeDuration}
+                    {item.recipeTitle}
+                    {"\n"}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        color: "gray",
+                        marginRight: 8,
+                      }}
+                    >
+                      {item.recipeDuration}
+                    </Text>
                   </Text>
-                </Text>
+                </Flex>
                 <TouchableOpacity
                   renderInPortal={false}
                   onPress={() => openDeleteRecipeModal(index)}
