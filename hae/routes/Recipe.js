@@ -29,7 +29,7 @@ const Recipe = ({ route }) => {
   const recipeImage = route.params.selectedItem.recipeImage;
   const stepImage = route.params.selectedItem.stepImage;
 
-  // console.log(route.params.selectedItem.recipeBook);
+  console.log(route.params.selectedItem.stepImage[0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,10 +88,11 @@ const Recipe = ({ route }) => {
         {recipeImage && (
           <Box>
             <Image
-              source={{ uri: recipeImage }}
+              source={{ uri: stepImage[index] }}
               style={{ width: "100%", height: 120 }}
               resizeMode="cover"
               alt="recipeImage"
+              key={index}
             />
           </Box>
         )}
