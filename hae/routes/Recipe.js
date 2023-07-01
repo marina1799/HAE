@@ -11,7 +11,6 @@ import {
   Image,
   Box,
   Heading,
-  Divider,
   ScrollView,
 } from "native-base";
 
@@ -95,8 +94,7 @@ const Recipe = ({ route }) => {
         <Box m={4}>
           <Heading size={"lg"}>{recipeTitle}</Heading>
           <Text mb={2}>{recipeDuration}</Text>
-          <Divider mb={2} />
-          <Heading size={"sm"} mb={2}>
+          <Heading size={"sm"} mb={2} mt={4}>
             Zutaten
           </Heading>
           {recipeIngredientsList.map((ingredient, index) => {
@@ -113,8 +111,7 @@ const Recipe = ({ route }) => {
               </Flex>
             );
           })}
-          <Divider my={2} />
-          <Heading size={"sm"} mb={2}>
+          <Heading size={"sm"} mb={2} mt={4}>
             Zubereitungsschritte
           </Heading>
           {recipeStepList.map((recipeSteps, index) => {
@@ -132,8 +129,6 @@ const Recipe = ({ route }) => {
               </Flex>
             );
           })}
-          <Divider mt={2} />
-
           <Flex alignItems={"center"}>
             <Button
               mt={8}
@@ -145,7 +140,6 @@ const Recipe = ({ route }) => {
             </Button>
           </Flex>
         </Box>
-
         <Modal isOpen={deleteModal} onClose={() => setDeleteModal(false)}>
           <Modal.Content>
             <Modal.CloseButton />
