@@ -116,7 +116,7 @@ const Recipe = ({ route }) => {
           </Heading>
           {recipeStepList.map((recipeSteps, index) => {
             return (
-              <Flex key={index} direction="column" alignItems="left">
+              <Flex key={index} direction="column" style={ alignItems= "left"}>
                 {stepImage && (
                   <Image
                     source={{ uri: stepImage[index] }}
