@@ -49,7 +49,6 @@ const CreateRecipeList = ({ navigation }) => {
       console.log("Data saved!");
 
       setInputList(updatedInputList);
-      console.log("Updated inputList:", updatedInputList);
 
       navigation.navigate("RecipeBooks");
     } catch (error) {
