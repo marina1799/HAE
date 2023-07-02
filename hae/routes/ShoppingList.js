@@ -10,6 +10,7 @@ import {
   Box,
   Divider,
 } from "native-base";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ShoppingList = () => {
   const [amount, setAmount] = useState("");
@@ -17,28 +18,34 @@ const ShoppingList = () => {
   const [ingredientsList, setIngredientsList] = useState([]);
   const [removedIngredientsList, setRemovedIngredientsList] = useState([]);
 
+  const fetchData = async () => {
+    try {
+      const storedIngredientsList = await AsyncStorage.getItem(
+        "ingredientsList"
+      );
+      const parsedIngredientsList = JSON.parse(storedIngredientsList) || [];
+      setIngredientsList(parsedIngredientsList);
+
+      const storedRemovedIngredientsList = await AsyncStorage.getItem(
+        "removedIngredientsList"
+      );
+      const parsedRemovedIngredientsList =
+        JSON.parse(storedRemovedIngredientsList) || [];
+      setRemovedIngredientsList(parsedRemovedIngredientsList);
+    } catch (error) {
+      console.log("Error retrieving data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const storedIngredientsList = await AsyncStorage.getItem(
-          "ingredientsList"
-        );
-        const parsedIngredientsList = JSON.parse(storedIngredientsList) || [];
-        setIngredientsList(parsedIngredientsList);
-
-        const storedRemovedIngredientsList = await AsyncStorage.getItem(
-          "removedIngredientsList"
-        );
-        const parsedRemovedIngredientsList =
-          JSON.parse(storedRemovedIngredientsList) || [];
-        setRemovedIngredientsList(parsedRemovedIngredientsList);
-      } catch (error) {
-        console.log("Error retrieving data:", error);
-      }
-    };
-
     fetchData();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   const saveIngredient = async () => {
     try {

@@ -29,18 +29,20 @@ const App = () => {
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}
-          options={{ title: "Startseite" }}
+          options={{
+            title: "Startseite",
+          }}
         />
         <Stack.Screen
           name="RecipeBooks"
           component={RecipeBooks}
-          options={{ title: "Rezepte" }}
+          options={{ title: "Rezeptelisten" }}
         />
 
         <Stack.Screen
           name="RecipesList"
           component={RecipesList}
-          options={{ title: "Rezepteliste" }}
+          options={{ title: "Rezepte" }}
         />
         <Stack.Screen
           name="CreateRecipe"
@@ -90,7 +92,7 @@ const TabNavigator = () => {
       <Tab.Screen
         name="RecipeBooks"
         component={RecipeBooks}
-        options={{ title: "Rezepte", headerShown: false }}
+        options={{ title: "Rezeptelisten", headerShown: false }}
       />
       <Tab.Screen
         name="ShoppingList"
