@@ -75,7 +75,7 @@ const CreateRecipe = ({ navigation }) => {
 
   const handlePress = (item) => {
     saveData();
-    navigation.goBack();
+    navigation.navigate("RecipeBooks");
   };
 
   // Input der Zutaten neu schreiben
