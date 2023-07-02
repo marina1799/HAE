@@ -50,7 +50,7 @@ const CreateRecipeList = ({ navigation }) => {
 
       setInputList(updatedInputList);
 
-      navigation.navigate("RecipeBooks");
+      navigation.goBack();
     } catch (error) {
       console.log("Error saving data:", error);
     }
