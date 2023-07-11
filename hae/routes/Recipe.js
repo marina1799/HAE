@@ -12,6 +12,7 @@ import {
   Box,
   Heading,
   ScrollView,
+  View,
 } from "native-base";
 
 const Recipe = ({ route }) => {
@@ -105,8 +106,8 @@ const Recipe = ({ route }) => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Text>
-                  &#8226; {ingredient?.amount} {ingredient?.ingredient}
+                <Text mb="1">
+                  {ingredient?.amount} {ingredient?.ingredient}
                 </Text>
               </Flex>
             );
@@ -116,16 +117,19 @@ const Recipe = ({ route }) => {
           </Heading>
           {recipeStepList.map((recipeSteps, index) => {
             return (
-              <Flex key={index} direction="column" alignItems="left">
-                {stepImage && (
-                  <Image
-                    source={{ uri: stepImage[index] }}
-                    style={{ width: 60, height: 60 }}
-                    resizeMode="cover"
-                    alt="recipeImage"
-                  />
-                )}
-                <Text mb={2}>&#8226; {recipeSteps.stepText}</Text>
+              <Flex key={index} direction="column" mb="3">
+                <Flex direction="row">
+                  {stepImage && (
+                    <Image
+                      source={{ uri: stepImage[index] }}
+                      style={{ width: 100, height: 100 }}
+                      resizeMode="cover"
+                      alt="recipeImage"
+                    />
+                  )}
+                  <Text ml="4">{recipeSteps.stepText}</Text>
+                </Flex>
+                <View direction="row" mt="3" style={{ flex: 1, height: 1, backgroundColor: 'lightgrey' }} />
               </Flex>
             );
           })}
