@@ -127,7 +127,7 @@ const Recipe = ({ route }) => {
                       alt="recipeImage"
                     />
                   )}
-                  <Text ml="4">{recipeSteps.stepText}</Text>
+                  <Text ml="4" maxWidth="70%">{recipeSteps.stepText}</Text>
                 </Flex>
                 <View direction="row" mt="3" style={{ flex: 1, height: 1, backgroundColor: 'lightgrey' }} />
               </Flex>
